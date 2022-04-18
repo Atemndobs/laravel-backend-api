@@ -44,10 +44,10 @@ class StrapiSongService
     }
 
     /**
-     * @param Song $song
+     * @param array $song
      * @return array
      */
-    public function importStrapiSong(Song $song)
+    public function importStrapiSong(array $song)
     {
         return $this->importAndSave($song, [], new UploadService());;
     }
