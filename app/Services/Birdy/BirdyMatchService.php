@@ -20,28 +20,20 @@ class BirdyMatchService
 
     public function getSongmatch($title)
     {
-
         $song = $this->getExistingSong($title);
-        if (!$this->checkAnalyzedSong($song) ) {
+        if (!$this->checkAnalyzedSong($song)) {
             return ['status' => 'not analyzed'];
         }
-/*
-        if ((bool)$song->played) {
-            return ['status' => 'already played'];
-        }*/
 
         $vibe = $this->getSimmilarSong($song);
-        $matches = $vibe->getHits();
 
-        $matches = $this->getMatches($vibe, $matches, $song);
-
-        if (sizeof($matches) < 3){
-            $matches = $this->relaxSearchFilters($matches, $song);
+        if ($vibe->getHitsCount() < 3){
+            $vibe = $this->relaxSearchFilters($vibe, $song);
         }
 
         return [
-            'hits_count' => sizeof($matches),
-            'hits' => $matches
+            'hits_count' => $vibe->getHitsCount(),
+            'hits' => $vibe->getHits()
         ];
     }
 
@@ -306,7 +298,7 @@ class BirdyMatchService
         return $res;
     }
 
-    public function relaxSearchFilters(array $searchResult, Song $song)
+    public function relaxSearchFilters(SearchResult|array $searchResult, Song $song)
     {
         $attr = [
             'bpm',
@@ -317,62 +309,35 @@ class BirdyMatchService
 
         $maxBpm = $this->getMaxBpm();
 
-        $matches = $searchResult;
-
-        while (sizeof($searchResult) < 3) {
+        while ($searchResult->getHitsCount() < 3) {
             $bpmRange = $bpmRange +1 ;
 
             if ($bpmRange >= $maxBpm) {
                 break;
             }
+            $searchResult =  $this->getSimmilarSong($song, $bpmRange, 100 , $attr);
 
-        //    $searchResult =  $this->getSimmilarSong($song, $bpmRange, 100 , $attr);
-            $res =  $this->getSimmilarSong($song, $bpmRange, 100 , $attr);
-
-            $matches  = $this->getMatches($res, $res->getHits(), $song);
-          //  dd($searchResult);
         }
-
 
         /** @var SearchResult|array $searchResult2 */
         $searchResult2 = [];
 
-        if (sizeof($matches) <= 3 ){
-
-            $p = 1;
-            while (sizeof($matches) < 3) {
+        if ($searchResult->getHitsCount() < 3){
+            while ($searchResult->getHitsCount() < 3) {
                 $bpmRange = $bpmRange -1 ;
-                $p = $p +1;
 
                 if ($maxBpm + $bpmRange <= 60) {
                     break;
                 }
-                $searchResult2 =  $this->getSimmilarSong($song, $bpmRange, 100 , $attr);
-
-                $matches  = $this->getMatches($searchResult2,$searchResult2->getHits(), $song);
-
-                if ($p === 50) {
-                  //  break;
-                }
+                $searchResult2=  $this->getSimmilarSong($song, $bpmRange, 100 , $attr);
             }
+
         }
-/*        if (sizeof($searchResult) < 3){
-            while (sizeof($searchResult) < 3) {
-                $bpmRange = $bpmRange -1 ;
 
-                if ($maxBpm + $bpmRange <= 60) {
-                    break;
-                }
-                $searchResult2 =  $this->getSimmilarSong($song, $bpmRange, 100 , $attr);
-            }
-        }*/
-
-     //   dd($matches);
-
-/*        if (!isEmpty($searchResult2) && $searchResult2->getHitsCount() > $searchResult->getHitsCount()){
+        if (!isEmpty($searchResult2) && $searchResult2->getHitsCount() > $searchResult->getHitsCount()){
             return $searchResult2 ;
-        }*/
-        return $matches;
+        }
+        return $searchResult;
     }
 
     public function getMaxBpm()
@@ -384,23 +349,5 @@ class BirdyMatchService
     {
         $spotifyService = new SpotifyService($song);
        return $spotifyService->searchSong();
-    }
-
-    /**
-     * @param array|SearchResult $vibe
-     * @param array $matches
-     * @param Song $song
-     * @return array
-     */
-    public function getMatches(array|SearchResult $vibe, array $matches, Song $song): array
-    {
-        if ($vibe->getHitsCount() >= 3) {
-            foreach ($matches as $key => $match) {
-                if ($match['title'] == $song->title) {
-                    unset($matches[$key]);
-                }
-            }
-        }
-        return $matches;
     }
 }

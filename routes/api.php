@@ -46,3 +46,4 @@ Route::post('upload/webhook', [\App\Http\Controllers\Api\UploadController::class
 Route::get('songs/match/{title}', [\App\Http\Controllers\Api\MatchSongController::class, 'getSongMatch']);
 Route::get('songs/match/{title}/{$attribute}', [\App\Http\Controllers\Api\MatchSongController::class, 'matchByAttribute']);
 Route::get('songs/search/{term}', [\App\Http\Controllers\Api\SongSearchController::class, 'searchSong']);
+Route::get('songs/genre/{artist}', [\App\Http\Controllers\Api\SpotifyController::class, 'getArtistGenre']);
