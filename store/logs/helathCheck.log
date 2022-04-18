@@ -1,0 +1,1380 @@
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  Please provide a valid cache path.
+
+  at vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:45
+     41▕      */
+     42▕     public function __construct(Filesystem $files, $cachePath, $basePath = '')
+     43▕     {
+     44▕         if (! $cachePath) {
+  ➜  45▕             throw new InvalidArgumentException('Please provide a valid cache path.');
+     46▕         }
+     47▕ 
+     48▕         $this->files = $files;
+     49▕         $this->cachePath = $cachePath;
+
+      [2m+19 vendor frames [22m
+  20  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+5 vendor frames [22m
+  26  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()

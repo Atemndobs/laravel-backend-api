@@ -1,0 +1,48 @@
+{
+    "data": {
+        "id": 14,
+        "title": "KARYO - Afro Bros - Kijken Mag (MASHUP BANGER) (PITCHED FOR COPYRIGHTS).mp3",
+        "author": "",
+        "link": "imported",
+        "source": "mp3",
+        "key": "D",
+        "bpm": 79.787231445312,
+        "comment": "",
+        "danceability": 0.91869191080332,
+        "happy": 0.62891578674316,
+        "sad": 0.46589266415685,
+        "relaxed": 0.41065008193254,
+        "aggressiveness": 0.30277990479954,
+        "energy": 174422.15625,
+        "path": "http://mage.tech:8899/storage/audio/KARYO - Afro Bros - Kijken Mag (MASHUP BANGER) (PITCHED FOR COPYRIGHTS).mp3",
+        "created_at": "2022-04-13T11:04:40.000000Z",
+        "updated_at": "2022-04-13T11:31:35.000000Z",
+        "published_at": null,
+        "created_by_id": null,
+        "updated_by_id": null,
+        "scale": "minor",
+        "extension": "mp3"
+    }
+}
+
+mood_happy: Inference took: 6254
+main.js:130 mood_happy predictions:  0.3551765042822808
+inference.js:103 mood_sad: Inference took: 6286
+main.js:130 mood_sad predictions:  0.5090648144483566
+inference.js:103 danceability: Inference took: 6919
+main.js:130 danceability predictions:  0.9991067588329315
+inference.js:103 mood_relaxed: Inference took: 8577
+main.js:130 mood_relaxed predictions:  0.4453777611255646
+inference.js:103 mood_aggressive: Inference took: 8981
+main.js:130 mood_aggressive predictions:  0.23782134875655175
+
+
+mood_aggressive predictions:  0.9262854273502643
+inference.js:103 mood_happy: Inference took: 10590
+main.js:130 mood_happy predictions:  0.37907186317114305
+inference.js:103 danceability: Inference took: 11874
+main.js:130 danceability predictions:  0.9794264940115122
+inference.js:103 mood_relaxed: Inference took: 12233
+main.js:130 mood_relaxed predictions:  0.3509010695494138
+inference.js:103 mood_sad: Inference took: 13169
+main.js:130 mood_sad predictions:  0.21231152059940192
