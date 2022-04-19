@@ -23,5 +23,5 @@ rabbitmq
 /storage/logs
 /public/packages
 
-var/
-storage/app/var
+/var/
+/storage/app/var/
