@@ -9,6 +9,7 @@ use Http\Client\Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use function Psy\debug;
+use const Widmogrod\Monad\Writer\log;
 
 class StrapiSongService
 {
@@ -44,10 +45,10 @@ class StrapiSongService
     }
 
     /**
-     * @param Song $song
+     * @param array $song
      * @return array
      */
-    public function importStrapiSong(Song $song)
+    public function importStrapiSong(array $song)
     {
         return $this->importAndSave($song, [], new UploadService());;
     }

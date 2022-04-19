@@ -71,7 +71,9 @@ class MeiliSearchService
             'aggressiveness',
             'danceability',
             'relaxed',
-            'path'
+            'played',
+            'path',
+            'related_songs'
         ]);
 
         $songIndex->updateRankingRules([

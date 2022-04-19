@@ -32,20 +32,32 @@ class SpotifyService
         $this->spotify->setAccessToken($accessToken);
     }
 
-    public function searchSong()
+    public function getArtistGenre(string $artist)
     {
       //  $existingSong = Song::where('title', '=', $title)->first();
         $spotifyTracks = null;
         $songTitle = $this->song->title;
 
-        $spotifyTrack = $this->spotify->search('BurnaBoy Gbona', 'track')->tracks->items[0];
+        $spotifyTrack = $this->spotify->search($artist, 'track')->tracks->items[0];
 
         $id = $spotifyTrack->id;
 
         $track = $this->spotify->getTrack($id);
-        $artistId = $track->artists[0]->id;
-        $artist = $this->spotify->getArtist($artistId);
-        $genres = $artist->genres;
+        $artists = $track->artists;
+
+        $genres = [];
+
+
+        foreach ($artists as $artist){
+            $artistId = $artist->id;
+            $artist = $this->spotify->getArtist($artistId);
+
+            $artistGenres = $artist->genres;
+            $genres[] = [
+                $artist->name => $artistGenres
+            ];
+        }
+
 
         return $genres;
     }

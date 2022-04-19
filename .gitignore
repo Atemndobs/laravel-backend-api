@@ -13,7 +13,7 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-/storage/app/public/audio/*
+/storage/app/public/audio
 /storage/var
 
 rabbitmq
@@ -21,3 +21,7 @@ rabbitmq
 /storage/framework/sessions/*
 /storage/framework/views/*
 /storage/logs
+/public/packages
+
+/var/
+/storage/app/var/

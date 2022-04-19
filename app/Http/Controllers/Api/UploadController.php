@@ -59,6 +59,13 @@ class UploadController extends Controller{
             info("Imported : " . $res[0]->title);
         }
 
+        if ($payload['event'] === strval("media.update")){
+            $song = $payload['media'];
+            $res = $this->strapiSongService->importStrapiSong($song);
+
+            info("Imported : " . $res[0]->path);
+        }
+
         if ($payload['event'] === strval("media.delete")){
             $track = $payload['media'];
             $song =   Song::where('title', '=', $track['name'])->first();
