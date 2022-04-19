@@ -9,6 +9,7 @@ use App\Services\UploadService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Jobs\RabbitMQJob;
 
 class ImportSongCommand extends Command
 {
@@ -36,6 +37,7 @@ class ImportSongCommand extends Command
         $unClassified = [];
         $data = [];
         $allFiles = Storage::disk('public')->allFiles();
+
         $uploadService = new UploadService();
         $tracks = $this->cleanFiles($allFiles);
         $uploadedSongs = $uploadService->importSongs($tracks);
@@ -63,9 +65,8 @@ class ImportSongCommand extends Command
 
         $deletablesHeader = ['deletables'];
         $deletablesBody = [];
-        foreach ($uploadService->getDeletables() as $deletable){
-            $deletablesBody[] = ['deletable' => $deletable];
-        }
+        $deletablesBody = $this->cleanDb($uploadService);
+
 
         $this->output->table($headers, $data);
         $this->output->table($deletablesHeader, $deletablesBody);
@@ -74,6 +75,16 @@ class ImportSongCommand extends Command
         $this->output->info("imported $total songs");
         info("=========================================IMPORT_DONE==========================================");
         return 0;
+    }
+
+    public function cleanDb(UploadService $uploadService)
+    {
+        $deletablesBody = [];
+        /** @var  string $deletable */
+        foreach ($uploadService->getDeletables() as $deletable){
+            $deletablesBody[] = ['deletable' => $deletable];
+        }
+        return $deletablesBody;
     }
 
     public function cleanFiles($files)

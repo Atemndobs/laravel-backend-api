@@ -218,18 +218,15 @@ class UploadService
 
         $path_to_store = Storage::path('public/audio/');
         $storeFile = $path_to_store . $file;
-
-
         $file_name = str_replace('&', '-', $file);
-        Storage::putFileAs($path_to_store, $storeFile, $file_name);
+       // Storage::putFileAs($path_to_store, $storeFile, $file_name);
         $full_path = asset(Storage::url('audio/' . $file_name));
-
 
         $deletables = [];
         if ($file_name  !== $file) {
             $oldFile = storage_path('app/public/audio/' .  $file);
             $this->deletItem = $file;
-            Storage::delete($oldFile);
+            rename($oldFile, $file_name);
             $this->addDeletables($storeFile);
         }
         $song->path = $full_path;

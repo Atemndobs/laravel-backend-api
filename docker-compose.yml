@@ -10,6 +10,8 @@ services:
         image: sail-8.1/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
+        #    - 'gateway.docker.internal:host-gateway'
+        #    - "mage.tech:172.17.0.1"
         #ports:
            # - '${APP_PORT:8090}:80'
         ports:
@@ -126,8 +128,9 @@ services:
             - 5672:5672
             - 15672:15672
         volumes:
-            - ./rabbitmq/data/:/var/lib/rabbitmq/
+       #     - ./rabbitmq/data/:/var/lib/rabbitmq/
             - ./rabbitmq/log/:/var/log/rabbitmq
+            - ./rabbitmq:/var/lib/rabbitmq
         networks:
             - sail
 
