@@ -40,7 +40,7 @@ class ImportSongCommand extends Command
 
         $uploadService = new UploadService();
         $tracks = $this->cleanFiles($allFiles);
-        $uploadedSongs = $uploadService->importSongs($tracks);
+        $uploadService->importSongs($tracks);
 
         DB::table('jobs')->delete();
         DB::table('failed_jobs')->delete();
@@ -63,15 +63,14 @@ class ImportSongCommand extends Command
             'status'
         ];
 
-        $deletablesHeader = ['deletables'];
-        $deletablesBody = [];
-        $deletablesBody = $this->cleanDb($uploadService);
-
+        $deletableHeader = ['deletable'];
+        $deletableBody = [];
+        $deletableBody[] = $this->cleanDb($uploadService);
 
         $this->output->table($headers, $data);
-        $this->output->table($deletablesHeader, $deletablesBody);
+        $this->output->table($deletableHeader, $deletableBody);
 
-        $total = sizeof($unClassified);
+        $total = count($unClassified);
         $this->output->info("imported $total songs");
         info("=========================================IMPORT_DONE==========================================");
         return 0;
@@ -79,15 +78,15 @@ class ImportSongCommand extends Command
 
     public function cleanDb(UploadService $uploadService)
     {
-        $deletablesBody = [];
+        $deletableBody = [];
         /** @var  string $deletable */
         foreach ($uploadService->getDeletables() as $deletable){
-            $deletablesBody[] = ['deletable' => $deletable];
+            $deletableBody[] = ['deletable' => $deletable];
         }
-        return $deletablesBody;
+        return $deletableBody;
     }
 
-    public function cleanFiles($files)
+    public function cleanFiles($files): array
     {
         $result = [];
         foreach ($files as $file){

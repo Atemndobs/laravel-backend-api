@@ -23,6 +23,11 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo('storage/logs/scheduler.log')
         ;
 
+        $schedule->command('queue:work database --queue=analyze --stop-when-empty')
+            ->everyMinute()
+            ->appendOutputTo('storage/logs/scheduler.log')
+        ;
+
         $schedule->command('queue:clear')
             ->everyThirtyMinutes()
             ->appendOutputTo('storage/logs/scheduler.log')

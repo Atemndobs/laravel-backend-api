@@ -89,10 +89,11 @@ class Song extends \App\Models\Base\Song
         'author',
         'comment',
         'link',
+        'image',
         'source',
 	];
 
-	public function admin_user()
+    public function admin_user()
 	{
 		return $this->belongsTo(AdminUser::class, 'updated_by_id');
 	}

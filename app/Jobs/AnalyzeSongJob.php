@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Services\MoodAnalysisService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,18 +10,19 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ImportSongJob implements ShouldQueue
+class AnalyzeSongJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected string $title;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(string $title)
     {
-        //
+        $this->title = $title;
     }
 
     /**
@@ -30,6 +32,6 @@ class ImportSongJob implements ShouldQueue
      */
     public function handle()
     {
-        //
+        (new MoodAnalysisService())->getAnalysis($this->title);
     }
 }

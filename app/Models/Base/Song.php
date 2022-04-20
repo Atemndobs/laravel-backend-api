@@ -38,6 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * @property int|null $created_by_id
  * @property int|null $updated_by_id
+ * @property string|null $image
  * @property bool|null $played
  * 
  * @property AdminUser|null $admin_user

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\AnalyzeSongEvent;
 use App\Http\Controllers\Controller;
+use App\Jobs\AnalyzeSongJob;
 use App\Models\Song;
+use App\Services\MoodAnalysisService;
 use App\Services\Strapi\StrapiSongService;
 use App\Services\UploadService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\DataCollector\EventDataCollector;
+use voku\helper\ASCII;
 use function Psy\debug;
 use function Widmogrod\Monad\Control\Doo\in;
 
@@ -42,36 +46,39 @@ class UploadController extends Controller{
         return $this->uploadService->uploadSong($data);
     }
 
-    public function getStrapiUploads()
+    public function getStrapiUploads(): array
     {
-        $res = $this->strapiSongService->importStrapiUploads();
-        return $res;
+        return $this->strapiSongService->importStrapiUploads();
     }
 
-    public function strapiUploadsWebhook(Request $request)
+    public function strapiUploadsWebhook(Request $request) : void
     {
         $payload = $request->all();
 
 
-        if ($payload['event'] === strval("media.create")){
+        if ($payload['event'] === "media.create"){
             $song = $payload['media'];
             $res = $this->strapiSongService->importStrapiSong($song);
-            info("Imported : " . $res[0]->title);
+
+            $title = $res[0]->title;
+            info("Imported : " . $title);
+            AnalyzeSongJob::dispatch($title)->onConnection('database')->onQueue('analyze');
+            // broadcast(new AnalyzeSongEvent($title))->toOthers();
         }
 
-        if ($payload['event'] === strval("media.update")){
+        if ($payload['event'] === "media.update"){
             $song = $payload['media'];
             $res = $this->strapiSongService->importStrapiSong($song);
 
             info("Imported : " . $res[0]->path);
         }
 
-        if ($payload['event'] === strval("media.delete")){
+        if ($payload['event'] === "media.delete"){
             $track = $payload['media'];
             $song =   Song::where('title', '=', $track['name'])->first();
             $song->delete();
 
-            info("Deleted : " . $song);
+            info("Deleted : " . $song->title);
         }
 
     }

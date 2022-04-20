@@ -50,7 +50,7 @@ class StrapiSongService
      */
     public function importStrapiSong(array $song)
     {
-        return $this->importAndSave($song, [], new UploadService());;
+        return $this->importAndSave($song, [], new UploadService());
     }
 
     /**
@@ -66,14 +66,12 @@ class StrapiSongService
      * @param $strapiUploads
      * @return array
      */
-    public function prepareImports($strapiUploads)
+    public function prepareImports($strapiUploads): array
     {
         $response = [];
         $uploadService = new UploadService();
         foreach ($strapiUploads as $upload){
-
             $response = $this->importAndSave($upload, $response, $uploadService);
-
         }
         return $response;
     }
@@ -92,6 +90,7 @@ class StrapiSongService
         if ($existing = $this->existing($upload['name'])) {
             $response[] = $existing;
         } else {
+            $song->title = $upload['name'];
             $song->path = $base . $upload['url'];
             $song->link = $upload['hash'];
             $song->source = $upload['provider'];
@@ -100,7 +99,7 @@ class StrapiSongService
             $api_url = env('APP_URL') . '/api/songs/match/';
             $song->related_songs = $api_url . $song->title;
 
-            $preparedSong = $uploadService->fillSong(
+            $uploadService->fillSong(
                 $song->source,
                 $song,
                 $upload['mime'],

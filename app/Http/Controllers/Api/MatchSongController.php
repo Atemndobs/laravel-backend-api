@@ -43,7 +43,7 @@ class MatchSongController extends Controller
         return response($res);
     }
 
-    public function matchByAttribute()
+    public function matchByAttribute($song)
     {
         return $this->birdyMatchService->getMatchByAttribute($song);
     }

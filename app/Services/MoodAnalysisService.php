@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 class MoodAnalysisService
 {
-    public function getAnalysis($title)
+    public function getAnalysis(string $title): array
     {
         $existingSong = Song::where('title', '=', $title)->first();
 
@@ -19,37 +19,34 @@ class MoodAnalysisService
         }
 
         $url = "http://localhost:3000/song/$title";
-        $response = Http::get($url)->body();
+
+        Http::get($url)->body();
+        info("Job In Progress: $url");
         return [
             'status' =>  'Job In Progress'
         ];
     }
 
-    public function classifySongs()
+    public function classifySongs(): array
     {
         $songs = Song::all();
         $unClassified = [];
-        $data = [];
         /** @var Song $song */
         foreach ($songs as $song) {
 
             $song->save();
             if ($song->analyzed == null ) {
-                $song->status = 'qeued';
+                $song->status = 'queued';
 
                 $api_url = env('APP_URL') . '/api/songs/match/';
                 $song->related_songs = $api_url . $song->title;
                 $unClassified[] = $song->title;
-                $data[] = [
-                    'title' => $song->title,
-                    'status' => 'pending'
-                ];
             }
         }
 
         foreach ($unClassified as $title) {
             ClassifySongJob::dispatch($title);
-            info("$title : has been qeued");
+            info("$title : has been queued");
         }
         return $unClassified;
     }

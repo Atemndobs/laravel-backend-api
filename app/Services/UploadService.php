@@ -140,8 +140,7 @@ class UploadService
      */
     protected function getExistingSong(Song $song)
     {
-        $existingSong = Song::where('path', '=', $song->path)->first();
-        return $existingSong;
+        return Song::where('path', '=', $song->path)->first();
     }
 
     /**
@@ -151,11 +150,13 @@ class UploadService
      */
     protected function processAndSaveSong(mixed $file, Song $song): Song
     {
-        $new_file_name = $file->getClientOriginalName();
-        $new_file_name = str_replace('&', '-', $new_file_name);
+        $file_name = $file->getClientOriginalName();
+        $new_file_name = str_replace('&', '-', $file_name);
         $file_path = $file->storeAs('audio', $new_file_name, 'public');
         $full_path = asset(Storage::url($file_path));
         $song->path = $full_path;
+
+        info($song);
         $existingSong = $this->getExistingSong($song);
 
         if ($existingSong) {
@@ -167,6 +168,8 @@ class UploadService
         $source = 'uploaded';
         $song->status = 'uploaded';
         $api_url = env('APP_URL') . '/api/songs/match/';
+
+
         $song->related_songs = $api_url . $file_name;
         $this->fillSong($source, $song, $type, $new_file_name, $ext);
         $song->save();
@@ -200,6 +203,7 @@ class UploadService
             'path' => $song->path,
             'relaxed' => '',
             'sad' => '',
+        //    'image' => '',
             'source' => $type,
             'title' => $name,
             'extension' => $ext,
