@@ -38,14 +38,14 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo('storage/logs/scheduler.log')
         ;
 
-        $schedule->command('song:import')
+/*        $schedule->command('song:import')
             ->everyThirtyMinutes()
             ->appendOutputTo('storage/logs/scheduler.log')
         ;
         $schedule->command('song:classify')
             ->everyThirtyMinutes()
             ->appendOutputTo('storage/logs/scheduler.log')
-        ;
+        ;*/
     }
 
     /**

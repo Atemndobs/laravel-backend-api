@@ -12,12 +12,8 @@ class SpotifyService
     public Song $song;
     public SpotifyWebAPI $spotify;
 
-    /**
-     * @param Song $song
-     */
-    public function __construct(Song $song)
+    public function __construct()
     {
-        $this->song = $song;
         $client_id = env('SPOTIFY_CLIENT_ID');
         $client_secret = env('SPOTIFY_CLIENT_SECRET');
         $url = 'http://dejavu.atmkng.de/';
@@ -34,12 +30,10 @@ class SpotifyService
 
     public function getArtistGenre(string $artist)
     {
-      //  $existingSong = Song::where('title', '=', $title)->first();
-        $spotifyTracks = null;
-        $songTitle = $this->song->title;
+
+        //$existingSong = Song::where('title', '=', $title)->first();
 
         $spotifyTrack = $this->spotify->search($artist, 'track')->tracks->items[0];
-
         $id = $spotifyTrack->id;
 
         $track = $this->spotify->getTrack($id);
@@ -47,19 +41,81 @@ class SpotifyService
 
         $genres = [];
 
+        if (count($artists) > 1) {
+            $genres = $this->getBestMatch($artist, $genres);
+        }
 
-        foreach ($artists as $artist){
-            $artistId = $artist->id;
-            $artist = $this->spotify->getArtist($artistId);
+        return $genres;
+    }
 
-            $artistGenres = $artist->genres;
+    public function getGenreByArtist(string $author)
+    {
+        $genres = [];
+        $artists = $this->spotify->search($author, 'artist')->artists->items;
+        foreach ($artists as $artist) {
+            if (count($artist->genres) === 0) {
+                continue;
+            }
             $genres[] = [
-                $artist->name => $artistGenres
+                'name' => $artist->name,
+                'genres' => $artist->genres
             ];
         }
 
+        if (count($genres) === 1 && strtoupper($genres[0]['name'] )=== strtoupper($author)) {
+            return  $genres[0]['genres'];
+        }
 
-        return $genres;
+
+        if (count($genres) >= 1) {
+            foreach ($genres as $genre) {
+                if (strtoupper($genre['name']) === strtoupper($author)) {
+                    return $genre['genres'];
+                }
+                similar_text(strtoupper($author), strtoupper($genre['name']), $perc);
+
+                if ($perc === 100.0) {
+                    return $genre['genres'];
+                }
+
+                if ($perc >= 80.0 ){
+                    return $genre['genres'];
+                }
+            }
+        }
+
+
+
+
+
+
+        if (count($genres) === 0){
+            return $genres;
+        }
+
+//          dump($author);
+//          dump($genres);
+//          dump($artists);
+//        dd('ENDE');
+      //  $genres = $this->getBestMatch($author, $genres);
+        return [];
+    }
+
+    /**
+     * @param $author
+     * @param array $genres
+     * @return array
+     */
+    public function getBestMatch($author, array $genres): array
+    {
+        $matchingGenres = [];
+        foreach ($genres as $genre) {
+            if ($author === $genre) {
+
+            }
+        }
+
+        return $matchingGenres;
     }
 
 }
