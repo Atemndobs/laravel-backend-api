@@ -36,7 +36,10 @@ services:
     strapi:
         container_name: strapi
        # image: pqm1989/strapi:v4.1.2-v1.0
-        image: pqm1989/strapi:v4.1.7-v1.0
+       # image: pqm1989/strapi:v4.1.7-v1.0
+        build:
+            context: ./docker/strapi
+            dockerfile: Dockerfile
         environment:
             DATABASE_CLIENT: mysql
             DATABASE_HOST: mysql
