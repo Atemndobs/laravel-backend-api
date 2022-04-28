@@ -5,7 +5,7 @@ namespace App\Services\Scraper;
 use App\Models\Song;
 use Goutte\Client;
 use Illuminate\Support\Facades\Http;
-use Psy\Util\Str;
+use Illuminate\Support\Str;
 
 class SoundcloudService
 {
@@ -53,12 +53,7 @@ class SoundcloudService
 
         $likedArtists = [];
         $likedSongs = [];
-        $collectedSongs = [];
         foreach ($songLinks as $songLink){
-/*            if (count($likedSongs) === 20) {
-                dump(['liked songs' => count($likedSongs)]);
-                break;
-            }*/
             if ( substr_count($songLink, '/') < 2){
                 $likedArtists[] = $this->baseUrl . $songLink;
             }else{
@@ -144,11 +139,8 @@ class SoundcloudService
     public function downloadSong(string $url)
     {
         $strapi_url = "http://localhost:1337/api/classify?link=";
-
         $link = $strapi_url . $url;
         $response = Http::get($link);
-
-
         return $response->status();
     }
 
@@ -164,7 +156,7 @@ class SoundcloudService
         $slug = '';
         foreach ($check as $i => $iValue) {
             if ($i === $n-1) {
-                $slug = \Illuminate\Support\Str::slug($iValue.'mp3', '_');
+                $slug = Str::slug($iValue.'mp3', '_');
             }
         }
         return  Song::where('slug', '=', $slug)->first();
