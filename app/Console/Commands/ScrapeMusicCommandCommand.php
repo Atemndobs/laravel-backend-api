@@ -13,7 +13,7 @@ class ScrapeMusicCommandCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'scrape:song {site?}';
+    protected $signature = 'scrape:song {site?} {--a|artist=null} {--p|playlist=null}';
 
     /**
      * The console command description.
@@ -29,23 +29,30 @@ class ScrapeMusicCommandCommand extends Command
      */
     public function handle()
     {
+
         $scrapedMusic = [];
         $data = [];
         $site = $this->argument('site');
         $musicScraper = new MusicBlogScraper();
-        $soundCloundService  = new  SoundcloudService();
 
-        dd($soundCloundService->getCuratedPlaylist($site));
+        if ($site === 'sc'){
+            $soundCloundService  = new  SoundcloudService();
 
+            $artist = $this->option('artist') ;
+            $playlist = $this->option('playlist') ;
 
+            if ($artist !== null){
+                $soundCloundService->getLikedSongsByArtis($artist);
+            }
 
-        if ($site !== null){
+            if ($playlist !== null){
+                $soundCloundService->getCuratedPlaylist($playlist);
+            }
+        }elseif ($site !== null){
             $scrapedMusic = $musicScraper->getMusicFromSource("https://{$site}.com/", 'main/download-mp3/');
         }else{
             $tooxclusive = $musicScraper->getMusicFromSource("https://tooxclusive.com/", 'main/download-mp3/');
             $fakaza = $musicScraper->getMusicFromSource("https://fakaza.com/", 'download-mp3/');
-        //    $jaguda = $musicScraper->getMusicFromSource("https://jaguda.com/", 'music-mp3/');
-
             $scrapedMusic = array_merge($tooxclusive, $fakaza);
         }
 
