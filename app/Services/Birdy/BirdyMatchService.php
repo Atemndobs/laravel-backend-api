@@ -18,9 +18,9 @@ class BirdyMatchService
         $this->songIndex = $this->meiliSearchService->getSongIndex();
     }
 
-    public function getSongmatch($title)
+    public function getSongmatch($slug)
     {
-        $song = $this->getExistingSong($title);
+        $song = $this->getExistingSong($slug);
         if (!$this->checkAnalyzedSong($song)) {
             return ['status' => 'not analyzed'];
         }
@@ -38,12 +38,12 @@ class BirdyMatchService
     }
 
     /**
-     * @param $title
+     * @param $slug
      * @return Song
      */
-    public function getExistingSong($title): Song
+    public function getExistingSong($slug): Song
     {
-        return Song::where('title', '=', $title)->first();
+        return Song::where('slug', '=', $slug)->first();
     }
 
     /**
@@ -53,7 +53,7 @@ class BirdyMatchService
     public function checkAnalyzedSong(Song $song): bool
     {
         /** @var Song $existingSong */
-        $existingSong = $this->getExistingSong($song->title);
+        $existingSong = $this->getExistingSong($song->slug);
 
         return (bool)$existingSong->analyzed;
     }
@@ -272,7 +272,7 @@ class BirdyMatchService
 
         $response = [
             'query' => [
-                'title' => $song->title,
+                'slug' => $song->slug,
                 'bpm' => $this->roundNumbers($song->bpm),
                 'path' => $song->path,
             ],

@@ -15,14 +15,14 @@ class ClearClassifierCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'song:clean';
+    protected $signature = 'song:clean {table?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Clean the Classifier Audio Dirrectory';
+    protected $description = 'Clean the Classifier Audio Directory';
 
     /**
      * Execute the console command.
@@ -46,12 +46,6 @@ class ClearClassifierCommand extends Command
     public function cleanSongDb()
     {
         $allSongs = Song::all();
-        $dir = Storage::allFiles('public/audio');
-
-        // dd($dir);
-        //  93 => "public/audio/DJ SNAKE - Loco Contigo (with J Balvin & Tyga).mp3"
-        //  dd(Storage::get('public/audio/DJ SNAKE - Loco Contigo (with J Balvin & Tyga).mp3'));
-        // public/audio/DJ SNAKE - Loco Contigo (with J Balvin & Tyga).mp3
 
         $fails = [];
         $pass = [];
@@ -67,10 +61,9 @@ class ClearClassifierCommand extends Command
                 if ($status !== 200) {
                     $fails[$song->id] = $song->title;
 
-                    $path = trim($song->path, 'http://mage.tech:8899/');
+                    $path = str_replace('http://mage.tech:8899/', '', $song->path);
                     $path = substr($path, 7);
                     $checkPath = Storage::get('public'.$path);
-
                     if ($checkPath === null) {
                         $song->delete();
                     }

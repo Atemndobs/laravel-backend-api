@@ -33,8 +33,9 @@ Orion::resource('feeds', \App\Http\Controllers\Api\FeedController::class);
 Route::get('/classify', [\App\Http\Controllers\Api\ClassificationController::class, 'classify']);
 Route::get('/analyze/{track}', [\App\Http\Controllers\Api\ClassificationController::class, 'analyze']);
 Orion::resource('songs', \App\Http\Controllers\Api\SongController::class);
+Orion::resource('files', \App\Http\Controllers\Api\FileController::class);
 
-Route::get('classify/{title}', [\App\Http\Controllers\Api\ClassificationController::class, 'findByTitle']);
+Route::get('classify/{slug}', [\App\Http\Controllers\Api\ClassificationController::class, 'findByTitle']);
 Route::post('upload', [\App\Http\Controllers\Api\UploadController::class, 'upload']);
 Route::get('upload/strapi', [\App\Http\Controllers\Api\UploadController::class, 'getStrapiUploads']);
 Route::post('upload/webhook', [\App\Http\Controllers\Api\UploadController::class, 'strapiUploadsWebhook']);

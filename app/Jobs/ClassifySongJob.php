@@ -28,7 +28,6 @@ class ClassifySongJob implements ShouldQueue
         $this->track = $track;
     }
 
-
     /**
      * Execute the job.
      *
@@ -36,21 +35,7 @@ class ClassifySongJob implements ShouldQueue
      */
     public function handle()
     {
-        $title = $this->track;
-        (new MoodAnalysisService())->getAnalysis($title);
-/*        $existingSong = Song::where('title', '=', $title)->first();
-
-        if ($existingSong->bpm != null && $existingSong->happy != null) {
-            return [
-                'status' =>  'Already Analysed'
-            ];
-        }
-
-        $url = "http://localhost:3000/song/$title";
-        $response = Http::get($url)->body();
-        return [
-            'status' =>  'Job In Progress'
-        ];*/
-
+        $slug = $this->track;
+        (new MoodAnalysisService())->getAnalysis($slug);
     }
 }

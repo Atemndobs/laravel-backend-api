@@ -32,12 +32,6 @@ class MeiliSearchService
 
     public function setSearchSettings(Indexes $songIndex) : Indexes
     {
-        /*         $songIndex->updateSettings([
-                    'filterableAttributes' => [
-                    ],
-                    'sortableAttributes' => [
-                    ],
-                ]);*/
         $songIndex->updateFilterableAttributes([
             'bpm',
             'key',
@@ -73,6 +67,7 @@ class MeiliSearchService
             'relaxed',
             'played',
             'path',
+            'image',
             'related_songs'
         ]);
 

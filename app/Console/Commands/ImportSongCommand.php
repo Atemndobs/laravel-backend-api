@@ -18,14 +18,14 @@ class ImportSongCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'song:import';
+    protected $signature = 'song:import {source?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import Songs from storag/audio directory';
+    protected $description = 'Import Songs from storage/audio directory';
 
     /**
      * Execute the console command.
@@ -34,6 +34,7 @@ class ImportSongCommand extends Command
      */
     public function handle()
     {
+        $source = $this->argument('source');
         $unClassified = [];
         $data = [];
         $allFiles = Storage::disk('public')->allFiles();
@@ -45,9 +46,16 @@ class ImportSongCommand extends Command
         DB::table('jobs')->delete();
         DB::table('failed_jobs')->delete();
 
+        if($source === 'strapi'){
+            $songs = (new StrapiSongService())->importStrapiUploads();
+        foreach ($songs as $song){
+            $data[] = $song->title;
+        }
+        dump($data);
+            return 0;
+        }
         (new StrapiSongService())->importStrapiUploads();
         $queuedSongs = (new MoodAnalysisService())->classifySongs();
-
 
         foreach ($queuedSongs as $title) {
             $unClassified[] = $title;
@@ -63,12 +71,12 @@ class ImportSongCommand extends Command
             'status'
         ];
 
-        $deletableHeader = ['deletable'];
         $deletableBody = [];
+        $deletableHeader = ['deletable'];
         $deletableBody[] = $this->cleanDb($uploadService);
+        // $this->output->table($deletableHeader, $deletableBody);
 
         $this->output->table($headers, $data);
-        $this->output->table($deletableHeader, $deletableBody);
 
         $total = count($unClassified);
         $this->output->info("imported $total songs");
@@ -91,7 +99,8 @@ class ImportSongCommand extends Command
         $result = [];
         foreach ($files as $file){
             if (str_contains($file, 'audio')){
-                $result[] = trim($file,'audio/');
+                $file= str_replace('audio/', '', $file);
+                $result[] = $file;
             }
         }
        return $result;

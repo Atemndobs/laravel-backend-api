@@ -8,6 +8,7 @@ use Dbfx\LaravelStrapi\LaravelStrapi;
 use Http\Client\Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use function Psy\debug;
 use const Widmogrod\Monad\Writer\log;
 
@@ -38,6 +39,7 @@ class StrapiSongService
             $response = Http::get('http://localhost:1337/api/upload/files');
             $strapiUploads = $response->json();
             $prepareImports = $this->prepareImports($strapiUploads);
+
         }catch (\Exception $exception){
             info($exception->getMessage());
         }
@@ -95,9 +97,18 @@ class StrapiSongService
             $song->link = $upload['hash'];
             $song->source = $upload['provider'];
             $song->status = 'queued';
-            // http://mage.tech:8899/api/songs/match/ODIE%20-%20North%20Face.mp3
+
+            $file_name = $song->title;
+            $ext = substr($file_name, -4);
+            $new_file_name = str_replace($ext, '', $file_name);
+            $new_file_name = Str::slug($new_file_name, '_');
+            $new_file_name .= $ext;
+            $song->slug = Str::slug($new_file_name, '_');
+
             $api_url = env('APP_URL') . '/api/songs/match/';
-            $song->related_songs = $api_url . $song->title;
+            $song->related_songs = $api_url . $song->slug;
+
+        //    dd($song->related_songs);
 
             $uploadService->fillSong(
                 $song->source,

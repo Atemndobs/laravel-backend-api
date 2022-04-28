@@ -31,15 +31,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $extension
  * @property array|null $genre
  * @property string|null $author
- * @property string|null $comment
+ * @property string|null $image
  * @property string|null $source
  * @property string|null $link
+ * @property bool|null $played
+ * @property string|null $slug
+ * @property string|null $comment
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int|null $created_by_id
  * @property int|null $updated_by_id
- * @property string|null $image
- * @property bool|null $played
  * 
  * @property AdminUser|null $admin_user
  *
@@ -59,9 +60,9 @@ class Song extends Model
 		'danceability' => 'float',
 		'relaxed' => 'float',
 		'genre' => 'json',
+		'played' => 'bool',
 		'created_by_id' => 'int',
-		'updated_by_id' => 'int',
-		'played' => 'bool'
+		'updated_by_id' => 'int'
 	];
 
 	public function admin_user()

@@ -12,7 +12,7 @@ class AnalyzeSongCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'song:analyze {title}';
+    protected $signature = 'song:analyze {slug}';
 
     /**
      * The console command description.
@@ -28,11 +28,11 @@ class AnalyzeSongCommand extends Command
      */
     public function handle()
     {
-        $title =$this->argument('title');
-        (new MoodAnalysisService())->getAnalysis($title);
+        $slug =$this->argument('slug');
+        (new MoodAnalysisService())->getAnalysis($slug);
 
-        $this->output->info("$title : analysis is in progress");
-        info("$title : analysis is in progress");
+        $this->output->info("$slug : analysis is in progress");
+        info("$slug : analysis is in progress");
 
         return "job has been queued";
     }

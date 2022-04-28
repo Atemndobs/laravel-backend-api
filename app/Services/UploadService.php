@@ -6,6 +6,7 @@ use App\Jobs\ClassifySongJob;
 use App\Models\Song;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UploadService
 {
@@ -43,21 +44,17 @@ class UploadService
     public function uploadSong(UploadedFile $track)
     {
         $song = new Song();
-        $song->uploadFileToDisk($track, 'path', 'public', 'audio');
+        $this->processAndSaveSong($track, $song);
         $existingSong = $this->getExistingSong($song);
 
         if ($existingSong){
             return $existingSong;
         }
-
-        $filledSong = $this->loadSong($track, $song);
-        $filledSong->status = 'uploaded';
-        $filledSong->save();
-
+        $song->status = 'uploaded';
+        $song->save();
        // (new MoodAnalysisService())->getAnalysis($filledSong->title);
-
-        ClassifySongJob::dispatch($filledSong->title);
-        return $filledSong->getDirty();
+        ClassifySongJob::dispatch($song->title);
+        return $song->getDirty();
     }
 
     /**
@@ -69,9 +66,7 @@ class UploadService
         $response = [];
         foreach ($tracks as $file) {
             $song = new Song();
-
             if ($file->isValid()) {
-
                 $filledSong = $this->processAndSaveSong($file, $song);
                 $response[] = $filledSong;
 
@@ -85,7 +80,7 @@ class UploadService
      * @param array $tracks
      * @return array
      */
-    public function importSongs(array $tracks)
+    public function importSongs(array $tracks): array
     {
         $response = [];
         $this->deletables = [];
@@ -104,34 +99,14 @@ class UploadService
             $ext = substr($file_name, -3);
             $type = $ext;
             $source = 'imported';
-            $api_url = env('APP_URL') . '/api/songs/match/';
-            $song->related_songs = $api_url . $file_name;
-            $this->fillSong($source, $song, $type, $file_name, $ext);
+            $this->fillSong($source, $song, $type, $file, $ext);
+            $song->title = $file;
             $song->save();
             $response[] = $song;
             $this->deletables[] = $this->deletItem;
             ClassifySongJob::dispatch($file_name);
         }
         return $response;
-    }
-
-    /**
-     * @param UploadedFile $track
-     * @param Song $song
-     * @return Song
-     */
-    protected function loadSong(UploadedFile $track, Song $song): Song
-    {
-        $name = $track->getClientOriginalName();
-        $name = str_replace('&', '-', $name);
-        $ext = $track->getClientOriginalExtension();
-        $type = $track->getMimeType();
-        $source = 'uploaded';
-
-        $api_url = env('APP_URL') . '/api/songs/match/';
-        $song->related_songs = $api_url . $name;
-        $this->fillSong($source, $song, $type, $name, $ext);
-        return $song;
     }
 
     /**
@@ -146,32 +121,34 @@ class UploadService
     /**
      * @param mixed $file
      * @param Song $song
-     * @return array
+     * @return Song
      */
     protected function processAndSaveSong(mixed $file, Song $song): Song
     {
         $file_name = $file->getClientOriginalName();
-        $new_file_name = str_replace('&', '-', $file_name);
+        $type = $file->getMimeType();
+        $source = 'uploaded';
+        $api_url = env('APP_URL') . '/api/songs/match/';
+        $ext = substr($file_name, -4);
+        $new_file_name = str_replace($ext, '', $file_name);
+        $new_file_name = Str::slug($new_file_name, '_');
+        $new_file_name .= $ext;
+
         $file_path = $file->storeAs('audio', $new_file_name, 'public');
         $full_path = asset(Storage::url($file_path));
+        $song->status = 'uploaded';
         $song->path = $full_path;
 
-        info($song);
         $existingSong = $this->getExistingSong($song);
 
         if ($existingSong) {
             return $existingSong;
         }
 
-        $ext = $file->getClientOriginalExtension();
-        $type = $file->getMimeType();
-        $source = 'uploaded';
-        $song->status = 'uploaded';
-        $api_url = env('APP_URL') . '/api/songs/match/';
-
-
-        $song->related_songs = $api_url . $file_name;
-        $this->fillSong($source, $song, $type, $new_file_name, $ext);
+        $slug = Str::slug($new_file_name, '_');
+        $song->slug = $slug;
+        $song->related_songs = $api_url . $slug;
+        $this->fillSong($source, $song, $type, $file_name, $ext);
         $song->save();
 
         return $song;
@@ -203,6 +180,7 @@ class UploadService
             'path' => $song->path,
             'relaxed' => '',
             'sad' => '',
+            'slug' => $song->slug,
         //    'image' => '',
             'source' => $type,
             'title' => $name,
@@ -222,18 +200,27 @@ class UploadService
 
         $path_to_store = Storage::path('public/audio/');
         $storeFile = $path_to_store . $file;
-        $file_name = str_replace('&', '-', $file);
-       // Storage::putFileAs($path_to_store, $storeFile, $file_name);
-        $full_path = asset(Storage::url('audio/' . $file_name));
+        $file_name = $file;
+        $ext = substr($file_name, -4);
+        $file_name = str_replace($ext, '', $file_name);
+        $file_name = Str::slug($file_name, '_');
+        $file_name .= $ext;
 
-        $deletables = [];
+        $full_path = asset(Storage::url('audio/' . $file_name));
         if ($file_name  !== $file) {
             $oldFile = storage_path('app/public/audio/' .  $file);
+            $newFile = storage_path('app/public/audio/' .  $file_name);
+            rename($oldFile, $newFile);
             $this->deletItem = $file;
-            rename($oldFile, $file_name);
             $this->addDeletables($storeFile);
         }
+
+        $api_url = env('APP_URL') . '/api/songs/match/';
+        $slug = Str::slug($file_name, '_');
+
         $song->path = $full_path;
+        $song->slug = $slug;
+        $song->related_songs = $api_url . $slug;
         return $file_name;
     }
 }

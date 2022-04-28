@@ -8,17 +8,25 @@ use Illuminate\Support\Facades\Http;
 
 class MoodAnalysisService
 {
-    public function getAnalysis(string $title): array
+    public function getAnalysis(string $slug): array
     {
-        $existingSong = Song::where('title', '=', $title)->first();
+        $existingSong = Song::where('slug', '=', $slug)->first();
 
+        if (!$existingSong) {
+            $res =  [
+                'status' =>  "$slug does not exist"
+            ];
+
+            dump($res);
+            return $res;
+        }
         if ($existingSong->analyzed) {
             return [
                 'status' =>  $existingSong->status
             ];
         }
 
-        $url = "http://localhost:3000/song/$title";
+        $url = "http://localhost:3000/song/$slug";
 
         Http::get($url)->body();
         info("Job In Progress: $url");
@@ -35,18 +43,15 @@ class MoodAnalysisService
         foreach ($songs as $song) {
 
             $song->save();
-            if ($song->analyzed == null ) {
+            if ($song->analyzed === null ) {
                 $song->status = 'queued';
-
-                $api_url = env('APP_URL') . '/api/songs/match/';
-                $song->related_songs = $api_url . $song->title;
-                $unClassified[] = $song->title;
+                $unClassified[] = $song->slug;
             }
         }
 
-        foreach ($unClassified as $title) {
-            ClassifySongJob::dispatch($title);
-            info("$title : has been queued");
+        foreach ($unClassified as $slug) {
+            ClassifySongJob::dispatch($slug);
+            info("$slug : has been queued");
         }
         return $unClassified;
     }
