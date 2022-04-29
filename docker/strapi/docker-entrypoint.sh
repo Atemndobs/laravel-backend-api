@@ -29,9 +29,9 @@ if [ "$1" = "strapi" ]; then
     if [ -f "yarn.lock" ]; then
 
       yarn install
-      npm config set ignore-scripts fals
-      rm -rf /node_modules
-      npm install --ignore-scripts=false --verbose
+#      npm config set ignore-scripts fals
+#      rm -rf /node_modules
+#      npm install --ignore-scripts=false --verbose
 
     else
 
@@ -46,3 +46,5 @@ fi
 echo "Starting your app..."
 
 exec "$@"
+
+mysqldump --no-tablespaces --add-drop-table -u mage -p`cat /etc/psa/.psa.shadow` mage  > mage.sql

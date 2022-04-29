@@ -4,8 +4,10 @@
  * Created by Reliese Model.
  */
 
-namespace App\Models;
+namespace App\Models\Base;
 
+use App\Models\AdminUser;
+use App\Models\FilesRelatedMorph;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +16,10 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property string|null $name
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property int|null $created_by_id
+ * @property int|null $updated_by_id
  * @property string|null $alternative_text
  * @property string|null $caption
  * @property int|null $width
@@ -27,47 +33,24 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $preview_url
  * @property string|null $provider
  * @property array|null $provider_metadata
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property int|null $created_by_id
- * @property int|null $updated_by_id
  * 
  * @property AdminUser|null $admin_user
  * @property FilesRelatedMorph $files_related_morph
  *
- * @package App\Models
+ * @package App\Models\Base
  */
 class File extends Model
 {
 	protected $table = 'files';
 
 	protected $casts = [
+		'created_by_id' => 'int',
+		'updated_by_id' => 'int',
 		'width' => 'int',
 		'height' => 'int',
 		'formats' => 'json',
 		'size' => 'float',
-		'provider_metadata' => 'json',
-		'created_by_id' => 'int',
-		'updated_by_id' => 'int'
-	];
-
-	protected $fillable = [
-		'name',
-		'alternative_text',
-		'caption',
-		'width',
-		'height',
-		'formats',
-		'hash',
-		'ext',
-		'mime',
-		'size',
-		'url',
-		'preview_url',
-		'provider',
-		'provider_metadata',
-		'created_by_id',
-		'updated_by_id'
+		'provider_metadata' => 'json'
 	];
 
 	public function admin_user()

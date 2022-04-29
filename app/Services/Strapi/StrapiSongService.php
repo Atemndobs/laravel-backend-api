@@ -8,6 +8,7 @@ use Dbfx\LaravelStrapi\LaravelStrapi;
 use Http\Client\Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use function Psy\debug;
 use const Widmogrod\Monad\Writer\log;
 
@@ -38,6 +39,7 @@ class StrapiSongService
             $response = Http::get('http://localhost:1337/api/upload/files');
             $strapiUploads = $response->json();
             $prepareImports = $this->prepareImports($strapiUploads);
+
         }catch (\Exception $exception){
             info($exception->getMessage());
         }
@@ -50,7 +52,7 @@ class StrapiSongService
      */
     public function importStrapiSong(array $song)
     {
-        return $this->importAndSave($song, [], new UploadService());;
+        return $this->importAndSave($song, [], new UploadService());
     }
 
     /**
@@ -66,14 +68,12 @@ class StrapiSongService
      * @param $strapiUploads
      * @return array
      */
-    public function prepareImports($strapiUploads)
+    public function prepareImports($strapiUploads): array
     {
         $response = [];
         $uploadService = new UploadService();
         foreach ($strapiUploads as $upload){
-
             $response = $this->importAndSave($upload, $response, $uploadService);
-
         }
         return $response;
     }
@@ -92,15 +92,25 @@ class StrapiSongService
         if ($existing = $this->existing($upload['name'])) {
             $response[] = $existing;
         } else {
+            $song->title = $upload['name'];
             $song->path = $base . $upload['url'];
             $song->link = $upload['hash'];
             $song->source = $upload['provider'];
             $song->status = 'queued';
-            // http://mage.tech:8899/api/songs/match/ODIE%20-%20North%20Face.mp3
-            $api_url = env('APP_URL') . '/api/songs/match/';
-            $song->related_songs = $api_url . $song->title;
 
-            $preparedSong = $uploadService->fillSong(
+            $file_name = $song->title;
+            $ext = substr($file_name, -4);
+            $new_file_name = str_replace($ext, '', $file_name);
+            $new_file_name = Str::slug($new_file_name, '_');
+            $new_file_name .= $ext;
+            $song->slug = Str::slug($new_file_name, '_');
+
+            $api_url = env('APP_URL') . '/api/songs/match/';
+            $song->related_songs = $api_url . $song->slug;
+
+        //    dd($song->related_songs);
+
+            $uploadService->fillSong(
                 $song->source,
                 $song,
                 $upload['mime'],

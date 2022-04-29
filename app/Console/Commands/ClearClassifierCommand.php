@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Song;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use function Widmogrod\Functional\tryCatch;
 
 class ClearClassifierCommand extends Command
@@ -14,14 +15,14 @@ class ClearClassifierCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'song:clean';
+    protected $signature = 'song:clean {table?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Clean the Classifier Audio Dirrectory';
+    protected $description = 'Clean the Classifier Audio Directory';
 
     /**
      * Execute the console command.
@@ -30,10 +31,16 @@ class ClearClassifierCommand extends Command
      */
     public function handle()
     {
+        $deleteItems = [];
+        $deleteItems[] = $this->cleanSongDb();
         $url = "http://localhost:3000/music/delete";
         $response = Http::get($url)->body();
+
+        $deleteItems[] = $response;
         $this->output->info("Audio directory Cleaned");
-        return 0;
+
+        dump($deleteItems);
+        return $response;
     }
 
     public function cleanSongDb()
@@ -45,19 +52,28 @@ class ClearClassifierCommand extends Command
         /** @var Song $song */
         foreach ($allSongs as $song){
 
-            $url = $song->path;
-            $status = Http::get($url);
-            dd($status);
+            $base = $song->path;
+            $local = "http://localhost:8899/";
+            $url = str_replace('mage.tech', 'localhost', $base);
 
             try {
-                $url = $song->path;
-                $status = Http::get($url);
-                $pass[] = [$status => $song->path ];
+                $status = Http::get($url)->status();
+                if ($status !== 200) {
+                    $fails[$song->id] = $song->title;
+
+                    $path = str_replace('http://mage.tech:8899/', '', $song->path);
+                    $path = substr($path, 7);
+                    $checkPath = Storage::get('public'.$path);
+                    if ($checkPath === null) {
+                        $song->delete();
+                    }
+                }
+
             }catch (\Exception $exception){
-                $fails[] = $song->path;
+                info($exception->getMessage());
             }
         }
 
-        return $pass;
+        return $fails;
     }
 }

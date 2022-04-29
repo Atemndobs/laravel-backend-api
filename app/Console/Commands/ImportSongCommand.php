@@ -9,6 +9,7 @@ use App\Services\UploadService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Jobs\RabbitMQJob;
 
 class ImportSongCommand extends Command
 {
@@ -17,14 +18,14 @@ class ImportSongCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'song:import';
+    protected $signature = 'song:import {source?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import Songs from storag/audio directory';
+    protected $description = 'Import Songs from storage/audio directory';
 
     /**
      * Execute the console command.
@@ -33,19 +34,28 @@ class ImportSongCommand extends Command
      */
     public function handle()
     {
+        $source = $this->argument('source');
         $unClassified = [];
         $data = [];
         $allFiles = Storage::disk('public')->allFiles();
+
         $uploadService = new UploadService();
         $tracks = $this->cleanFiles($allFiles);
-        $uploadedSongs = $uploadService->importSongs($tracks);
+        $uploadService->importSongs($tracks);
 
         DB::table('jobs')->delete();
         DB::table('failed_jobs')->delete();
 
+        if($source === 'strapi'){
+            $songs = (new StrapiSongService())->importStrapiUploads();
+        foreach ($songs as $song){
+            $data[] = $song->title;
+        }
+        dump($data);
+            return 0;
+        }
         (new StrapiSongService())->importStrapiUploads();
         $queuedSongs = (new MoodAnalysisService())->classifySongs();
-
 
         foreach ($queuedSongs as $title) {
             $unClassified[] = $title;
@@ -61,27 +71,36 @@ class ImportSongCommand extends Command
             'status'
         ];
 
-        $deletablesHeader = ['deletables'];
-        $deletablesBody = [];
-        foreach ($uploadService->getDeletables() as $deletable){
-            $deletablesBody[] = ['deletable' => $deletable];
-        }
+        $deletableBody = [];
+        $deletableHeader = ['deletable'];
+        $deletableBody[] = $this->cleanDb($uploadService);
+        // $this->output->table($deletableHeader, $deletableBody);
 
         $this->output->table($headers, $data);
-        $this->output->table($deletablesHeader, $deletablesBody);
 
-        $total = sizeof($unClassified);
+        $total = count($unClassified);
         $this->output->info("imported $total songs");
         info("=========================================IMPORT_DONE==========================================");
         return 0;
     }
 
-    public function cleanFiles($files)
+    public function cleanDb(UploadService $uploadService)
+    {
+        $deletableBody = [];
+        /** @var  string $deletable */
+        foreach ($uploadService->getDeletables() as $deletable){
+            $deletableBody[] = ['deletable' => $deletable];
+        }
+        return $deletableBody;
+    }
+
+    public function cleanFiles($files): array
     {
         $result = [];
         foreach ($files as $file){
             if (str_contains($file, 'audio')){
-                $result[] = trim($file,'audio/');
+                $file= str_replace('audio/', '', $file);
+                $result[] = $file;
             }
         }
        return $result;

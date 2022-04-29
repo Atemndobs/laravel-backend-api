@@ -4,3 +4,5 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('song') }}'><i class='nav-icon la la-question'></i> Songs</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('setting') }}'><i class='nav-icon la la-cog'></i> <span>Settings</span></a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('log') }}'><i class='nav-icon la la-terminal'></i> Logs</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('app\-models\-file') }}'><i class='nav-icon la la-question'></i> App\ models\ files</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('file') }}'><i class='nav-icon la la-question'></i> Files</a></li>

@@ -10,6 +10,8 @@ services:
         image: sail-8.1/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
+        #    - 'gateway.docker.internal:host-gateway'
+        #    - "mage.tech:172.17.0.1"
         #ports:
            # - '${APP_PORT:8090}:80'
         ports:
@@ -34,7 +36,10 @@ services:
     strapi:
         container_name: strapi
        # image: pqm1989/strapi:v4.1.2-v1.0
-        image: pqm1989/strapi:v4.1.7-v1.0
+       # image: pqm1989/strapi:v4.1.7-v1.0
+        build:
+            context: ./docker/strapi
+            dockerfile: Dockerfile
         environment:
             DATABASE_CLIENT: mysql
             DATABASE_HOST: mysql
@@ -50,16 +55,6 @@ services:
             - mysql
         networks:
             - sail
-#    quasar:
-#        container_name: quasar
-#        build:
-#            context: ./quasar
-#        ports:
-#            - 2022:8080
-#        volumes:
-#            - ./quasar:/srv/app/
-#        networks:
-#            - sail
     mysql:
         image: 'mysql/mysql-server:8.0'
         restart: always
@@ -81,18 +76,6 @@ services:
             test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
             retries: 3
             timeout: 5s
-    redis:
-        image: 'redis:alpine'
-        ports:
-            - '${FORWARD_REDIS_PORT:-6380}:6379'
-        volumes:
-            - 'sail-redis:/data'
-        networks:
-            - sail
-        healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
-            retries: 3
-            timeout: 5s
     meilisearch:
         image: 'getmeili/meilisearch:latest'
         ports:
@@ -105,20 +88,6 @@ services:
             test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
             retries: 3
             timeout: 5s
-    mailhog:
-        image: 'mailhog/mailhog:latest'
-        ports:
-            - '${FORWARD_MAILHOG_PORT:-1030}:1025'
-            - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8050}:8025'
-        networks:
-            - sail
-    selenium:
-        image: 'selenium/standalone-chrome'
-        volumes:
-            - '/dev/shm:/dev/shm'
-        networks:
-            - sail
-
     rabbitmq:
         image: rabbitmq:3-management-alpine
         container_name: 'rabbitmq'
@@ -126,10 +95,40 @@ services:
             - 5672:5672
             - 15672:15672
         volumes:
-            - ./rabbitmq/data/:/var/lib/rabbitmq/
+            #     - ./rabbitmq/data/:/var/lib/rabbitmq/
             - ./rabbitmq/log/:/var/log/rabbitmq
+            - ./rabbitmq:/var/lib/rabbitmq
         networks:
             - sail
+
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-6380}:6379'
+        volumes:
+            - 'sail-redis:/data'
+        networks:
+            - sail
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            retries: 3
+            timeout: 5s
+
+#    mailhog:
+#        image: 'mailhog/mailhog:latest'
+#        ports:
+#            - '${FORWARD_MAILHOG_PORT:-1030}:1025'
+#            - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8050}:8025'
+#        networks:
+#            - sail
+    selenium:
+        image: 'selenium/standalone-chrome'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - sail
+
+
 
 networks:
     rabbitmq_go_net:

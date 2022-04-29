@@ -43,8 +43,8 @@ class ClassificationController extends Controller
 
     public function findByTitle(Request $request) : Response
     {
-        $title = $request->title;
-        $song = Song::where('title', '=', $title)->first();
+        $slug = $request->slug;
+        $song = Song::where('slug', '=', $slug)->first();
 
         if ($song) {
             $msg = [
@@ -55,7 +55,7 @@ class ClassificationController extends Controller
         }
 
         $msg = [
-            'SONG_NOT_FOUND' => "$title does not exist , Please upload and try again"
+            'SONG_NOT_FOUND' => "$slug does not exist , Please upload and try again"
         ];
         return \response($msg, 404);
     }

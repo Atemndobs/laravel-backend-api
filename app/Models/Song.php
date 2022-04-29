@@ -89,15 +89,16 @@ class Song extends \App\Models\Base\Song
         'author',
         'comment',
         'link',
+        'image',
         'source',
 	];
 
-	public function admin_user()
+    public function admin_user()
 	{
 		return $this->belongsTo(AdminUser::class, 'updated_by_id');
 	}
 
-    public function uploadFileToDisk($value, $attribute_name, $disk, $destination_path)
+/*    public function uploadFileToDisk($value, $attribute_name, $disk, $destination_path)
     {
 
         // if a new file is uploaded, delete the file from the disk
@@ -176,6 +177,6 @@ class Song extends \App\Models\Base\Song
             }
         }
         $this->attributes[$attribute_name] = json_encode($attribute_value);
-    }
+    }*/
 
 }

@@ -38,12 +38,11 @@ class MatchSongController extends Controller
     public function getSongMatch()
     {
         $title = $this->request->title;
-
         $res = $this->birdyMatchService->getSongmatch($title);
         return response($res);
     }
 
-    public function matchByAttribute()
+    public function matchByAttribute($song)
     {
         return $this->birdyMatchService->getMatchByAttribute($song);
     }
