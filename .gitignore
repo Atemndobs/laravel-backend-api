@@ -22,7 +22,7 @@ rabbitmq
 /storage/framework/views/*
 /storage/logs
 /storage/app/public/essentia_app
-/storage/app/public/essentia_streaming_musicnn_pred
+/storage/app/public/essentia_streaming_musicnn_predict
 /public/packages
 
 /var/
