@@ -51,6 +51,9 @@ class SpotifyService
     public function getGenreByArtist(string $author)
     {
         $genres = [];
+        if ($author === 'unknown'){
+            return  ['remix'];
+        }
         $artists = $this->spotify->search($author, 'artist')->artists->items;
         foreach ($artists as $artist) {
             if (count($artist->genres) === 0) {
@@ -83,21 +86,9 @@ class SpotifyService
                 }
             }
         }
-
-
-
-
-
-
         if (count($genres) === 0){
             return $genres;
         }
-
-//          dump($author);
-//          dump($genres);
-//          dump($artists);
-//        dd('ENDE');
-      //  $genres = $this->getBestMatch($author, $genres);
         return [];
     }
 

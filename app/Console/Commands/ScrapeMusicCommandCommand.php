@@ -29,6 +29,7 @@ class ScrapeMusicCommandCommand extends Command
      */
     public function handle()
     {
+        // sources = fakaza, tooxclusive, hiphopkit
 
         $scrapedMusic = [];
         $data = [];
@@ -50,7 +51,12 @@ class ScrapeMusicCommandCommand extends Command
             }
         }elseif ($site !== null){
             $scrapedMusic = $musicScraper->getMusicFromSource("https://{$site}.com/", 'main/download-mp3/');
-        }else{
+        }elseif ($site === 'hiphopkit'){
+            $scrapedMusic = $musicScraper->getSongsFromHiphopkit();
+            dd($scrapedMusic);
+        }
+
+        else{
             $tooxclusive = $musicScraper->getMusicFromSource("https://tooxclusive.com/", 'main/download-mp3/');
             $fakaza = $musicScraper->getMusicFromSource("https://fakaza.com/", 'download-mp3/');
             $scrapedMusic = array_merge($tooxclusive, $fakaza);

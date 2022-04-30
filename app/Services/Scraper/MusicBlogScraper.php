@@ -69,40 +69,83 @@ class MusicBlogScraper
             if ($songLink === $baseUrl
                 || $songLink === $downloadLink
                 || !str_contains($songLink, $baseUrl)
-           //     || strlen($songLink) < (strlen($downloadLink) + 4)
-              || str_contains($songLink, 'news')
+                || str_contains($songLink, 'news')
                 || str_contains($songLink, 'contact')
                 || str_contains($songLink, 'editorial')
-             //   || str_contains($songLink, 'feed')
-              //  || str_contains($songLink, 'video')
-              //  || str_contains($songLink, 'main/')
-             //   || str_contains($songLink, 'tag/')
-             //   || str_contains($songLink, 'sitemap')
-            //    || str_contains($songLink, 'lyrics')
-              //  || str_contains($songLink, 'about')
                 || str_contains($songLink, 'disclaimer')
-              //  || str_contains($songLink, 'contact-us')
                 || str_contains($songLink, 'artists-z-music-list')
-             //   || str_contains($songLink, 'videos')
-            //    || str_contains($songLink, 'artists-a-z')
-               // || str_contains($songLink, '#comments')
             ){
                 unset($songLinks[$key]);
             }
 
         }
 
-
         foreach ($songLinks as $songLink) {
             if (count($this->getAudio($songLink)) > 0) {
-                $collectedSongs[] = $this->getAudio($songLink)[0];
+                $assetLink = $this->getAudio($songLink)[0];
+                $ext = substr($assetLink, -3);
+                if ($ext !== 'mp3') {
+                    continue;
+                }
+                $split = explode('/', $assetLink);
+                $size = count($split);
+                $title = '';
+                foreach ($split as $i => $part){
+                    if ($i === $size - 1) {
+                        $title = $part;
+                    }
+                }
+
+                $path = "storage/app/public/audio/$title";
+                $this->download($path, $assetLink);
+                $collectedSongs[] = $assetLink;
             }
 
         }
-
         $collectedSongs = array_unique($collectedSongs);
 
         return $collectedSongs;
+    }
+
+    /**
+     * @param $outFileName
+     * @param $url
+     * @return mixed|void
+     */
+    public function download($outFileName, $url)
+    {
+        if(is_file($url)) {
+            copy($url, $outFileName);
+        } else {
+            $options = array(
+                CURLOPT_FILE    => fopen($outFileName, 'w'),
+                CURLOPT_TIMEOUT =>  28800, // set this to 8 hours so we dont timeout on big files
+                CURLOPT_URL     => $url
+            );
+
+            $ch = curl_init();
+            curl_setopt_array($ch, $options);
+            curl_exec($ch);
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            return $httpcode;
+        }
+    }
+
+    public function getSongsFromHiphopkit()
+    {
+        $downloadLink = 'https://hiphopkit.com/music/artiste/drake/';
+
+        $res = $this->client->request('GET', $downloadLink);
+
+        $songLinks = $res->filter('a')->each(function ($node){
+            dump($node);
+            return $node->attr('href') . '';
+        });
+
+        $songLinks = array_unique($songLinks);
+
+        dd($songLinks);
     }
 
 }

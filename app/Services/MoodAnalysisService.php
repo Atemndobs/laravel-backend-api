@@ -21,6 +21,10 @@ class MoodAnalysisService
             return $res;
         }
         if ($existingSong->analyzed) {
+            dump([
+                'analyzed' => $existingSong->analyzed,
+                'Existing' => $existingSong->status
+                ]);
             return [
                 'status' =>  $existingSong->status
             ];

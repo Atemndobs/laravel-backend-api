@@ -30,17 +30,14 @@ class SongUpdateBpmCommand extends Command
      */
     public function handle()
     {
-
         $updateService = new SongUpdateService();
         $slug = $this->argument('slug');
         $bpm = $this->option('field') === 'bpm';
         $key = $this->option('field') === 'key';
 
-
         if ($slug !== null) {
             $song = Song::where('slug', '=', $slug)->first();
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
-
             dump($updatedSong->bpm);
             return 0;
         }
@@ -50,7 +47,7 @@ class SongUpdateBpmCommand extends Command
 
         /** @var Song $song */
         foreach ($songs as $song) {
-            if ($song->bpm !== null) {
+            if ((int)$song->bpm !== 0) {
                 continue;
             }
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);

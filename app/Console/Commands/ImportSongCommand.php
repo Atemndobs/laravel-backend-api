@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\File;
 use App\Models\Song;
 use App\Services\MoodAnalysisService;
 use App\Services\Strapi\StrapiSongService;
@@ -42,6 +43,7 @@ class ImportSongCommand extends Command
         $uploadService = new UploadService();
         $tracks = $this->cleanFiles($allFiles);
         $uploadService->importSongs($tracks);
+        $this->downloadStrapiSong();
 
         DB::table('jobs')->delete();
         DB::table('failed_jobs')->delete();
@@ -104,5 +106,19 @@ class ImportSongCommand extends Command
             }
         }
        return $result;
+    }
+
+    public function downloadStrapiSong()
+    {
+        $allSongs = Song::all();
+        $strapiService = new StrapiSongService();
+
+        /** @var Song $song */
+        foreach ($allSongs as $song) {
+            if (str_contains($song->path, '1337')) {
+                $done = $strapiService->dowloadStrapiSong($song);
+                dump($done);
+            }
+        }
     }
 }

@@ -2,12 +2,14 @@
 
 namespace App\Services\Strapi;
 
+use App\Models\File;
 use App\Models\Song;
 use App\Services\UploadService;
 use Dbfx\LaravelStrapi\LaravelStrapi;
 use Http\Client\Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use function Psy\debug;
 use const Widmogrod\Monad\Writer\log;
@@ -108,8 +110,6 @@ class StrapiSongService
             $api_url = env('APP_URL') . '/api/songs/match/';
             $song->related_songs = $api_url . $song->slug;
 
-        //    dd($song->related_songs);
-
             $uploadService->fillSong(
                 $song->source,
                 $song,
@@ -119,7 +119,48 @@ class StrapiSongService
             );
             $song->save();
             $response[] = $song;
+
+            $this->dowloadStrapiSong($song);
         }
         return $response;
+    }
+
+    public function dowloadStrapiSong(Song $song)
+    {
+        $slug = $song->slug;
+        $url = $song->path;
+        $req_url = str_replace('http://mage.tech', 'http://localhost', $url);
+
+        $full_path = $this->getSongByLink($slug, $req_url);
+        $song->path = $full_path;
+        $song->save();
+        $this->deleteStrapiFile($song);
+
+        return $song->path;
+    }
+
+    public function deleteStrapiFile(Song $song)
+    {
+        $file =  File::where('name', '=', $song->title)->first() ;
+        $id = $file->id;
+        $req = Http::delete("http://localhost:1337/api/upload/files/$id");
+        $file->delete();
+        return $req->status();
+    }
+
+    /**
+     * @param string|null $slug
+     * @param array|string|null $req_url
+     * @return string
+     */
+    public function getSongByLink(?string $slug, array|string|null $req_url): string
+    {
+        $ext = substr($slug, -3);
+        $new_file_name = str_replace($ext, '', $slug);
+        $new_file_name = Str::slug($new_file_name, '_');
+        $filename = "$new_file_name.$ext";
+
+        file_put_contents("storage/app/public/audio/$filename", fopen($req_url, 'r'));
+        return asset(Storage::url("audio/$filename"));
     }
 }

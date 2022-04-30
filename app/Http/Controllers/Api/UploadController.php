@@ -59,11 +59,9 @@ class UploadController extends Controller{
         if ($payload['event'] === "media.create"){
             $song = $payload['media'];
             $res = $this->strapiSongService->importStrapiSong($song);
-
             $title = $res[0]->title;
             info("Imported : " . $title);
             AnalyzeSongJob::dispatch($title)->onConnection('database')->onQueue('analyze');
-            // broadcast(new AnalyzeSongEvent($title))->toOthers();
         }
 
         if ($payload['event'] === "media.update"){
