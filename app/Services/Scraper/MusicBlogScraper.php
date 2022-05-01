@@ -3,6 +3,8 @@
 namespace App\Services\Scraper;
 
 use Goutte\Client;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
 
 
@@ -132,20 +134,54 @@ class MusicBlogScraper
         }
     }
 
-    public function getSongsFromHiphopkit()
+    public function getSongsFromHiphopkit(string $artist)
     {
-        $downloadLink = 'https://hiphopkit.com/music/artiste/drake/';
-
+        $baseUrl = "https://hiphopkit.com/";
+        $downloadLink = $baseUrl . "music/artiste/" .  $artist;
         $res = $this->client->request('GET', $downloadLink);
 
         $songLinks = $res->filter('a')->each(function ($node){
-            dump($node);
             return $node->attr('href') . '';
         });
 
         $songLinks = array_unique($songLinks);
+        $collectedSongs = [];
+        foreach ($songLinks as $key => $songLink) {
+            if (
+                $songLink === $baseUrl
+                || $songLink === $downloadLink
+                || !str_contains($songLink, "$baseUrl$artist-")
+            ){
+                unset($songLinks[$key]);
+            }
+        }
 
-        dd($songLinks);
+        foreach ($songLinks as $songLink){
+            $link = $this->client->request('GET', $songLink);
+            $artistLinks = $link->filter('a')->each(function ($node){
+                $link = $node->attr('href') . '' ;
+                return str_contains($link, 'music/download') ? $link : null;
+            });
+            $dnloadMusic = array_unique($artistLinks);
+
+            foreach ($dnloadMusic as $music){
+                if ($music !== null) {
+                    dump($music);
+                    $songId = substr($songLink, -4);
+                    $title = str_replace(array('https://hiphopkit.com/', $songId), '', $songLink);
+                    $title = Str::slug($title, '_');
+                    $path = "storage/app/public/audio/$title.mp3";
+                    $exist = Storage::exists("public/audio/$title.mp3");
+
+                    if (!$exist){
+                          $this->download($path, $music);
+                         file_put_contents($path, fopen($music, 'r'));
+                        $collectedSongs[] = asset("storage/audio/$title.mp3");
+                    }
+
+                }
+            }
+        }
+        return $collectedSongs;
     }
-
 }

@@ -34,14 +34,19 @@ class ScrapeMusicCommandCommand extends Command
         $scrapedMusic = [];
         $data = [];
         $site = $this->argument('site');
+        $artist = $this->option('artist') ;
+        $playlist = $this->option('playlist') ;
+
         $musicScraper = new MusicBlogScraper();
+
+        if ($site === 'hiphopkit'){
+            $scrapedMusic = $musicScraper->getSongsFromHiphopkit($artist);
+            dd($scrapedMusic);
+        }
+
 
         if ($site === 'sc'){
             $soundCloundService  = new  SoundcloudService();
-
-            $artist = $this->option('artist') ;
-            $playlist = $this->option('playlist') ;
-
             if ($artist !== null){
                 $soundCloundService->getLikedSongsByArtis($artist);
             }
@@ -51,12 +56,7 @@ class ScrapeMusicCommandCommand extends Command
             }
         }elseif ($site !== null){
             $scrapedMusic = $musicScraper->getMusicFromSource("https://{$site}.com/", 'main/download-mp3/');
-        }elseif ($site === 'hiphopkit'){
-            $scrapedMusic = $musicScraper->getSongsFromHiphopkit();
-            dd($scrapedMusic);
-        }
-
-        else{
+        }else{
             $tooxclusive = $musicScraper->getMusicFromSource("https://tooxclusive.com/", 'main/download-mp3/');
             $fakaza = $musicScraper->getMusicFromSource("https://fakaza.com/", 'download-mp3/');
             $scrapedMusic = array_merge($tooxclusive, $fakaza);
