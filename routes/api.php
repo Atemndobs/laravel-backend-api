@@ -1,5 +1,7 @@
 <?php
 
+use App\Websockets\SocketHandler\UpdateSongSocketHandler;
+use BeyondCode\LaravelWebSockets\Facades\WebSocketsRouter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
@@ -44,3 +46,5 @@ Route::get('songs/match/{title}', [\App\Http\Controllers\Api\MatchSongController
 Route::get('songs/match/{title}/{$attribute}', [\App\Http\Controllers\Api\MatchSongController::class, 'matchByAttribute']);
 Route::get('songs/search/{term}', [\App\Http\Controllers\Api\SongSearchController::class, 'searchSong']);
 Route::get('songs/genre/{artist}', [\App\Http\Controllers\Api\SpotifyController::class, 'getArtistGenre']);
+
+WebSocketsRouter::webSocket('/socket/song', UpdateSongSocketHandler::class);

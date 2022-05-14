@@ -126,12 +126,12 @@
 
                 <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
                     <div class="flex items-center">
-                        <div class="ml-4 text-lg leading-7 font-semibold text-gray-900 dark:text-white"> <a href="#" >  Front end (Mobile App) </a> </div>
+                        <div class="ml-4 text-lg leading-7 font-semibold text-gray-900 dark:text-white"> <a href="http://mage.tech:8899/laravel-websockets" >  Web Sockets </a> </div>
                     </div>
 
                     <div class="ml-12">
                         <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                            <div>  <a href="#" > comming soon...</a> </div>
+                            <div>  <a href="http://mage.tech:8899/laravel-websockets" >laravel websockers</a> </div>
                         </div>
                     </div>
                 </div>

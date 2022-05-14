@@ -35,8 +35,18 @@ class SongUpdateGenreCommand extends Command
         $genres = [] ;
         if ($author !== null ) {
             $genres = $spotifyService->getGenreByArtist($author);
-            $song = Song::where('author', '=', $author)->first();
+            dump($genres);
+            $song = Song::query()->where('author', '=', $author)->first(
+             //  ['author', 'title', 'genre']
+            );
+
+            if ($song === null) {
+                $song = Song::query()->where('author', 'like', "%$author%")->first();
+            }
             $song->genre = $genres;
+            /// $song->get(['genre']);
+
+            $song->setAttribute();
             $song->save();
             $displayGenres = json_encode($genres);
             $this->output->info("$author : $displayGenres");

@@ -450,6 +450,441 @@
                     "Song"
                 ]
             }
+        },
+        "/api/files/search": {
+            "post": {
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/FileResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#/components/schemas/ResourceLinks"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/ResourceMeta"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "summary": "Search for files",
+                "tags": [
+                    "File"
+                ]
+            }
+        },
+        "/api/files/batch": {
+            "post": {
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "resources": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/File"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/FileResource"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "summary": "Create a batch of files",
+                "tags": [
+                    "File"
+                ]
+            },
+            "patch": {
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "resources": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/File"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/FileResource"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "summary": "Update a batch of files",
+                "tags": [
+                    "File"
+                ]
+            },
+            "delete": {
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "resources": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "description": "A list of resource IDs"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/FileResource"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "summary": "Delete a batch of files",
+                "tags": [
+                    "File"
+                ]
+            }
+        },
+        "/api/files": {
+            "get": {
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/FileResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#/components/schemas/ResourceLinks"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/ResourceMeta"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "summary": "Get a list of files",
+                "tags": [
+                    "File"
+                ]
+            },
+            "post": {
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/File"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/FileResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "summary": "Create file",
+                "tags": [
+                    "File"
+                ]
+            }
+        },
+        "/api/files/{file}": {
+            "get": {
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "name": "file",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/FileResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "summary": "Get file",
+                "tags": [
+                    "File"
+                ]
+            },
+            "patch": {
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "name": "file",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/File"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/FileResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "summary": "Update file",
+                "tags": [
+                    "File"
+                ]
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "name": "file",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/FileResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "summary": "Delete file",
+                "tags": [
+                    "File"
+                ]
+            }
         }
     },
     "components": {
@@ -583,6 +1018,10 @@
                             "played": {
                                 "type": "boolean",
                                 "nullable": true
+                            },
+                            "slug": {
+                                "type": "string",
+                                "nullable": true
                             }
                         }
                     }
@@ -636,12 +1075,101 @@
                         "type": "integer"
                     }
                 }
+            },
+            "File": {
+                "title": "File",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "alternative_text": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "caption": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "width": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "height": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "formats": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "hash": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "ext": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "mime": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "size": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "url": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "preview_url": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "provider": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "provider_metadata": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "created_by_id": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "updated_by_id": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                }
+            },
+            "FileResource": {
+                "title": "FileResource",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/File"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ]
             }
         }
     },
     "tags": [
         {
             "name": "Song"
+        },
+        {
+            "name": "File"
         }
     ]
 }

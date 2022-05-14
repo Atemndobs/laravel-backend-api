@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Websockets\SocketHandler;
+
+use App\Models\Song;
+use Ratchet\ConnectionInterface;
+use Ratchet\RFC6455\Messaging\MessageInterface;
+
+class UpdateSongSocketHandler extends BaseSocketHandler
+{
+
+    public function onMessage(ConnectionInterface $conn, MessageInterface $msg)
+    {
+        dump(Song::query()->first());
+    }
+}

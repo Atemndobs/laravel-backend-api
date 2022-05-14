@@ -42,6 +42,7 @@ class MeiliSearchService
             'aggressiveness',
             'danceability',
             'relaxed',
+            'slug',
         ]);
         $songIndex->updateSortableAttributes([
             'bpm',
@@ -53,6 +54,7 @@ class MeiliSearchService
             'aggressiveness',
             'danceability',
             'relaxed',
+            'slug',
         ]);
         $songIndex->updateDisplayedAttributes([
             'title',
@@ -67,6 +69,7 @@ class MeiliSearchService
             'relaxed',
             'played',
             'path',
+            'slug',
             'image',
             'related_songs'
         ]);

@@ -27,7 +27,7 @@ use Illuminate\Notifications\Notifiable;
  *
  * @package App\Models
  */
-class Feed extends Model
+class Feed extends \App\Models\Base\Feed
 {
     use CrudTrait;
     use Notifiable;
@@ -40,7 +40,5 @@ class Feed extends Model
 		'content',
 		'payload',
 		'source',
-		'image',
-		'since'
 	];
 }

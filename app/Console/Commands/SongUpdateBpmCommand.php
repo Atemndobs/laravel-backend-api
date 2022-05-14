@@ -37,6 +37,7 @@ class SongUpdateBpmCommand extends Command
 
         if ($slug !== null) {
             $song = Song::where('slug', '=', $slug)->first();
+            dump("prepare updating |  $song->slug");
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
             dump($updatedSong->bpm);
             return 0;
@@ -50,6 +51,7 @@ class SongUpdateBpmCommand extends Command
             if ((int)$song->bpm !== 0) {
                 continue;
             }
+            dump("prepare updating | $song->slug");
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
             $updatedSongs[] = $updatedSong->bpm;
         }

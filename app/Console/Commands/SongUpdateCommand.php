@@ -32,7 +32,6 @@ class SongUpdateCommand extends Command
      */
     public function handle()
     {
-
         // http://localhost:3000/song
         $data = [];
         $updated =[];
