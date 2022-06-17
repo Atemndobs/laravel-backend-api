@@ -1,0 +1,669 @@
+apiVersion: v1
+items:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: jenkins
+      name: jenkins
+    spec:
+      ports:
+        - name: "8099"
+          port: 8099
+          targetPort: 8080
+      selector:
+        io.kompose.service: jenkins
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: laravel-test
+      name: laravel.test
+    spec:
+      ports:
+        - name: "8899"
+          port: 8899
+          targetPort: 80
+        - name: "6001"
+          port: 6001
+          targetPort: 6001
+      selector:
+        io.kompose.service: laravel-test
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: meilisearch
+      name: meilisearch
+    spec:
+      ports:
+        - name: "7700"
+          port: 7700
+          targetPort: 7700
+      selector:
+        io.kompose.service: meilisearch
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mysql
+      name: mysql
+    spec:
+      ports:
+        - name: "3307"
+          port: 3307
+          targetPort: 3306
+      selector:
+        io.kompose.service: mysql
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: rabbitmq
+      name: rabbitmq
+    spec:
+      ports:
+        - name: "5672"
+          port: 5672
+          targetPort: 5672
+        - name: "15672"
+          port: 15672
+          targetPort: 15672
+      selector:
+        io.kompose.service: rabbitmq
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: redis
+      name: redis
+    spec:
+      ports:
+        - name: "6380"
+          port: 6380
+          targetPort: 6379
+      selector:
+        io.kompose.service: redis
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: strapi
+      name: strapi
+    spec:
+      ports:
+        - name: "1337"
+          port: 1337
+          targetPort: 1337
+      selector:
+        io.kompose.service: strapi
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Pod
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: jenkins
+      name: jenkins
+    spec:
+      containers:
+        - image: jenkins/jenkins:latest
+          name: my-jenkins
+          ports:
+            - containerPort: 8080
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/jenkins_home
+              name: jenkins-claim0
+      restartPolicy: OnFailure
+      volumes:
+        - name: jenkins-claim0
+          persistentVolumeClaim:
+            claimName: jenkins-claim0
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: jenkins-claim0
+      name: jenkins-claim0
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+    status: {}
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: laravel-test
+      name: laravel-test
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          io.kompose.service: laravel-test
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          annotations:
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+            kompose.version: 1.26.0 (40646f47)
+          creationTimestamp: null
+          labels:
+            io.kompose.network/sail: "true"
+            io.kompose.service: laravel-test
+        spec:
+          containers:
+            - env:
+                - name: LARAVEL_SAIL
+                  value: "1"
+                - name: WWWUSER
+                - name: XDEBUG_CONFIG
+                  value: client_host=host.docker.internal
+                - name: XDEBUG_MODE
+                  value: "off"
+              image: sail-8.1/app
+              name: laravel.test
+              ports:
+                - containerPort: 80
+                - containerPort: 6001
+              resources: {}
+              volumeMounts:
+                - mountPath: /var/www/html
+                  name: laravel-test-claim0
+          restartPolicy: Always
+          volumes:
+            - name: laravel-test-claim0
+              persistentVolumeClaim:
+                claimName: laravel-test-claim0
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: laravel-test-claim0
+      name: laravel-test-claim0
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+    status: {}
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      creationTimestamp: null
+      name: sail
+    spec:
+      ingress:
+        - from:
+            - podSelector:
+                matchLabels:
+                  io.kompose.network/sail: "true"
+      podSelector:
+        matchLabels:
+          io.kompose.network/sail: "true"
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: meilisearch
+      name: meilisearch
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          io.kompose.service: meilisearch
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          annotations:
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+            kompose.version: 1.26.0 (40646f47)
+          creationTimestamp: null
+          labels:
+            io.kompose.network/sail: "true"
+            io.kompose.service: meilisearch
+        spec:
+          containers:
+            - image: getmeili/meilisearch:latest
+              livenessProbe:
+                exec:
+                  command:
+                    - wget
+                    - --no-verbose
+                    - --spider
+                    - http://localhost:7700/health
+                failureThreshold: 3
+                timeoutSeconds: 5
+              name: meilisearch
+              ports:
+                - containerPort: 7700
+              resources: {}
+              volumeMounts:
+                - mountPath: /data.ms
+                  name: sail-meilisearch
+          restartPolicy: Always
+          volumes:
+            - name: sail-meilisearch
+              persistentVolumeClaim:
+                claimName: sail-meilisearch
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: sail-meilisearch
+      name: sail-meilisearch
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+    status: {}
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mysql
+      name: mysql
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          io.kompose.service: mysql
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          annotations:
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+            kompose.version: 1.26.0 (40646f47)
+          creationTimestamp: null
+          labels:
+            io.kompose.network/sail: "true"
+            io.kompose.service: mysql
+        spec:
+          containers:
+            - args:
+                - --default-authentication-plugin=mysql_native_password
+              env:
+                - name: MYSQL_ALLOW_EMPTY_PASSWORD
+                  value: "1"
+                - name: MYSQL_DATABASE
+                  value: mage
+                - name: MYSQL_PASSWORD
+                  value: mage
+                - name: MYSQL_ROOT_HOST
+                  value: '%'
+                - name: MYSQL_ROOT_PASSWORD
+                  value: mage
+                - name: MYSQL_USER
+                  value: mage
+              image: mysql/mysql-server:8.0
+              livenessProbe:
+                exec:
+                  command:
+                    - mysqladmin
+                    - ping
+                    - -pmage
+                failureThreshold: 3
+                timeoutSeconds: 5
+              name: mysql
+              ports:
+                - containerPort: 3306
+              resources: {}
+              volumeMounts:
+                - mountPath: /var/lib/mysql
+                  name: sail-mysql
+          restartPolicy: Always
+          volumes:
+            - name: sail-mysql
+              persistentVolumeClaim:
+                claimName: sail-mysql
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: sail-mysql
+      name: sail-mysql
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+    status: {}
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: rabbitmq
+      name: rabbitmq
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          io.kompose.service: rabbitmq
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          annotations:
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+            kompose.version: 1.26.0 (40646f47)
+          creationTimestamp: null
+          labels:
+            io.kompose.network/sail: "true"
+            io.kompose.service: rabbitmq
+        spec:
+          containers:
+            - image: rabbitmq:3-management-alpine
+              name: rabbitmq
+              ports:
+                - containerPort: 5672
+                - containerPort: 15672
+              resources: {}
+              volumeMounts:
+                - mountPath: /var/log/rabbitmq
+                  name: rabbitmq-claim0
+                - mountPath: /var/lib/rabbitmq
+                  name: rabbitmq-claim1
+          restartPolicy: Always
+          volumes:
+            - name: rabbitmq-claim0
+              persistentVolumeClaim:
+                claimName: rabbitmq-claim0
+            - name: rabbitmq-claim1
+              persistentVolumeClaim:
+                claimName: rabbitmq-claim1
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: rabbitmq-claim0
+      name: rabbitmq-claim0
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: rabbitmq-claim1
+      name: rabbitmq-claim1
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+    status: {}
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: redis
+      name: redis
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          io.kompose.service: redis
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          annotations:
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+            kompose.version: 1.26.0 (40646f47)
+          creationTimestamp: null
+          labels:
+            io.kompose.network/sail: "true"
+            io.kompose.service: redis
+        spec:
+          containers:
+            - image: redis:alpine
+              livenessProbe:
+                exec:
+                  command:
+                    - redis-cli
+                    - ping
+                failureThreshold: 3
+                timeoutSeconds: 5
+              name: redis
+              ports:
+                - containerPort: 6379
+              resources: {}
+              volumeMounts:
+                - mountPath: /data
+                  name: sail-redis
+          restartPolicy: Always
+          volumes:
+            - name: sail-redis
+              persistentVolumeClaim:
+                claimName: sail-redis
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: sail-redis
+      name: sail-redis
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+    status: {}
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: selenium
+      name: selenium
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          io.kompose.service: selenium
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          annotations:
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+            kompose.version: 1.26.0 (40646f47)
+          creationTimestamp: null
+          labels:
+            io.kompose.network/sail: "true"
+            io.kompose.service: selenium
+        spec:
+          containers:
+            - image: selenium/standalone-chrome
+              name: selenium
+              resources: {}
+              volumeMounts:
+                - mountPath: /dev/shm
+                  name: selenium-claim0
+          restartPolicy: Always
+          volumes:
+            - name: selenium-claim0
+              persistentVolumeClaim:
+                claimName: selenium-claim0
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: selenium-claim0
+      name: selenium-claim0
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+    status: {}
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: strapi
+      name: strapi
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          io.kompose.service: strapi
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          annotations:
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubemanifest.yaml
+            kompose.version: 1.26.0 (40646f47)
+          creationTimestamp: null
+          labels:
+            io.kompose.network/sail: "true"
+            io.kompose.service: strapi
+        spec:
+          containers:
+            - env:
+                - name: DATABASE_CLIENT
+                  value: mysql
+                - name: DATABASE_HOST
+                  value: mysql
+                - name: DATABASE_NAME
+                  value: mage
+                - name: DATABASE_PASSWORD
+                  value: mage
+                - name: DATABASE_PORT
+                  value: "3306"
+                - name: DATABASE_USERNAME
+                  value: mage
+              image: strapi
+              name: strapi
+              ports:
+                - containerPort: 1337
+              resources: {}
+              volumeMounts:
+                - mountPath: /srv/app
+                  name: strapi-claim0
+          restartPolicy: Always
+          volumes:
+            - name: strapi-claim0
+              persistentVolumeClaim:
+                claimName: strapi-claim0
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: strapi-claim0
+      name: strapi-claim0
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Mi
+    status: {}
+kind: List
+metadata: {}
+

@@ -32,6 +32,10 @@ class SoundcloudService
             return $node->attr('href') . '';
         });
 
+//        ray([
+//            'URL' => $url
+//        ]);
+
         $songLinks = array_unique($songLinks);
 
         foreach ($songLinks as $key => $songLink) {
@@ -138,7 +142,7 @@ class SoundcloudService
 
     public function downloadSong(string $url)
     {
-        $strapi_url = "http://localhost:1337/api/classify?link=";
+        $strapi_url = "http://host.docker.internal:1337/api/classify?link=";
         $link = $strapi_url . $url;
         $response = Http::get($link);
         return $response->status();

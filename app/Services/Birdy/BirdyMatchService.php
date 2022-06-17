@@ -259,6 +259,7 @@ class BirdyMatchService
 
     /**
      * @param Song $song
+     * @param string $attr
      * @return void
      */
     public function getMatchByAttribute(Song $song, string $attr = 'bpm')
@@ -298,6 +299,11 @@ class BirdyMatchService
         return $res;
     }
 
+    /**
+     * @param SearchResult|array $searchResult
+     * @param Song $song
+     * @return array|SearchResult
+     */
     public function relaxSearchFilters(SearchResult|array $searchResult, Song $song)
     {
         $attr = [
@@ -345,6 +351,10 @@ class BirdyMatchService
         return Song::max('bpm');
     }
 
+    /**
+     * @param Song $song
+     * @return mixed
+     */
     public function getGenre(Song $song)
     {
         $spotifyService = new SpotifyService($song);

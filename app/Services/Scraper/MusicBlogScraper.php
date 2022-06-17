@@ -136,6 +136,7 @@ class MusicBlogScraper
 
     public function getSongsFromHiphopkit(string $artist)
     {
+        $artist = Str::slug($artist, '-');
         $baseUrl = "https://hiphopkit.com/";
         $downloadLink = $baseUrl . "music/artiste/" .  $artist;
         $res = $this->client->request('GET', $downloadLink);
@@ -144,18 +145,28 @@ class MusicBlogScraper
             return $node->attr('href') . '';
         });
 
+        ray()->clearAll();
+
+
         $songLinks = array_unique($songLinks);
         $collectedSongs = [];
         foreach ($songLinks as $key => $songLink) {
             if (
-                $songLink === $baseUrl
-                || $songLink === $downloadLink
-                || !str_contains($songLink, "$baseUrl$artist-")
+
+                $songLink == $baseUrl
+             //   || $songLink == $downloadLink
+              //  || !str_contains($songLink, "$baseUrl$artist")
             ){
                 unset($songLinks[$key]);
             }
         }
 
+        ray([
+            'base_url' => $baseUrl,
+            'download_link' => $downloadLink,
+            'Artist' => $artist,
+            'links' => $songLinks
+        ]);
         foreach ($songLinks as $songLink){
             $link = $this->client->request('GET', $songLink);
             $artistLinks = $link->filter('a')->each(function ($node){
@@ -166,19 +177,25 @@ class MusicBlogScraper
 
             foreach ($dnloadMusic as $music){
                 if ($music !== null) {
-                    dump($music);
+                    ray($music)->screenGreen();
                     $songId = substr($songLink, -4);
                     $title = str_replace(array('https://hiphopkit.com/', $songId), '', $songLink);
                     $title = Str::slug($title, '_');
                     $path = "storage/app/public/audio/$title.mp3";
                     $exist = Storage::exists("public/audio/$title.mp3");
 
+                    ray($path)->red();
                     if (!$exist){
                           $this->download($path, $music);
                          file_put_contents($path, fopen($music, 'r'));
                         $collectedSongs[] = asset("storage/audio/$title.mp3");
                     }
 
+                    ray($collectedSongs)->screenGreen();
+
+                    if (count($collectedSongs) === 5){
+                        break;
+                    }
                 }
             }
         }

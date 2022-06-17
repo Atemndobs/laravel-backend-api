@@ -44,7 +44,6 @@ class ScrapeMusicCommandCommand extends Command
             dd($scrapedMusic);
         }
 
-
         if ($site === 'sc'){
             $soundCloundService  = new  SoundcloudService();
             if ($artist !== null){

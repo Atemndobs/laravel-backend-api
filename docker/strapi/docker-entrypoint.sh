@@ -11,6 +11,7 @@ if [ "$1" = "strapi" ]; then
 
     echo "Using strapi $(strapi version)"
     echo "No project found at /srv/app. Creating a new strapi project"
+    mysql -u root -p [root-password] -e "update user set authentication_string=password(''), plugin='mysql_native_password' where user='root';"
 
     DOCKER=true strapi new . \
       --dbclient=$DATABASE_CLIENT \

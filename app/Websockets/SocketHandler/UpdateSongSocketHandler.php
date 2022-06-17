@@ -11,6 +11,6 @@ class UpdateSongSocketHandler extends BaseSocketHandler
 
     public function onMessage(ConnectionInterface $conn, MessageInterface $msg)
     {
-        dump(Song::query()->first());
+       dump(['received_message_from_fe:' => $msg->getPayload()]);
     }
 }

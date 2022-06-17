@@ -27,3 +27,8 @@ rabbitmq
 
 /var/
 /storage/app/var/
+/jenkins
+
+
+# Ignore DevSpace cache and log folder
+.devspace/

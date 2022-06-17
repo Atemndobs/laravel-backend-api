@@ -21,11 +21,6 @@ class MeiliSearchService
         $songIndex = $this->meiliSearch->index('songs')->resetSettings();
         $songs = Song::search($searchTerm)->paginate(10);
         $matches = Song::search($searchTerm)->get();
-
-        $res= [
-            'search_term' => $searchTerm,
-            'matches' => $matches,
-        ];
         return $matches;
     }
 
