@@ -33,7 +33,7 @@ class AnalyzeSongCommand extends Command
 
         $this->output->info("$slug : analysis is in progress");
         info("$slug : analysis is in progress");
-
-        return "job has been queued";
+        $this->info("job is has been queued");
+        return 0;
     }
 }

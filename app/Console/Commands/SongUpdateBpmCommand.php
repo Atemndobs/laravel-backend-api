@@ -37,21 +37,21 @@ class SongUpdateBpmCommand extends Command
 
         if ($slug !== null) {
             $song = Song::where('slug', '=', $slug)->first();
-            dump("prepare updating |  $song->slug");
+            $this->info("prepare updating |  $song->slug");
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
-            dump($updatedSong->bpm);
+            $this->info($updatedSong->bpm);
             return 0;
         }
-        $songs = Song::all();
-
+        $songs = Song::where('bpm', '=', 0)->get();
+        $this->info(count($songs) . ' songs found');
         $updatedSongs = [];
 
         /** @var Song $song */
-        foreach ($songs as $song) {
-            if ((int)$song->bpm !== 0) {
-                continue;
-            }
-            dump("prepare updating | $song->slug");
+        foreach ($songs as $position => $song) {
+            $number = $position + 1;
+            $left = count($songs) - $position;
+            $this->info("prepare updating | $song->slug | $number song out of " . count($songs) . "| $left songs left");
+
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
             $updatedSongs[] = $updatedSong->bpm;
         }

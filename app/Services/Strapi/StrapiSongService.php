@@ -38,7 +38,8 @@ class StrapiSongService
         $prepareImports = [];
 
         try {
-            $response = Http::get('http://localhost:1337/api/upload/files');
+            // http://host.docker.internal:1337
+            $response = Http::get('http://host.docker.internal:1337/api/upload/files');
             $strapiUploads = $response->json();
             $prepareImports = $this->prepareImports($strapiUploads);
 
@@ -129,7 +130,8 @@ class StrapiSongService
     {
         $slug = $song->slug;
         $url = $song->path;
-        $req_url = str_replace('http://mage.tech', 'http://localhost', $url);
+       // $req_url = str_replace('http://mage.tech', 'http://localhost', $url);
+        $req_url = str_replace('http://mage.tech', 'http://host.docker.internal', $url);
 
         $full_path = $this->getSongByLink($slug, $req_url);
         $song->path = $full_path;
@@ -143,7 +145,7 @@ class StrapiSongService
     {
         $file =  File::where('name', '=', $song->title)->first() ;
         $id = $file->id;
-        $req = Http::delete("http://localhost:1337/api/upload/files/$id");
+        $req = Http::delete("http://host.docker.internal:1337/api/upload/files/$id");
         $file->delete();
         return $req->status();
     }

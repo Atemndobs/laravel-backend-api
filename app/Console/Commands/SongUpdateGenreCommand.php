@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Song;
 use App\Services\Birdy\SpotifyService;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class SongUpdateGenreCommand extends Command
 {
@@ -20,7 +21,7 @@ class SongUpdateGenreCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Get Artis Genre from Spotify';
+    protected $description = 'Get Artist Genre from Spotify';
 
     /**
      * Execute the console command.
@@ -53,26 +54,37 @@ class SongUpdateGenreCommand extends Command
             return 0;
         }
 
-        $songs = Song::all();
+        $songs = Song::where('genre', '=', null)
+            ->where('author', '!=', null)
+            ->get();
 
+        if (count($songs) === 0) {
+            $this->output->info("song:genre | No songs to update");
+            ray("song:genre | No songs to update")->green();
+            return 0;
+        }
+
+        $this->info("Found ".count($songs)." songs to update");
         /** @var Song $song */
         foreach ($songs as $song) {
-
-            if ($song->genre !== null || $song->author === null){
-                continue;
-            }
             $author = $song->author;
-            $genres = $spotifyService->getGenreByArtist($author);
-
+            if ($author === 'unknown') {
+                $genres = ["remix"];
+            }else{
+                $genres = $spotifyService->getGenreByArtist($author);
+                sleep(5);
+            }
             $song->genre = $genres;
-
-            // dd($genres);
             $song->save();
-
             $genre = json_encode($genres);
             $this->output->info("$author : $genre");
-            sleep(5);
-            $this->output->info("$author : DONE");
+            $left = count(Song::where('genre', '=', null)
+                ->where('author', '!=', null)
+                ->get());
+            $this->line("<fg=red;bg=cyan>$left songs left</>");
+            ray("Artist => $author  |  genres => $genre | $left songs pending genres")->blue();
+           //  ray("$left songs pending genres")->blue();
+          //  $this->output->warning("$left songs left");
 
         }
         return 0;

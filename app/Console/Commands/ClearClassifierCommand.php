@@ -33,7 +33,7 @@ class ClearClassifierCommand extends Command
     {
         $deleteItems = [];
         $deleteItems[] = $this->cleanSongDb();
-        $url = "http://localhost:3000/music/delete";
+        $url = "http://host.docker.internal:3000/music/delete";
         $response = Http::get($url)->body();
 
         $deleteItems[] = $response;

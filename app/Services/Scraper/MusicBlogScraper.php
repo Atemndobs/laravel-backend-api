@@ -3,9 +3,11 @@
 namespace App\Services\Scraper;
 
 use Goutte\Client;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
+use function example\int;
 
 
 class MusicBlogScraper
@@ -17,12 +19,6 @@ class MusicBlogScraper
     public function __construct()
     {
         $this->client = new Client();
-
-    }
-
-
-    public function searchSongsByArtist(string $artis)
-    {
 
     }
 
@@ -58,13 +54,7 @@ class MusicBlogScraper
     {
         $downloadLink = $baseUrl . $downloadPage;
 
-        $res = $this->client->request('GET', $downloadLink);
-
-        $songLinks = $res->filter('a')->each(function ($node){
-            return $node->attr('href') . '';
-        });
-
-        $songLinks = array_unique($songLinks);
+        $songLinks = $this->getSongLinks($downloadLink);
 
         $collectedSongs = [];
         foreach ($songLinks as $key => $songLink) {
@@ -200,5 +190,130 @@ class MusicBlogScraper
             }
         }
         return $collectedSongs;
+    }
+
+    /**
+     * @param array $searchTerms
+     * @return array
+     */
+    public function getSongsFromZaplaylist(array $searchTerms) : array
+    {
+       //https://zaplaylist.com/?s=Big+Flexa
+
+        // if search terms are empty, return empty array
+        if (empty($searchTerms)) {
+            return [];
+        }
+
+        // if search terms are not empty, build search url
+        // search = artis, title, mixtape
+        // initialize artist , title and mixtape variables
+        $artist = $title = null;
+        $searchOptions = [];
+        $searchUrl = 'https://zaplaylist.com/?';
+        foreach ($searchTerms as $search => $term) {
+            $term = Str::slug($term, '+');
+            $artist = $search === 'artist' ? $searchUrl . "s=$term" : null;
+            if ($artist !== null) {
+                $searchOptions['artist'] = $artist;
+            }
+            $title = $search === 'title' ? $searchUrl . "s=$term" : null;
+            if ($title !== null) {
+                $searchOptions['title'] = $title;
+            }
+            $mixtape = $search === 'mixtape' ? $searchUrl . "s=$term" : null;
+            if ($mixtape !== null) {
+                $searchOptions['mixtape'] = $mixtape;
+            }
+        }
+
+        if (count($searchOptions) === 1) {
+            // if only title search option is set, get song links
+            if (array_key_exists('title', $searchOptions)) {
+                $songLinks = $this->getSongLinks($searchOptions['title']);
+            } else {
+                // if only artist search option is set, get artist links
+                $artistLinks = $this->getArtistLinksFromZaplaylist($searchOptions['artist']);
+            }
+            $songLinks = $this->getSongLinks($searchOptions['title']);
+            dd($songLinks);
+        }
+        else {
+            ray()->clearAll();
+            dump('CONTAINS MORE THAN ONE SEARCH OPTION');
+            // first get song links from title search option
+            $songLinks = $this->getSongLinks($searchOptions['title']);
+            $songLinks = $this->filterDownloadUrls($songLinks);
+            // if $songLinks is empty, get song links from artist search option
+            if (empty($songLinks)) {
+                $songLinks = $this->getArtistLinksFromZaplaylist($searchOptions['artist']);
+            }
+            // if $songLinks has more than 5 songs, filter results by title
+            if (count($songLinks) > 1) {
+                $songLinks = $this->filterSongLinksByTitle($songLinks, $searchOptions['title']);
+            }
+
+            // download song from $songLinks
+            $songFoundUrl = Arr::first($songLinks);
+            $res = $this->client->request('GET', $songFoundUrl);
+            $downloadUrls = $res->filter('a')->each(function ($node) {
+                return $node->attr('href') . '';
+            });
+            $downloadUrls = array_unique($downloadUrls);
+            $downloadUrls = $this->filterDownloadUrls($downloadUrls, '.mp3');
+            $downloadUrl = Arr::first($downloadUrls);
+            $fileName = explode('/', $downloadUrl);
+            $fileName = Arr::last($fileName);
+            $this->download($fileName, $downloadUrl);
+        }
+        return $songLinks;
+    }
+
+    /**
+     * @param string $uri
+     * @return array
+     */
+    public function getSongLinks(string $uri): array
+    {
+        $res = $this->client->request('GET', $uri);
+        $songLinks = $res->filter('a')->each(function ($node) {
+            return $node->attr('href') . '';
+        });
+
+        return array_unique($songLinks);
+    }
+
+    private function getArtistLinksFromZaplaylist(string $artist)
+    {
+        $songLinks = $this->getSongLinks($artist);
+        // filter download links
+        $songLinks = array_filter($songLinks, function ($link) {
+            return str_contains($link, 'music/download');
+        });
+
+        return $songLinks;
+    }
+
+    private function filterSongLinksByTitle(array $songLinks, string $title)
+    {
+        // replace + with - in title
+        $title = str_replace('+', '-', $title);
+        $title = Str::slug($title, '-');
+        return array_filter($songLinks, function ($link) use ($title) {
+            return str_contains($link, $title);
+        });
+    }
+
+    /**
+     * @param array $songLinks
+     * @param string $filter
+     * @return array
+     */
+    public function filterDownloadUrls(array $songLinks, string $filter = 'mp3/'): array
+    {
+        // filter links containing $title and ends with mp3
+        return array_filter($songLinks, function ($link) use ($filter) {
+            return str_ends_with($link, $filter);
+        });
     }
 }

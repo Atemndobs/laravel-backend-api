@@ -81,9 +81,12 @@ class SongUpdateService
     {
         $file = $this->getFilePath($song);
 
+        dump($file);
         $slug = $song->slug;
         $shell  = shell_exec(" ./storage/app/public/streaming_extractor_music storage/app/public/$file storage/app/public/$slug.json 2>&1");
         $shellRes = explode(" ", $shell);
+
+        dd($shellRes);
 
         $error = str_contains($shell, "error = Operation not permitted");
         $error2 = str_contains($shell, "File does not exist ");

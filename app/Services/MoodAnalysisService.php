@@ -13,12 +13,9 @@ class MoodAnalysisService
         $existingSong = Song::where('slug', '=', $slug)->first();
 
         if (!$existingSong) {
-            $res =  [
+            return [
                 'status' =>  "$slug does not exist"
             ];
-
-            dump($res);
-            return $res;
         }
         if ($existingSong->analyzed) {
             dump([
@@ -30,10 +27,14 @@ class MoodAnalysisService
             ];
         }
 
-        $url = "http://localhost:3000/song/$slug";
+       // $url = "http://localhost:3000/song/$slug";
+        $url = "http://host.docker.internal:3000/song/$slug";
 
         Http::get($url)->body();
         info("Job In Progress: $url");
+        // total of all songs not yet analyzed
+        $notAnalyzedSongs = Song::where('analyzed', '=', null)->count();
+        ray("$notAnalyzedSongs Songs Pending Analysis ")->screenBlue();
         return [
             'status' =>  'Job In Progress'
         ];

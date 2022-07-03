@@ -6,14 +6,14 @@ use App\Services\Scraper\SoundcloudService;
 use Illuminate\Console\Command;
 use App\Services\Scraper\MusicBlogScraper;
 
-class ScrapeMusicCommandCommand extends Command
+class ScrapeMusicCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'scrape:song {site?} {--a|artist=null} {--p|playlist=null}';
+    protected $signature = 'scrape:song {site?} {--a|artist=null} {--p|playlist=null} {--t|title=null} {--m|mixtape=null}';
 
     /**
      * The console command description.
@@ -36,22 +36,59 @@ class ScrapeMusicCommandCommand extends Command
         $site = $this->argument('site');
         $artist = $this->option('artist') ;
         $playlist = $this->option('playlist') ;
+        $title = $this->option('title') ;
 
+        $allOptions = $this->options();
+        // filter out null values
+        $allOptions = array_filter($allOptions, function ($arg) {
+            return $arg !== null && $arg !== '' && $arg !== 'null' && $arg !== false;
+        });
+        if (count($allOptions) === 0){
+            $this->info('No arguments provided');
+            return 0;
+        }
         $musicScraper = new MusicBlogScraper();
 
         if ($site === 'hiphopkit'){
             $scrapedMusic = $musicScraper->getSongsFromHiphopkit($artist);
-            dd($scrapedMusic);
+        }
+        if ($site === 'zaplaylist'){
+            $scrapedMusic = $musicScraper->getSongsFromZaplaylist($allOptions);
         }
 
+        dd($scrapedMusic);
+
         if ($site === 'sc'){
-            $soundCloundService  = new  SoundcloudService();
+            $soundCloudService  = new  SoundcloudService();
+            $choice_1 = "Get $artist PlayList";
+            $choice_2 = "Get $artist Liked Songs";
+
             if ($artist !== null){
-                $soundCloundService->getLikedSongsByArtis($artist);
+                $choice = $this->choice('Download Option', [
+                    1 => $choice_1,
+                    2 => $choice_2
+                ],
+                1
+                );
+
+                if ($choice === $choice_2) {
+                    $soundCloudService->getLikedSongsByArtis($artist);
+                }
+                else {
+                    ray($choice_1)->blue();
+                    $playlistOptions = $soundCloudService->getArtistPlaylists($artist);
+                    $playlistChoice = $this->choice('Download Option',
+                        $playlistOptions
+                    );
+                    ray()->clearAll();
+                    ray($playlistChoice);
+                    return $soundCloudService->downloadPlaylist($playlistChoice);
+                }
+
             }
 
             if ($playlist !== null){
-                $soundCloundService->getCuratedPlaylist($playlist);
+                $soundCloudService->getCuratedPlaylist($playlist);
             }
         }elseif ($site !== null){
             $scrapedMusic = $musicScraper->getMusicFromSource("https://{$site}.com/", 'main/download-mp3/');
@@ -92,6 +129,6 @@ class ScrapeMusicCommandCommand extends Command
 
         $total = count($scrapedMusic);
         $this->output->info("extracted $total songs");
-        info("=========================================DONE_SCRAPPING $site=================================");
+        info("========================================= DONE_SCRAPPING $site =================================");
     }
 }

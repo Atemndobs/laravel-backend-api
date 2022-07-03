@@ -23,6 +23,11 @@ class SoundcloudService
 
     }
 
+    /**
+     * @param string $artist
+     * @param string $searchTerm
+     * @return array[]
+     */
     public function getLikedSongsByArtis(string $artist, string $searchTerm = 'likes') : array
     {
         $url = "$this->baseUrl/$artist/$searchTerm";
@@ -31,11 +36,6 @@ class SoundcloudService
         $songLinks = $res->filter('a')->each(function ($node){
             return $node->attr('href') . '';
         });
-
-//        ray([
-//            'URL' => $url
-//        ]);
-
         $songLinks = array_unique($songLinks);
 
         foreach ($songLinks as $key => $songLink) {
@@ -79,6 +79,32 @@ class SoundcloudService
             'artists' => $likedArtists,
             'liked_songs' => $likedSongs
         ];
+    }
+
+    public function getArtistPlaylists(string $artist) :array
+    {
+        $url = "$this->baseUrl/$artist";
+        $res = $this->client->request('GET', $url);
+
+        $songLinks = $res->filter('a')->each(function ($node){
+            return $node->attr('href') . '';
+        });
+        $songLinks = array_unique($songLinks);
+
+        $playlists = [];
+        foreach ($songLinks as $link){
+            if (str_contains($link, 'comments')){
+                continue;
+            }
+            if (substr_count($link, '/') < 2){
+                continue;
+            }
+            if (str_contains($link, $artist)){
+                $playlists[] = $link;
+            }
+        }
+
+        return $playlists;
     }
 
     public function getCuratedPlaylist(string $artist = "theafrobeatshub") : array
@@ -145,6 +171,8 @@ class SoundcloudService
         $strapi_url = "http://host.docker.internal:1337/api/classify?link=";
         $link = $strapi_url . $url;
         $response = Http::get($link);
+
+        dump($response->status());
         return $response->status();
     }
 
@@ -164,5 +192,12 @@ class SoundcloudService
             }
         }
         return  Song::where('slug', '=', $slug)->first();
+    }
+
+    public function downloadPlaylist(string $songLink)
+    {
+        ray($songLink)->red();
+        $song = $this->baseUrl . $songLink;
+        return $this->downloadSong($song);
     }
 }

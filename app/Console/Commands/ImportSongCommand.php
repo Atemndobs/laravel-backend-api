@@ -56,7 +56,7 @@ class ImportSongCommand extends Command
         dump($data);
             return 0;
         }
-        (new StrapiSongService())->importStrapiUploads();
+        //(new StrapiSongService())->importStrapiUploads();
         $queuedSongs = (new MoodAnalysisService())->classifySongs();
 
         foreach ($queuedSongs as $title) {
@@ -81,7 +81,7 @@ class ImportSongCommand extends Command
         $this->output->table($headers, $data);
 
         $total = count($unClassified);
-        $this->output->info("imported $total songs");
+        $this->output->info("imported $total songs from $source");
         info("=========================================IMPORT_DONE==========================================");
         return 0;
     }
