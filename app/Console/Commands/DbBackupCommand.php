@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Console\Commands;
+
+use App\Models\File;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
+
+class DbBackupCommand extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'db:bk';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        $this->info('Backup database');
+        $this->call('backup:list');
+
+        // count files in backup folder
+        $files = glob(storage_path('app/backups/*'));
+        $count = count($files);
+        if ($count > 4) {
+            $this->info('Backup folder contains '.$count.' files');
+            $this->question('Do you want to delete all files? (y/n)');
+            $answer = $this->ask('Do you want to delete all files? (y/n)');
+            if ($answer == 'y') {
+                // delete all files from backup folder
+                $this->info('Deleting all files from backup folder');
+                foreach ($files as $file) {
+                    unlink($file);
+                }
+                $this->info('All files deleted');
+            }else{
+                $backupFiles = glob(storage_path('app/backups/*'));
+                // chose files to delete from $files array
+                foreach ($backupFiles as $file) {
+                    $this->info('Chose files to delete');
+                    $cancel = 'select enter to continue with backup';
+
+                    $cleanupFiles = [];
+                    foreach ($backupFiles as $key =>$deleteFile) {
+                        $cleanupFiles[$key+1] = $deleteFile;
+                    }
+
+                    $cleanupFiles[] = $cancel;
+                    $cleanupFiles[] = '';
+                    $filesToDelete = $this->choice('Choose files to delete', $cleanupFiles);
+                    // if $filesToDelete is empty, break loop
+                    if (empty($filesToDelete)) {
+                        break;
+                    }
+                    if ($filesToDelete  === $cancel) {
+                        break;
+                    }
+                    // delete files from backup folder
+                    $this->info('Deleting files from backup folder');
+                    // remove 'cancel' from $files array
+                    unset($cleanupFiles[array_search($cancel, $cleanupFiles)]);
+
+                    // remove $filesToDelete from $files array
+                    unset($cleanupFiles[array_search($filesToDelete, $cleanupFiles)]);
+                    unset($backupFiles[array_search($filesToDelete, $backupFiles)]);
+                    unset($cleanupFiles[array_search('', $cleanupFiles)]);
+                    // reset $files array keys
+                    $backupFiles = array_values($backupFiles);
+                    unlink($filesToDelete);
+                }
+            }
+
+        } else {
+            $this->info('Backup folder is empty');
+        }
+        $this->call("backup:run", [
+            "--only-db" => true,
+            "--only-files" => false,
+            "--disable-notifications" => true,
+            "--no-compression",
+        ]);
+        $this->info('Backup database done');
+        return 0;
+    }
+}

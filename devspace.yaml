@@ -1,0 +1,484 @@
+version: v1beta11
+
+# `images` specifies all images that may need to be built for this project
+images:
+  laravel:
+    image: sail-8.1/app
+    dockerfile: docker/8.1/Dockerfile
+    context: docker/8.1
+    build:
+      docker:
+        options:
+          buildArgs:
+            WWWGROUP: "1000"
+            WWWUSER: sail
+
+# `deployments` tells DevSpace how to deploy this project
+deployments:
+- name: redis
+  # This deployment uses `helm` but you can also define `kubectl` deployments or kustomizations
+  helm:
+    # We are deploying the so-called Component Chart: https://devspace.sh/component-chart/docs
+    componentChart: true
+    # Under `values` we can define the values for this Helm chart used during `helm install/upgrade`
+    # You may also use `valuesFiles` to load values from files, e.g. valuesFiles: ["values.yaml"]
+    values:
+      containers:
+      - image: redis:alpine
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          failureThreshold: 3
+        name: redis-container
+        volumeMounts:
+        - containerPath: /data
+          volume:
+            name: sail-redis
+            readOnly: false
+      service:
+        ports:
+        - containerPort: 6379
+          port: 6380
+          protocol: TCP
+      volumes:
+      - name: sail-redis
+        size: 5Gi
+- name: selenium
+  # This deployment uses `helm` but you can also define `kubectl` deployments or kustomizations
+  helm:
+    # We are deploying the so-called Component Chart: https://devspace.sh/component-chart/docs
+    componentChart: true
+    # Under `values` we can define the values for this Helm chart used during `helm install/upgrade`
+    # You may also use `valuesFiles` to load values from files, e.g. valuesFiles: ["values.yaml"]
+    values:
+      containers:
+      - image: selenium/standalone-chrome
+        name: selenium-container
+        volumeMounts:
+        - containerPath: /dev/shm
+          volume:
+            name: volume-1
+            readOnly: false
+      initContainers:
+      - args:
+        - -c
+        - while [ ! -f /tmp/done ]; do sleep 2; done
+        command:
+        - sh
+        image: alpine
+        name: upload-volumes
+        volumeMounts:
+        - containerPath: /dev/shm
+          volume:
+            name: volume-1
+            readOnly: false
+      volumes:
+      - emptyDir: {}
+        name: volume-1
+- name: meilisearch
+  # This deployment uses `helm` but you can also define `kubectl` deployments or kustomizations
+  helm:
+    # We are deploying the so-called Component Chart: https://devspace.sh/component-chart/docs
+    componentChart: true
+    # Under `values` we can define the values for this Helm chart used during `helm install/upgrade`
+    # You may also use `valuesFiles` to load values from files, e.g. valuesFiles: ["values.yaml"]
+    values:
+      containers:
+      - image: getmeili/meilisearch:latest
+        livenessProbe:
+          exec:
+            command:
+            - wget
+            - --no-verbose
+            - --spider
+            - http://localhost:7700/health
+          failureThreshold: 3
+        name: meilisearch-container
+        volumeMounts:
+        - containerPath: /data.ms
+          volume:
+            name: sail-meilisearch
+            readOnly: false
+      service:
+        ports:
+        - containerPort: 7700
+          port: 7700
+          protocol: TCP
+      volumes:
+      - name: sail-meilisearch
+        size: 5Gi
+- name: mysql
+  # This deployment uses `helm` but you can also define `kubectl` deployments or kustomizations
+  helm:
+    # We are deploying the so-called Component Chart: https://devspace.sh/component-chart/docs
+    componentChart: true
+    # Under `values` we can define the values for this Helm chart used during `helm install/upgrade`
+    # You may also use `valuesFiles` to load values from files, e.g. valuesFiles: ["values.yaml"]
+    values:
+      containers:
+      - args:
+        - --default-authentication-plugin=mysql_native_password
+        env:
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: "1"
+        - name: MYSQL_DATABASE
+          value: mage
+        - name: MYSQL_PASSWORD
+          value: mage
+        - name: MYSQL_ROOT_HOST
+          value: mysql
+        - name: MYSQL_ROOT_PASSWORD
+          value: mage
+        - name: MYSQL_USER
+          value: mage
+        image: mysql/mysql-server:8.0
+        livenessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+            - -p
+          failureThreshold: 3
+        name: mysql-container
+        volumeMounts:
+        - containerPath: /var/lib/mysql
+          volume:
+            name: sail-mysql
+            readOnly: false
+      restartPolicy: Always
+      service:
+        ports:
+        - containerPort: 3306
+          port: 3307
+          protocol: TCP
+      volumes:
+      - name: sail-mysql
+        size: 5Gi
+- name: laravel
+  # This deployment uses `helm` but you can also define `kubectl` deployments or kustomizations
+  helm:
+    # We are deploying the so-called Component Chart: https://devspace.sh/component-chart/docs
+    componentChart: true
+    # Under `values` we can define the values for this Helm chart used during `helm install/upgrade`
+    # You may also use `valuesFiles` to load values from files, e.g. valuesFiles: ["values.yaml"]
+    values:
+      containers:
+      - env:
+        - name: LARAVEL_SAIL
+          value: "1"
+        - name: WWWUSER
+          value: ""
+        - name: XDEBUG_CONFIG
+          value: client_host=host.docker.internal
+        - name: XDEBUG_MODE
+          value: "off"
+        image: sail-8.1/app
+        name: laravel-container
+        volumeMounts:
+        - containerPath: /var/www/html
+          volume:
+            name: volume-1
+            readOnly: false
+      hostAliases:
+      - hostnames:
+        - host.docker.internal
+        ip: 192.168.49.2
+      initContainers:
+      - args:
+        - -c
+        - while [ ! -f /tmp/done ]; do sleep 2; done
+        command:
+        - sh
+        image: alpine
+        name: upload-volumes
+        volumeMounts:
+        - containerPath: /var/www/html
+          volume:
+            name: volume-1
+            readOnly: false
+      service:
+        ports:
+        - containerPort: 80
+          port: 8899
+          protocol: TCP
+        - containerPort: 6001
+          port: 6001
+          protocol: TCP
+      volumes:
+      - emptyDir: {}
+        name: volume-1
+- name: strapi
+  # This deployment uses `helm` but you can also define `kubectl` deployments or kustomizations
+  helm:
+    # We are deploying the so-called Component Chart: https://devspace.sh/component-chart/docs
+    componentChart: true
+    # Under `values` we can define the values for this Helm chart used during `helm install/upgrade`
+    # You may also use `valuesFiles` to load values from files, e.g. valuesFiles: ["values.yaml"]
+    values:
+      containers:
+      - env:
+        - name: DATABASE_CLIENT
+          value: mysql
+        - name: DATABASE_HOST
+          value: mysql
+        - name: DATABASE_NAME
+          value: mage
+        - name: DATABASE_PASSWORD
+          value: mage
+        - name: DATABASE_PORT
+          value: "3306"
+        - name: DATABASE_USERNAME
+          value: mage
+        image: atemndobs/strapi
+        name: strapi-container
+        volumeMounts:
+        - containerPath: /srv/app
+          volume:
+            name: volume-1
+            readOnly: false
+      initContainers:
+      - args:
+        - -c
+        - while [ ! -f /tmp/done ]; do sleep 2; done
+        command:
+        - sh
+        image: alpine
+        name: upload-volumes
+        volumeMounts:
+        - containerPath: /srv/app
+          volume:
+            name: volume-1
+            readOnly: false
+      service:
+        ports:
+        - containerPort: 1337
+          port: 1337
+          protocol: TCP
+      volumes:
+      - emptyDir: {}
+        name: volume-1
+- name: rabbitmq
+  # This deployment uses `helm` but you can also define `kubectl` deployments or kustomizations
+  helm:
+    # We are deploying the so-called Component Chart: https://devspace.sh/component-chart/docs
+    componentChart: true
+    # Under `values` we can define the values for this Helm chart used during `helm install/upgrade`
+    # You may also use `valuesFiles` to load values from files, e.g. valuesFiles: ["values.yaml"]
+    values:
+      containers:
+      - image: rabbitmq:3-management-alpine
+        name: rabbitmq
+        volumeMounts:
+        - containerPath: /var/log/rabbitmq
+          volume:
+            name: volume-1
+            readOnly: false
+        - containerPath: /var/lib/rabbitmq
+          volume:
+            name: volume-2
+            readOnly: false
+      initContainers:
+      - args:
+        - -c
+        - while [ ! -f /tmp/done ]; do sleep 2; done
+        command:
+        - sh
+        image: alpine
+        name: upload-volumes
+        volumeMounts:
+        - containerPath: /var/log/rabbitmq
+          volume:
+            name: volume-1
+            readOnly: false
+        - containerPath: /var/lib/rabbitmq
+          volume:
+            name: volume-2
+            readOnly: false
+      service:
+        ports:
+        - containerPort: 5672
+          port: 5672
+          protocol: TCP
+        - containerPort: 15672
+          port: 15672
+          protocol: TCP
+      volumes:
+      - emptyDir: {}
+        name: volume-1
+      - emptyDir: {}
+        name: volume-2
+
+# `dev` only applies when you run `devspace dev`
+dev:
+  # `dev.ports` specifies all ports that should be forwarded while `devspace dev` is running
+  # Port-forwarding lets you access your application via localhost on your local machine
+  ports:
+  - labelSelector:
+      app.kubernetes.io/component: redis
+    forward:
+    - port: 6380
+      remotePort: 6379
+  - labelSelector:
+      app.kubernetes.io/component: meilisearch
+    forward:
+    - port: 7700
+  - labelSelector:
+      app.kubernetes.io/component: mysql
+    forward:
+    - port: 3307
+      remotePort: 3306
+  - labelSelector:
+      app.kubernetes.io/component: laravel
+    forward:
+    - port: 8899
+      remotePort: 80
+    - port: 6001
+  - labelSelector:
+      app.kubernetes.io/component: strapi
+    forward:
+    - port: 1337
+  - labelSelector:
+      app.kubernetes.io/component: rabbitmq
+    forward:
+    - port: 5672
+    - port: 15672
+  # `dev.sync` configures a file sync between our Pods in k8s and your local project files
+  sync:
+  - labelSelector:
+      app.kubernetes.io/component: selenium
+    containerName: selenium-container
+    localSubPath: /dev/shm
+    containerPath: /dev/shm
+  - labelSelector:
+      app.kubernetes.io/component: laravel
+    containerName: laravel-container
+    localSubPath: ./
+    containerPath: /var/www/html
+    excludeFile: .dockerignore
+  - labelSelector:
+      app.kubernetes.io/component: strapi
+    containerName: strapi-container
+    localSubPath: ./../strapi
+    containerPath: /srv/app
+  - labelSelector:
+      app.kubernetes.io/component: rabbitmq
+    containerName: rabbitmq
+    localSubPath: ./rabbitmq/log/
+    containerPath: /var/log/rabbitmq
+  - labelSelector:
+      app.kubernetes.io/component: rabbitmq
+    containerName: rabbitmq
+    localSubPath: ./rabbitmq
+    containerPath: /var/lib/rabbitmq
+hooks:
+- events:
+  - after:deploy:redis
+  wait:
+    running: true
+    terminatedWithCode: 0
+  container:
+    labelSelector:
+      app.kubernetes.io/component: redis
+    containerName: redis-container
+- events:
+  - after:deploy:selenium
+  upload:
+    localPath: /dev/shm
+    containerPath: /dev/shm
+  container:
+    labelSelector:
+      app.kubernetes.io/component: selenium
+    containerName: upload-volumes
+- events:
+  - after:deploy:selenium
+  command: touch /tmp/done
+  container:
+    labelSelector:
+      app.kubernetes.io/component: selenium
+    containerName: upload-volumes
+- events:
+  - after:deploy:selenium
+  wait:
+    running: true
+    terminatedWithCode: 0
+  container:
+    labelSelector:
+      app.kubernetes.io/component: selenium
+    containerName: selenium-container
+- events:
+  - after:deploy:meilisearch
+  wait:
+    running: true
+    terminatedWithCode: 0
+  container:
+    labelSelector:
+      app.kubernetes.io/component: meilisearch
+    containerName: meilisearch-container
+- events:
+  - after:deploy:mysql
+  wait:
+    running: true
+    terminatedWithCode: 0
+  container:
+    labelSelector:
+      app.kubernetes.io/component: mysql
+    containerName: mysql-container
+- events:
+  - after:deploy:laravel
+  upload:
+    localPath: ./
+    containerPath: /var/www/html
+  container:
+    labelSelector:
+      app.kubernetes.io/component: laravel
+    containerName: upload-volumes
+- events:
+  - after:deploy:laravel
+  command: touch /tmp/done
+  container:
+    labelSelector:
+      app.kubernetes.io/component: laravel
+    containerName: upload-volumes
+- events:
+  - after:deploy:strapi
+  upload:
+    localPath: ./../strapi
+    containerPath: /srv/app
+  container:
+    labelSelector:
+      app.kubernetes.io/component: strapi
+    containerName: upload-volumes
+- events:
+  - after:deploy:strapi
+  command: touch /tmp/done
+  container:
+    labelSelector:
+      app.kubernetes.io/component: strapi
+    containerName: upload-volumes
+- events:
+  - after:deploy:rabbitmq
+  upload:
+    localPath: ./rabbitmq/log/
+    containerPath: /var/log/rabbitmq
+  container:
+    labelSelector:
+      app.kubernetes.io/component: rabbitmq
+    containerName: upload-volumes
+- events:
+  - after:deploy:rabbitmq
+  upload:
+    localPath: ./rabbitmq
+    containerPath: /var/lib/rabbitmq
+  container:
+    labelSelector:
+      app.kubernetes.io/component: rabbitmq
+    containerName: upload-volumes
+- events:
+  - after:deploy:rabbitmq
+  command: touch /tmp/done
+  container:
+    labelSelector:
+      app.kubernetes.io/component: rabbitmq
+    containerName: upload-volumes
