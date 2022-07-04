@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Song;
 
 use App\Models\File;
 use App\Models\Song;

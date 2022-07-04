@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Song;
 
 use App\Services\SongSearchService;
 use Illuminate\Console\Command;

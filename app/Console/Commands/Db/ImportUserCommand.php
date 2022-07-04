@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Console\Commands;
+// Import User From Magento API
+namespace App\Console\Commands\Db;
 
 use App\Services\Birdy\UserImportService;
 use App\Services\MultipleSheeExport;

@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Song;
 
 use App\Models\Song;
 use App\Services\SongUpdateService;
 use Illuminate\Console\Command;
-use function example\int;
 
 class SongUpdateBpmCommand extends Command
 {

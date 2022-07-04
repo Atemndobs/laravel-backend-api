@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Scraper;
 
 use App\Services\Scraper\SoundcloudService;
 use Illuminate\Console\Command;

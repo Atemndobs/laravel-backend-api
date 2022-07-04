@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Analysis;
 
 use App\Services\MoodAnalysisService;
 use Illuminate\Console\Command;
