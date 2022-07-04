@@ -83,8 +83,6 @@ class SongUpdateGenreCommand extends Command
                 ->get());
             $this->line("<fg=red;bg=cyan>$left songs left</>");
             ray("Artist => $author  |  genres => $genre | $left songs pending genres")->blue();
-           //  ray("$left songs pending genres")->blue();
-          //  $this->output->warning("$left songs left");
 
         }
         return 0;

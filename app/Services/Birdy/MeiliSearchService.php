@@ -37,6 +37,7 @@ class MeiliSearchService
             'aggressiveness',
             'danceability',
             'relaxed',
+            'analyzed',
             'slug',
         ]);
         $songIndex->updateSortableAttributes([

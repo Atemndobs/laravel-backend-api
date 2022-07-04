@@ -209,6 +209,10 @@ class BirdyMatchService
             if ($attribute === 'energy'){
                 continue;
             }
+            // remove slug attribute
+            if ($attribute === 'slug') {
+                continue;
+            }
             if ($attribute === 'bpm') {
                 $min = $value - $bpmRange;
                 $max = $value + $bpmRange;
@@ -225,9 +229,11 @@ class BirdyMatchService
                 $val = strval($value);
                 $filter[] = "$attribute = '$val'";
             }
-
         }
-
+        // remove song with same slug as the song we are analyzing
+        $filter[] = "slug != '{$song->slug}'";
+        $filter[] = "analyzed = 1";
+        //dd($filter);
         $dirrection = 'asc';
         return $this->songIndex->search('', [
             'filter' => $filter,

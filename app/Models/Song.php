@@ -9,9 +9,12 @@ namespace App\Models;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Scout\Searchable;
 
@@ -42,6 +45,9 @@ use Laravel\Scout\Searchable;
  * @property Carbon|null $updated_at
  * @property int|null $created_by_id
  * @property int|null $updated_by_id
+ * @property string|null $slug
+ * @property string|null $duration
+ *
  *
  * @property AdminUser|null $admin_user
  *
@@ -49,7 +55,7 @@ use Laravel\Scout\Searchable;
  */
 class Song extends \App\Models\Base\Song
 {
-    use CrudTrait, HasRoles, Search, Searchable;
+    use CrudTrait, HasRoles, Search, Searchable, HasApiTokens, HasFactory, Notifiable;
 	protected $table = 'songs';
 
 	protected $casts = [

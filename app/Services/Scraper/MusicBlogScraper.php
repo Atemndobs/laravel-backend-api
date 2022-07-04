@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
 use function example\int;
 
+// factor out source websites to separate class
 
 class MusicBlogScraper
 {
@@ -235,8 +236,22 @@ class MusicBlogScraper
                 // if only artist search option is set, get artist links
                 $artistLinks = $this->getArtistLinksFromZaplaylist($searchOptions['artist']);
             }
-            $songLinks = $this->getSongLinks($searchOptions['title']);
-            dd($songLinks);
+            $songLinks = $this->getSongLinks($searchOptions['artist']);
+            $songLinks = $this->filterDownloadUrls($songLinks);
+            // if empty, return empty array
+            if (empty($songLinks)) {
+                return [];
+            }
+            dump("found " . count($songLinks) . " songs");
+            dd();
+            $res  = [];
+            foreach ($songLinks as $songLink) {
+                dump("downloading $songLink");
+                $downloadLink = $this->downloadZaplaylist($songLink);
+                $res[] = $downloadLink;
+            }
+            dump($res);
+            return $res;
         }
         else {
             ray()->clearAll();
@@ -255,16 +270,7 @@ class MusicBlogScraper
 
             // download song from $songLinks
             $songFoundUrl = Arr::first($songLinks);
-            $res = $this->client->request('GET', $songFoundUrl);
-            $downloadUrls = $res->filter('a')->each(function ($node) {
-                return $node->attr('href') . '';
-            });
-            $downloadUrls = array_unique($downloadUrls);
-            $downloadUrls = $this->filterDownloadUrls($downloadUrls, '.mp3');
-            $downloadUrl = Arr::first($downloadUrls);
-            $fileName = explode('/', $downloadUrl);
-            $fileName = Arr::last($fileName);
-            $this->download($fileName, $downloadUrl);
+            $this->downloadZaplaylist($songFoundUrl);
         }
         return $songLinks;
     }
@@ -315,5 +321,23 @@ class MusicBlogScraper
         return array_filter($songLinks, function ($link) use ($filter) {
             return str_ends_with($link, $filter);
         });
+    }
+
+    /**
+     * @param mixed $songFoundUrl
+     * @return void
+     */
+    public function downloadZaplaylist(mixed $songFoundUrl): void
+    {
+        $res = $this->client->request('GET', $songFoundUrl);
+        $downloadUrls = $res->filter('a')->each(function ($node) {
+            return $node->attr('href') . '';
+        });
+        $downloadUrls = array_unique($downloadUrls);
+        $downloadUrls = $this->filterDownloadUrls($downloadUrls, '.mp3');
+        $downloadUrl = Arr::first($downloadUrls);
+        $fileName = explode('/', $downloadUrl);
+        $fileName = Arr::last($fileName);
+        $this->download($fileName, $downloadUrl);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Base\AdminUser as BaseAdminUser;
 
 class AdminUser extends BaseAdminUser
 {
+    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
 	protected $hidden = [
 		'password',
 		'reset_password_token',

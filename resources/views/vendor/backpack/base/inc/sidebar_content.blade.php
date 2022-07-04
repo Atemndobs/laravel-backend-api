@@ -6,3 +6,8 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('log') }}'><i class='nav-icon la la-terminal'></i> Logs</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('app\-models\-file') }}'><i class='nav-icon la la-question'></i> App\ models\ files</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('file') }}'><i class='nav-icon la la-question'></i> Files</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('admin-user') }}'><i class='nav-icon la la-question'></i> Admin users</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('catalog') }}'><i class='nav-icon la la-question'></i> Catalogs</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('feed') }}'><i class='nav-icon la la-question'></i> Feeds</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('up-user') }}'><i class='nav-icon la la-question'></i> Up users</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('usage') }}'><i class='nav-icon la la-question'></i> Usages</a></li>
