@@ -210,6 +210,8 @@ class UploadService
         if ($file_name  !== $file) {
             $oldFile = storage_path('app/public/audio/' .  $file);
             $newFile = storage_path('app/public/audio/' .  $file_name);
+
+           // dd(['old' => $oldFile, 'new' => $newFile]);
             rename($oldFile, $newFile);
             $this->deletItem = $file;
             $this->addDeletables($storeFile);

@@ -13,6 +13,10 @@ class FileController extends Controller
     use DisableAuthorization;
     use DisablePagination;
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected $model = File::class;
 
 }

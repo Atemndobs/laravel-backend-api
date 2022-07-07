@@ -18,6 +18,10 @@ class SpotifyController extends Controller
         $this->spotifyService = $spotifyService;
     }
 
+    /**
+     * @param Request $request
+     * @return array|string[]
+     */
     public function getArtistGenre(Request $request)
     {
         return $this->spotifyService->getArtistGenre($request->artist);

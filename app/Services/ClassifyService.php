@@ -26,10 +26,17 @@ class ClassifyService
         $this->client = $client;
     }
 
+    /**
+     * @return void
+     */
     public function getClaissification()
     {
     }
 
+    /**
+     * @param string $track
+     * @return array|string[]
+     */
     public function analyzeTrack(string $track)
     {
         if ($this->checkSong($track)){

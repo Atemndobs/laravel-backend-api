@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\AnalyzeSongEvent;
 use App\Http\Controllers\Controller;
 use App\Jobs\AnalyzeSongJob;
 use App\Models\Song;
-use App\Services\MoodAnalysisService;
 use App\Services\Strapi\StrapiSongService;
 use App\Services\UploadService;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\DataCollector\EventDataCollector;
-use voku\helper\ASCII;
-use function Psy\debug;
-use function Widmogrod\Monad\Control\Doo\in;
 
+/**
+ * Class SongController
+ * @package App\Http\Controllers\Api
+ */
 class UploadController extends Controller{
 
     public Request $request;
@@ -24,6 +22,8 @@ class UploadController extends Controller{
     /**
      * @param uploadService $uploadService
      * @param Song $song
+     * @param Request $request
+     * @param StrapiSongService $strapiSongService
      */
     public function __construct(
         UploadService $uploadService,
@@ -37,6 +37,10 @@ class UploadController extends Controller{
         $this->request = $request;
         $this->strapiSongService = $strapiSongService;
     }
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function upload(Request $request)
     {
         $data = $request->path;
@@ -46,11 +50,18 @@ class UploadController extends Controller{
         return $this->uploadService->uploadSong($data);
     }
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getStrapiUploads(): array
     {
         return $this->strapiSongService->importStrapiUploads();
     }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public function strapiUploadsWebhook(Request $request) : void
     {
         $payload = $request->all();

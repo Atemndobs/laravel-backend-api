@@ -2,9 +2,12 @@
 
 namespace App\Console\Commands\Scraper;
 
+use App\Services\Scraper\Blogs\Zaplaylist;
 use App\Services\Scraper\SoundcloudService;
 use Illuminate\Console\Command;
 use App\Services\Scraper\MusicBlogScraper;
+use Illuminate\Support\Arr;
+use mysql_xdevapi\Warning;
 
 class ScrapeMusicCommand extends Command
 {
@@ -29,7 +32,7 @@ class ScrapeMusicCommand extends Command
      */
     public function handle()
     {
-        // sources = fakaza, tooxclusive, hiphopkit
+        // sources = fakaza, tooxclusive, hiphopkit, zaplaylist, soundcloud
 
         $scrapedMusic = [];
         $data = [];
@@ -49,14 +52,79 @@ class ScrapeMusicCommand extends Command
         }
         $musicScraper = new MusicBlogScraper();
 
+        if ($site === 'zaplaylist'){
+            $zaplalist = new Zaplaylist();
+
+            $songLinks = $zaplalist->getSongsFromZaplaylist($allOptions);
+
+            if (empty(array_filter($songLinks))){
+                $this->info('No songs found');
+                return 0;
+            }
+
+            if (count($songLinks) === 1){
+                $link = Arr::first($songLinks);
+                $answer = $this->ask("$link found,do you want to download it? (y/n)", 'n');
+                if ($answer === 'n'){
+                    $this->error('Download cancelled');
+                    return 0;
+                }
+                // magenta line output
+                $this->line("<fg=magenta> downloading song: .$link </>");
+                $zaplalist->downloadZaplaylist($link);
+                return 0;
+            }
+            else{
+                // found multiple songs
+                $this->info('Found '.count($songLinks).' songs');
+                $answer = $this->ask("Do you want to download all songs? (y/n)", 'n');
+                if ($answer === 'y'){
+                    $this->downloadMany($songLinks);
+                    return 0;
+                }
+                // magenta line output
+                $this->line("<fg=blue> select songs to download: </>");
+                $songLinks = array_values($songLinks);
+                // start array key from 1 instead of 0
+                $songLinks = array_combine(range(1, count($songLinks)), $songLinks);
+                $songsToDownload = $this->choice(
+                    'Choose songs to download, enter comma separated list',
+                    $songLinks,
+                    null,
+                    null,
+                    true
+                );
+
+                $extractedTitles = $this->extractMultipleTitles($songsToDownload);
+                $count = count($extractedTitles);
+                $this->comment("You selected: $count songs");
+                foreach ($extractedTitles as $title => $link){
+                    $data[] =  [$title,$link];
+                }
+                $this->table(['number', 'title'], $data);
+                $this->confirm('Do you want to download these songs?', true);
+                $this->downloadMany($songsToDownload);
+                return 0;
+            }
+        }
+
+
+
         if ($site === 'hiphopkit'){
             $scrapedMusic = $musicScraper->getSongsFromHiphopkit($artist);
         }
-        if ($site === 'zaplaylist'){
-            $scrapedMusic = $musicScraper->getSongsFromZaplaylist($allOptions);
+
+        if ($site === 'tooxclusive'){
+            $tooxclusive = $musicScraper->getMusicFromSource("https://tooxclusive.com/", 'main/download-mp3/');
+          //  $scrapedMusic = $musicScraper->getSongsFromTooxclusive($allOptions);
+
+        }
+        if ($site === 'fakaza'){
+            $fakaza = $musicScraper->getMusicFromSource("https://fakaza.com/", 'download-mp3/');
+           // $scrapedMusic = $musicScraper->getSongsFromFakaza($allOptions);
+
         }
 
-        dd($scrapedMusic);
 
         if ($site === 'sc'){
             $soundCloudService  = new  SoundcloudService();
@@ -74,17 +142,21 @@ class ScrapeMusicCommand extends Command
                 if ($choice === $choice_2) {
                     $soundCloudService->getLikedSongsByArtis($artist);
                 }
-                else {
-                    ray($choice_1)->blue();
+                if ($choice === $choice_1) {
+                    ray($choice)->blue();
                     $playlistOptions = $soundCloudService->getArtistPlaylists($artist);
+                    if (count($playlistOptions) === 0) {
+                        $this->info('No playlists found');
+                        return 0;
+                    }
                     $playlistChoice = $this->choice('Download Option',
-                        $playlistOptions
+                        $playlistOptions,
+                        0
                     );
                     ray()->clearAll();
                     ray($playlistChoice);
                     return $soundCloudService->downloadPlaylist($playlistChoice);
                 }
-
             }
 
             if ($playlist !== null){
@@ -92,11 +164,9 @@ class ScrapeMusicCommand extends Command
             }
         }elseif ($site !== null){
             $scrapedMusic = $musicScraper->getMusicFromSource("https://{$site}.com/", 'main/download-mp3/');
-        }else{
-            $tooxclusive = $musicScraper->getMusicFromSource("https://tooxclusive.com/", 'main/download-mp3/');
-            $fakaza = $musicScraper->getMusicFromSource("https://fakaza.com/", 'download-mp3/');
-            $scrapedMusic = array_merge($tooxclusive, $fakaza);
         }
+
+      //  $scrapedMusic = array_merge($tooxclusive, $fakaza);
 
         $this->extracted($scrapedMusic, $site, $data);
         return 0;
@@ -130,5 +200,47 @@ class ScrapeMusicCommand extends Command
         $total = count($scrapedMusic);
         $this->output->info("extracted $total songs");
         info("========================================= DONE_SCRAPPING $site =================================");
+    }
+
+    /**
+     * @param mixed $songLink
+     * @return string
+     */
+    public function extractSongTitleFromLink(mixed $songLink): string
+    {
+        // extract song tile from song link https://zaplaylist.com/2022/03/12/download-diamond-platnumz-fresh-ft-focalistic-costa-titch-pabi-cooper-mp3/
+        $songTitle = explode('/', $songLink)[6];
+        $songTitle = str_replace('-', ' ', $songTitle);
+        // remove 'download' from song title
+        $songTitle = str_replace('download', '', $songTitle);
+        $songTitle = str_replace('mp3', '', $songTitle);
+        $songTitle = ucwords($songTitle);
+        return $songTitle;
+    }
+
+    /**
+     * @param array $songLinks
+     * @return void
+     */
+    public function downloadMany(array $songLinks): void
+    {
+        $this->info('Downloading all songs');
+        $bar = $this->output->createProgressBar(count($songLinks));
+        foreach ($songLinks as $songLink) {
+            $songTitle = $this->extractSongTitleFromLink($songLink);
+            $this->line("<fg=cyan> downloading song: .$songTitle </>");
+            //$zaplalist->downloadZaplaylist($songLink);
+            $bar->advance();
+            $this->newLine();
+        }
+        $bar->finish();
+    }
+
+    private function extractMultipleTitles(array $songLinks)
+    {
+        foreach ($songLinks as $key => $songLink) {
+            $songLinks[$key] = $this->extractSongTitleFromLink($songLink);
+        }
+        return $songLinks;
     }
 }

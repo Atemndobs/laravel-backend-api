@@ -2,9 +2,7 @@
 
 namespace App\Console\Commands\Db;
 
-use App\Models\File;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 
 class DbBackupCommand extends Command
 {

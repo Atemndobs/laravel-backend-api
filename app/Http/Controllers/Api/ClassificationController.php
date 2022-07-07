@@ -8,6 +8,9 @@ use App\Services\ClassifyService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * Class ClassificationController
+ */
 class ClassificationController extends Controller
 {
     public Request $request;
@@ -29,18 +32,34 @@ class ClassificationController extends Controller
         $this->request = $request;
     }
 
-
+    /**
+     * @return array|string[]
+     */
     public function classify()
     {
-        $track = $this->request->track;
-        return $this->classifyService->analyzeTrack($track);
+        return [];
     }
 
-    public function analyze()
+    /**
+     * @return array|string[]
+     */
+    public function analyze(): array
     {
-        return 'HERE';
+        $track = $this->request->track;
+        try {
+            $response = $this->classifyService->analyzeTrack($track);
+        } catch (\Exception $e) {
+            $response = [
+                'error' => $e->getMessage(),
+            ];
+        }
+        return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function findByTitle(Request $request) : Response
     {
         $slug = $request->slug;

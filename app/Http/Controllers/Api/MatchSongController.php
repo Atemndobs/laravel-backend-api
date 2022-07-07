@@ -35,6 +35,9 @@ class MatchSongController extends Controller
     }
 
 
+    /**
+     * @return array|string[]
+     */
     public function getSongMatch()
     {
         $title = $this->request->title;
@@ -42,6 +45,10 @@ class MatchSongController extends Controller
         return response($res);
     }
 
+    /**
+     * @param $song
+     * @return array|array[]|\MeiliSearch\Search\SearchResult|\mixed[][]|void|null
+     */
     public function matchByAttribute($song)
     {
         return $this->birdyMatchService->getMatchByAttribute($song);

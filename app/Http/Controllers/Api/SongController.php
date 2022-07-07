@@ -13,6 +13,9 @@ class SongController extends Controller
     use DisableAuthorization;
     use DisablePagination;
 
+    /**
+     * @var string $model
+     */
     protected $model = Song::class;
 
 }

@@ -29,6 +29,9 @@ class SongSearchController extends Controller
     }
 
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function searchSong()
     {
         $response = $this->meiliSearchService->seatchSong($this->request->term);
