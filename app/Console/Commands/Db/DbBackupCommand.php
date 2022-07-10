@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 
 class DbBackupCommand extends Command
 {
+    use Tools;
     /**
      * The name and signature of the console command.
      *
@@ -34,8 +35,9 @@ class DbBackupCommand extends Command
         $files = glob(storage_path('app/backups/*'));
         $count = count($files);
         if ($count > 4) {
+            $this->backupTable($files, $count);
+
             $this->info('Backup folder contains '.$count.' files');
-            $this->question('Do you want to delete all files? (y/n)');
             $answer = $this->ask('Do you want to delete all files? (y/n)');
             if ($answer == 'y') {
                 // delete all files from backup folder
@@ -48,7 +50,6 @@ class DbBackupCommand extends Command
                 $backupFiles = glob(storage_path('app/backups/*'));
                 // chose files to delete from $files array
                 foreach ($backupFiles as $file) {
-                    $this->info('Chose files to delete');
                     $cancel = 'select enter to continue with backup';
 
                     $cleanupFiles = [];

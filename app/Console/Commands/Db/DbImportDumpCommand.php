@@ -9,6 +9,7 @@ use ZipArchive;
 
 class DbImportDumpCommand extends Command
 {
+    use Tools;
     /**
      * The name and signature of the console command.
      *
@@ -50,20 +51,10 @@ class DbImportDumpCommand extends Command
             if ($count > 1) {
                 $dates = [];
                 foreach ($files as $file) {
-                    // get the latest file by date in file name
-                    $fileName = basename($file);
-                    $fileDate = substr($fileName, 0, 19);
-                    $date = date_create_from_format('Y-m-d-H-i-s', $fileDate);
-                    $dates[] = $date->getTimestamp();
-
                     if (count($dates) > 1) {
                         $latestDate = max($dates);
                         $latestFile = $fileName;
                     }
-                    $data[] = [
-                        'file' => $fileName,
-                        'date' => $date->format('Y-m-d H:i:s'),
-                    ];
                 }
             } else {
                 $latestFile = basename($files[0]);
@@ -88,7 +79,7 @@ class DbImportDumpCommand extends Command
         }
 
         // table with all files and dates
-        $this->table(['file', 'date'], $data);
+        $this->backupTable($files, $count);
         // show all backups
         $this->info('Backups:');
         $this->call('backup:list');
