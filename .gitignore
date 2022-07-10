@@ -33,3 +33,4 @@ rabbitmq
 # Ignore DevSpace cache and log folder
 .devspace/
 /storage/app/public/images/
+/docker/shift/
