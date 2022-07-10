@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Analysis;
 
+use App\Exceptions\SongException\NotAnalyzedException;
 use App\Services\ClassifyService;
 use Illuminate\Console\Command;
 
@@ -30,6 +31,18 @@ class ReClassifyCommand extends Command
     {
         $slug = $this->argument('slug');
         $classifyService = new ClassifyService();
+        try {
+            $classifiedSongs = $classifyService->reClassify($slug);
+        } catch (NotAnalyzedException $e) {
+            $this->error($e->getMessage());
+            $this->table(['slug', 'message'], [
+                [$slug, $e->getMessage()],
+            ]);
+            return 1;
+        }
+
+        // table of classified songs
+        $this->table(['slug', 'classification_properties',], $classifiedSongs);
         return 0;
     }
 }

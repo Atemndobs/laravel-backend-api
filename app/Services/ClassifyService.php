@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Exceptions\SongException\NotClassifiedException;
 use App\Jobs\ClassifySongJob;
 use App\Models\Song;
-use Goutte\Client;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\SongException\NotAnalyzedException;
 
 class ClassifyService
 {
@@ -66,5 +67,44 @@ class ClassifyService
         }
 
         return $existingSong;
+    }
+
+    /**
+     * @param array|string|null $slug
+     * @return array|Song
+     * @throws NotAnalyzedException
+     */
+    public function reClassify(array|string|null $slug = ''): Song|array
+    {
+        if ($slug == '') {
+            $songs = Song::where('analyzed', '=', true);
+        } else {
+            $songs = Song::where('slug', '=', $slug)->get('slug');
+            if ($songs->count() == 0) {
+                throw new ModelNotFoundException("$slug does not exist , Please upload and try again");
+            }
+            if ($songs->count() > 1) {
+                throw new ModelNotFoundException("$slug is not unique , Please upload and try again");
+            }
+            $song = $songs->first();
+            dump([
+                'analyzed' => $song->analyzed,
+                'int_vale' => $song->analyzed == 1,
+                'slug' => $song->slug]);
+            if ((int)$song->analyzed !== 1) {
+
+                dump(['analyzed' => $song->analyzed, 'slug' => $song->slug]);
+                $message = "Song $slug is not analyzed yet, please analyze it first";
+                throw new NotAnalyzedException($message);
+            }
+            /** @var Song $song */
+            if ($song->status == 're-classified' || $song->classification_properties != null) {
+                $message = "Song $slug is already classified";
+                throw new NotClassifiedException($message);
+            }
+            return $song->toArray();
+        }
+
+        return $songs->get('slug')->toArray();
     }
 }
