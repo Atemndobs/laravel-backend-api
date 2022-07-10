@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
@@ -54,7 +57,9 @@
         "phpunit/phpunit": "^9.5.10",
         "reliese/laravel": "^1.1",
         "spatie/laravel-ignition": "^1.0",
-        "spatie/laravel-ray": "^1.29"
+        "spatie/laravel-ray": "^1.29",
+        "jasonmccreary/laravel-test-assertions": "^2.0",
+        "laravel-shift/factory-generator": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -95,6 +100,5 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "repositories": {
-    }
+    "repositories": []
 }
