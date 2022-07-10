@@ -1,1 +1,278 @@
-Could not open input file: shift
+
+*** Shift SKU: TG
+*** Shift Version: b586d77c03e909fa0fec7c50a90b46b4174cbc27 (2022-04-20)
+
+
+Deprecated: trim(): Passing null to parameter #1 ($string) of type string is deprecated in phar:///opt/shift/shift/helpers.php on line 161
+
+Deprecated: trim(): Passing null to parameter #1 ($string) of type string is deprecated in phar:///opt/shift/shift/helpers.php on line 162
+Installing dependencies from lock file (including require-dev)
+Verifying lock file contents can be installed on current platform.
+Nothing to install, update or remove
+Generating optimized autoload files
+136 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+*** Completed: Shift\Tasks\Workbench\ComposerInstall
+*** Completed: Shift\Tasks\Laravel\TestsGenerator\DetermineTestingFramework
+> Illuminate\Foundation\ComposerScripts::postAutoloadDump
+> @php artisan package:discover --ansi
+sh: mysql: not found
+sh: mysql: not found
+sh: mysql: not found
+>>> Event: could not create database: 9b57e1fd00158ebc_test
+
+In ShowCommand.php line 277:
+                                                                               
+  Package "laravel/passport" not found, try using --all (-a) to show all avai  
+  lable packages.                                                              
+                                                                               
+
+show [--all] [--locked] [-i|--installed] [-p|--platform] [-a|--available] [-s|--self] [-N|--name-only] [-P|--path] [-t|--tree] [-l|--latest] [-o|--outdated] [--ignore IGNORE] [-m|--minor-only] [--patch-only] [-D|--direct] [--strict] [-f|--format FORMAT] [--no-dev] [--ignore-platform-req IGNORE-PLATFORM-REQ] [--ignore-platform-reqs] [--] [<package> [<version>]]
+
+*** Completed: Shift\Tasks\Laravel\TestsGenerator\SetupEnvironment
+>>> Event: matched core file: phpunit.xml with version: 9.0.1
+>>> Event: matched core file: tests/TestCase.php with version: 9.0.1
+>>> Event: matched core file: tests/CreatesApplication.php with version: 9.0.1
+*** Completed: Shift\Tasks\Laravel\TestsGenerator\CoreFiles
+*** Completed: Shift\Tasks\PerformCommit
+Loading composer repositories with package information
+Info from https://repo.packagist.org: #StandWithUkraine
+Updating dependencies
+Lock file operations: 1 install, 0 updates, 0 removals
+  - Locking jasonmccreary/laravel-test-assertions (v2.1.1)
+Writing lock file
+Installing dependencies from lock file (including require-dev)
+Package operations: 1 install, 0 updates, 0 removals
+  - Downloading jasonmccreary/laravel-test-assertions (v2.1.1)
+  - Installing jasonmccreary/laravel-test-assertions (v2.1.1): Extracting archive
+Generating optimized autoload files
+136 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+Loading composer repositories with package information
+Updating dependencies
+Lock file operations: 2 installs, 0 updates, 0 removals
+  - Locking laravel-shift/factory-generator (dev-master 2e96788)
+  - Locking naoray/eloquent-model-analyzer (v3.0.0)
+Writing lock file
+Installing dependencies from lock file (including require-dev)
+Package operations: 2 installs, 0 updates, 0 removals
+  - Downloading naoray/eloquent-model-analyzer (v3.0.0)
+  - Downloading laravel-shift/factory-generator (dev-master 2e96788)
+  - Installing naoray/eloquent-model-analyzer (v3.0.0): Extracting archive
+  - Installing laravel-shift/factory-generator (dev-master 2e96788): Extracting archive
+Generating optimized autoload files
+137 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+*** Completed: Shift\Tasks\Laravel\TestsGenerator\AddTestPackages
+*** Completed: Shift\Tasks\PerformCommit
+[2022-07-10 12:14:16] shift.ERROR: could not find driver (SQL: SHOW FULL TABLES WHERE table_type = 'BASE TABLE') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): could not find driver (SQL: SHOW FULL TABLES WHERE table_type = 'BASE TABLE') at /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php:716)
+[stacktrace]
+#0 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(676): Illuminate\\Database\\Connection->runQueryCallback('SHOW FULL TABLE...', Array, Object(Closure))
+#1 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(376): Illuminate\\Database\\Connection->run('SHOW FULL TABLE...', Array, Object(Closure))
+#2 /project/vendor/laravel/framework/src/Illuminate/Database/Schema/MySqlBuilder.php(125): Illuminate\\Database\\Connection->select('SHOW FULL TABLE...')
+#3 /project/vendor/laravel/framework/src/Illuminate/Database/Schema/MySqlBuilder.php(74): Illuminate\\Database\\Schema\\MySqlBuilder->getAllTables()
+#4 /project/vendor/laravel/framework/src/Illuminate/Database/Console/WipeCommand.php(78): Illuminate\\Database\\Schema\\MySqlBuilder->dropAllTables()
+#5 /project/vendor/laravel/framework/src/Illuminate/Database/Console/WipeCommand.php(55): Illuminate\\Database\\Console\\WipeCommand->dropAllTables(NULL)
+#6 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\WipeCommand->handle()
+#7 /project/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#8 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#9 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#10 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#11 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call(Array)
+#12 /project/vendor/symfony/console/Command/Command.php(291): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#13 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#14 /project/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#15 /project/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(28): Illuminate\\Console\\Command->runCommand('db:wipe', Array, Object(Illuminate\\Console\\OutputStyle))
+#16 /project/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(43): Illuminate\\Console\\Command->call('db:wipe', Array)
+#17 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#18 /project/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#19 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#20 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#21 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#22 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call(Array)
+#23 /project/vendor/symfony/console/Command/Command.php(291): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#24 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#25 /project/vendor/symfony/console/Application.php(989): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 /project/vendor/symfony/console/Application.php(299): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 /project/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#28 /project/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#29 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#30 /project/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#31 {main}
+
+[previous exception] [object] (PDOException(code: 0): could not find driver at /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:70)
+[stacktrace]
+#0 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(70): PDO->__construct('mysql:host=loca...', 'shift', '', Array)
+#1 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(46): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('mysql:host=loca...', 'shift', '', Array)
+#2 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php(24): Illuminate\\Database\\Connectors\\Connector->createConnection('mysql:host=loca...', Array, Array)
+#3 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(184): Illuminate\\Database\\Connectors\\MySqlConnector->connect(Array)
+#4 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->Illuminate\\Database\\Connectors\\{closure}()
+#5 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1064): call_user_func(Object(Closure))
+#6 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1100): Illuminate\\Database\\Connection->getPdo()
+#7 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(442): Illuminate\\Database\\Connection->getReadPdo()
+#8 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(368): Illuminate\\Database\\Connection->getPdoForSelect(true)
+#9 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(709): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}('SHOW FULL TABLE...', Array)
+#10 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(676): Illuminate\\Database\\Connection->runQueryCallback('SHOW FULL TABLE...', Array, Object(Closure))
+#11 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(376): Illuminate\\Database\\Connection->run('SHOW FULL TABLE...', Array, Object(Closure))
+#12 /project/vendor/laravel/framework/src/Illuminate/Database/Schema/MySqlBuilder.php(125): Illuminate\\Database\\Connection->select('SHOW FULL TABLE...')
+#13 /project/vendor/laravel/framework/src/Illuminate/Database/Schema/MySqlBuilder.php(74): Illuminate\\Database\\Schema\\MySqlBuilder->getAllTables()
+#14 /project/vendor/laravel/framework/src/Illuminate/Database/Console/WipeCommand.php(78): Illuminate\\Database\\Schema\\MySqlBuilder->dropAllTables()
+#15 /project/vendor/laravel/framework/src/Illuminate/Database/Console/WipeCommand.php(55): Illuminate\\Database\\Console\\WipeCommand->dropAllTables(NULL)
+#16 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\WipeCommand->handle()
+#17 /project/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#18 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#19 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#20 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#21 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call(Array)
+#22 /project/vendor/symfony/console/Command/Command.php(291): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#23 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#24 /project/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#25 /project/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(28): Illuminate\\Console\\Command->runCommand('db:wipe', Array, Object(Illuminate\\Console\\OutputStyle))
+#26 /project/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(43): Illuminate\\Console\\Command->call('db:wipe', Array)
+#27 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#28 /project/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#29 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#30 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#31 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#32 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call(Array)
+#33 /project/vendor/symfony/console/Command/Command.php(291): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#34 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#35 /project/vendor/symfony/console/Application.php(989): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#36 /project/vendor/symfony/console/Application.php(299): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#37 /project/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#38 /project/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#39 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#40 /project/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#41 {main}
+"} 
+>>> Event: failed to run migrate:fresh
+[2022-07-10 12:14:16] shift.ERROR: could not find driver {"exception":"[object] (PDOException(code: 0): could not find driver at /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:70)
+[stacktrace]
+#0 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(70): PDO->__construct('mysql:host=loca...', 'shift', '', Array)
+#1 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(46): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('mysql:host=loca...', 'shift', '', Array)
+#2 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php(24): Illuminate\\Database\\Connectors\\Connector->createConnection('mysql:host=loca...', Array, Array)
+#3 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(184): Illuminate\\Database\\Connectors\\MySqlConnector->connect(Array)
+#4 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->Illuminate\\Database\\Connectors\\{closure}()
+#5 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1064): call_user_func(Object(Closure))
+#6 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1014): Illuminate\\Database\\Connection->getPdo()
+#7 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(994): Illuminate\\Database\\Connection->getDoctrineConnection()
+#8 /project/vendor/naoray/eloquent-model-analyzer/src/Detectors/ColumnsDetector.php(30): Illuminate\\Database\\Connection->getDoctrineSchemaManager()
+#9 /project/vendor/naoray/eloquent-model-analyzer/src/Analyzer.php(19): Naoray\\EloquentModelAnalyzer\\Detectors\\ColumnsDetector->__construct(Object(App\\Models\\AdminUser))
+#10 /project/vendor/laravel-shift/factory-generator/src/FactoryGenerator.php(53): Naoray\\EloquentModelAnalyzer\\Analyzer::columns(Object(App\\Models\\AdminUser))
+#11 /project/vendor/laravel-shift/factory-generator/src/GenerateCommand.php(39): Shift\\FactoryGenerator\\FactoryGenerator->generate('App\\\\Models\\\\Admi...')
+#12 /project/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php(263): Shift\\FactoryGenerator\\GenerateCommand->Shift\\FactoryGenerator\\{closure}('App\\\\Models\\\\Admi...', 0)
+#13 /project/vendor/laravel-shift/factory-generator/src/GenerateCommand.php(46): Illuminate\\Support\\Collection->each(Object(Closure))
+#14 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Shift\\FactoryGenerator\\GenerateCommand->handle()
+#15 /project/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#16 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#17 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#18 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#19 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call(Array)
+#20 /project/vendor/symfony/console/Command/Command.php(291): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#21 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#22 /project/vendor/symfony/console/Application.php(989): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /project/vendor/symfony/console/Application.php(299): Symfony\\Component\\Console\\Application->doRunCommand(Object(Shift\\FactoryGenerator\\GenerateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /project/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 /project/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 /project/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#28 {main}
+"} 
+>>> Event: could not generate factories
+*** Completed: Shift\Tasks\Laravel\TestsGenerator\Factories
+*** Completed: Shift\Tasks\PerformCommit
+[2022-07-10 12:14:16] shift.ERROR: could not find driver (SQL: select column_name as `column_name` from information_schema.columns where table_schema = 9b57e1fd00158ebc_test and table_name = users) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): could not find driver (SQL: select column_name as `column_name` from information_schema.columns where table_schema = 9b57e1fd00158ebc_test and table_name = users) at /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php:716)
+[stacktrace]
+#0 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(676): Illuminate\\Database\\Connection->runQueryCallback('select column_n...', Array, Object(Closure))
+#1 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(376): Illuminate\\Database\\Connection->run('select column_n...', Array, Object(Closure))
+#2 /project/vendor/laravel/framework/src/Illuminate/Database/Schema/MySqlBuilder.php(59): Illuminate\\Database\\Connection->select('select column_n...', Array)
+#3 /project/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(149): Illuminate\\Database\\Schema\\MySqlBuilder->getColumnListing('users')
+#4 /project/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(337): Illuminate\\Database\\Schema\\Builder->hasColumn('users', 'email')
+#5 /project/vendor/backpack/crud/src/helpers.php(98): Illuminate\\Support\\Facades\\Facade::__callStatic('hasColumn', Array)
+#6 /project/vendor/backpack/crud/src/app/Http/Controllers/Auth/ResetPasswordController.php(49): backpack_users_have_email()
+#7 [internal function]: Backpack\\CRUD\\app\\Http\\Controllers\\Auth\\ResetPasswordController->__construct()
+#8 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(917): ReflectionClass->newInstanceArgs(Array)
+#9 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(758): Illuminate\\Container\\Container->build('Backpack\\\\CRUD\\\\a...')
+#10 /project/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(855): Illuminate\\Container\\Container->resolve('Backpack\\\\CRUD\\\\a...', Array, true)
+#11 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Foundation\\Application->resolve('Backpack\\\\CRUD\\\\a...', Array)
+#12 /project/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(840): Illuminate\\Container\\Container->make('Backpack\\\\CRUD\\\\a...', Array)
+#13 /project/vendor/laravel/framework/src/Illuminate/Routing/Route.php(275): Illuminate\\Foundation\\Application->make('Backpack\\\\CRUD\\\\a...')
+#14 /project/vendor/laravel/framework/src/Illuminate/Routing/Route.php(1071): Illuminate\\Routing\\Route->getController()
+#15 /project/vendor/laravel/framework/src/Illuminate/Routing/Route.php(1014): Illuminate\\Routing\\Route->controllerMiddleware()
+#16 /project/vendor/laravel/framework/src/Illuminate/Routing/Router.php(738): Illuminate\\Routing\\Route->gatherMiddleware()
+#17 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(206): Illuminate\\Routing\\Router->gatherRouteMiddleware(Object(Illuminate\\Routing\\Route))
+#18 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(151): Illuminate\\Foundation\\Console\\RouteListCommand->getMiddleware(Object(Illuminate\\Routing\\Route))
+#19 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(121): Illuminate\\Foundation\\Console\\RouteListCommand->getRouteInformation(Object(Illuminate\\Routing\\Route))
+#20 [internal function]: Illuminate\\Foundation\\Console\\RouteListCommand->Illuminate\\Foundation\\Console\\{closure}(Object(Illuminate\\Routing\\Route), 14)
+#21 /project/vendor/laravel/framework/src/Illuminate/Collections/Collection.php(717): array_map(Object(Closure), Array, Array)
+#22 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(122): Illuminate\\Support\\Collection->map(Object(Closure))
+#23 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(106): Illuminate\\Foundation\\Console\\RouteListCommand->getRoutes()
+#24 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Console\\RouteListCommand->handle()
+#25 /project/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#26 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#27 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#28 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#29 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call(Array)
+#30 /project/vendor/symfony/console/Command/Command.php(291): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#31 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#32 /project/vendor/symfony/console/Application.php(989): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#33 /project/vendor/symfony/console/Application.php(299): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Foundation\\Console\\RouteListCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#34 /project/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#35 /project/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#36 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#37 /project/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#38 {main}
+
+[previous exception] [object] (PDOException(code: 0): could not find driver at /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:70)
+[stacktrace]
+#0 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(70): PDO->__construct('mysql:host=loca...', 'shift', '', Array)
+#1 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(46): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('mysql:host=loca...', 'shift', '', Array)
+#2 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php(24): Illuminate\\Database\\Connectors\\Connector->createConnection('mysql:host=loca...', Array, Array)
+#3 /project/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(184): Illuminate\\Database\\Connectors\\MySqlConnector->connect(Array)
+#4 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->Illuminate\\Database\\Connectors\\{closure}()
+#5 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1064): call_user_func(Object(Closure))
+#6 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1100): Illuminate\\Database\\Connection->getPdo()
+#7 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(442): Illuminate\\Database\\Connection->getReadPdo()
+#8 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(368): Illuminate\\Database\\Connection->getPdoForSelect(true)
+#9 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(709): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}('select column_n...', Array)
+#10 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(676): Illuminate\\Database\\Connection->runQueryCallback('select column_n...', Array, Object(Closure))
+#11 /project/vendor/laravel/framework/src/Illuminate/Database/Connection.php(376): Illuminate\\Database\\Connection->run('select column_n...', Array, Object(Closure))
+#12 /project/vendor/laravel/framework/src/Illuminate/Database/Schema/MySqlBuilder.php(59): Illuminate\\Database\\Connection->select('select column_n...', Array)
+#13 /project/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(149): Illuminate\\Database\\Schema\\MySqlBuilder->getColumnListing('users')
+#14 /project/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(337): Illuminate\\Database\\Schema\\Builder->hasColumn('users', 'email')
+#15 /project/vendor/backpack/crud/src/helpers.php(98): Illuminate\\Support\\Facades\\Facade::__callStatic('hasColumn', Array)
+#16 /project/vendor/backpack/crud/src/app/Http/Controllers/Auth/ResetPasswordController.php(49): backpack_users_have_email()
+#17 [internal function]: Backpack\\CRUD\\app\\Http\\Controllers\\Auth\\ResetPasswordController->__construct()
+#18 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(917): ReflectionClass->newInstanceArgs(Array)
+#19 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(758): Illuminate\\Container\\Container->build('Backpack\\\\CRUD\\\\a...')
+#20 /project/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(855): Illuminate\\Container\\Container->resolve('Backpack\\\\CRUD\\\\a...', Array, true)
+#21 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Foundation\\Application->resolve('Backpack\\\\CRUD\\\\a...', Array)
+#22 /project/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(840): Illuminate\\Container\\Container->make('Backpack\\\\CRUD\\\\a...', Array)
+#23 /project/vendor/laravel/framework/src/Illuminate/Routing/Route.php(275): Illuminate\\Foundation\\Application->make('Backpack\\\\CRUD\\\\a...')
+#24 /project/vendor/laravel/framework/src/Illuminate/Routing/Route.php(1071): Illuminate\\Routing\\Route->getController()
+#25 /project/vendor/laravel/framework/src/Illuminate/Routing/Route.php(1014): Illuminate\\Routing\\Route->controllerMiddleware()
+#26 /project/vendor/laravel/framework/src/Illuminate/Routing/Router.php(738): Illuminate\\Routing\\Route->gatherMiddleware()
+#27 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(206): Illuminate\\Routing\\Router->gatherRouteMiddleware(Object(Illuminate\\Routing\\Route))
+#28 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(151): Illuminate\\Foundation\\Console\\RouteListCommand->getMiddleware(Object(Illuminate\\Routing\\Route))
+#29 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(121): Illuminate\\Foundation\\Console\\RouteListCommand->getRouteInformation(Object(Illuminate\\Routing\\Route))
+#30 [internal function]: Illuminate\\Foundation\\Console\\RouteListCommand->Illuminate\\Foundation\\Console\\{closure}(Object(Illuminate\\Routing\\Route), 14)
+#31 /project/vendor/laravel/framework/src/Illuminate/Collections/Collection.php(717): array_map(Object(Closure), Array, Array)
+#32 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(122): Illuminate\\Support\\Collection->map(Object(Closure))
+#33 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(106): Illuminate\\Foundation\\Console\\RouteListCommand->getRoutes()
+#34 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Console\\RouteListCommand->handle()
+#35 /project/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#36 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#37 /project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#38 /project/vendor/laravel/framework/src/Illuminate/Container/Container.php(653): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#39 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(136): Illuminate\\Container\\Container->call(Array)
+#40 /project/vendor/symfony/console/Command/Command.php(291): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#41 /project/vendor/laravel/framework/src/Illuminate/Console/Command.php(121): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#42 /project/vendor/symfony/console/Application.php(989): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /project/vendor/symfony/console/Application.php(299): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Foundation\\Console\\RouteListCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /project/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#45 /project/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#46 /project/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#47 /project/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#48 {main}
+"} 
+could not run route:list
