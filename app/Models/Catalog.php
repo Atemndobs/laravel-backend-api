@@ -18,13 +18,13 @@ class Catalog extends BaseCatalog
     protected $table = 'catalogs';
 
     protected $fillable = [
-		'item_id',
-		'item_name',
-		'item_category',
-		'description',
-		'features_list',
-		'published_at',
-		'created_by_id',
-		'updated_by_id'
-	];
+        'item_id',
+        'item_name',
+        'item_category',
+        'description',
+        'features_list',
+        'published_at',
+        'created_by_id',
+        'updated_by_id',
+    ];
 }

@@ -1,4 +1,5 @@
 <?php
+
 // Save this in a file called "ray.php"
 
 return [
@@ -10,7 +11,7 @@ return [
     /*
      *  The host used to communicate with the Ray app.
      */
-   // 'host' => 'localhost',
+    // 'host' => 'localhost',
     'host' => 'host.docker.internal',
 
     /*

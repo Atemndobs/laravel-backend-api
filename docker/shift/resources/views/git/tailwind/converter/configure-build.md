@@ -1,0 +1,1 @@
+Configure build for Tailwind assets

@@ -2,18 +2,19 @@
 
 namespace App\Services\Crawler;
 
+use Goutte\Client as Goutte;
 use GuzzleHttp\Client;
 use Spatie\Crawler\Crawler;
-use Goutte\Client as Goutte;
 
 class SpatieCrawlerService
 {
     public Client $client;
+
     public Goutte $goutte;
 
     /**
-     * @param Client $client
-     * @param Goutte $goutte
+     * @param  Client  $client
+     * @param  Goutte  $goutte
      */
     public function __construct(Client $client, Goutte $goutte)
     {
@@ -21,13 +22,11 @@ class SpatieCrawlerService
         $this->goutte = $goutte;
     }
 
-
     public function crawlUrl($url)
     {
-            Crawler::create()
+        Crawler::create()
             ->setCrawlObserver(new CrawlObserver())
-                ->startCrawling($url)
-            ;
+                ->startCrawling($url);
     }
 
     /**
@@ -35,18 +34,17 @@ class SpatieCrawlerService
      */
     public function getPage($url)
     {
-       // $response = $this->client->get( $url);
+        // $response = $this->client->get( $url);
         //$content = $response->getBody()->getContents();
 
         $crawler = $this->goutte->request('GET', 'https://laravelexamples.com/');
 
         $site = $crawler;
 
-
         //        /html/body/div/main/div/div[1]/a[2]/div/div/p
 
         return [
-            'site_text' => $site->filterXPath('')->text()
+            'site_text' => $site->filterXPath('')->text(),
         ];
     }
 }

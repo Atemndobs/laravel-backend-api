@@ -9,28 +9,27 @@ use Ratchet\ConnectionInterface;
 
 abstract class BaseSocketHandler implements \Ratchet\WebSocket\MessageComponentInterface
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    function onOpen(ConnectionInterface $conn)
+    public function onOpen(ConnectionInterface $conn)
     {
         $this->verifyAppKey($conn)->generateSocketId($conn);
         dump('Connection Opened');
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    function onClose(ConnectionInterface $conn)
+    public function onClose(ConnectionInterface $conn)
     {
         dump('On CLOSE');
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    function onError(ConnectionInterface $conn, \Exception $e)
+    public function onError(ConnectionInterface $conn, \Exception $e)
     {
         dump('On Error');
     }
@@ -55,5 +54,4 @@ abstract class BaseSocketHandler implements \Ratchet\WebSocket\MessageComponentI
 
         return $this;
     }
-
 }

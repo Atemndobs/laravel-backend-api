@@ -6,7 +6,6 @@ use App\Models\Song;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use function Widmogrod\Functional\tryCatch;
 
 class ClearClassifierCommand extends Command
 {
@@ -33,13 +32,14 @@ class ClearClassifierCommand extends Command
     {
         $deleteItems = [];
         $deleteItems[] = $this->cleanSongDb();
-        $url = "http://host.docker.internal:3000/music/delete";
+        $url = 'http://host.docker.internal:3000/music/delete';
         $response = Http::get($url)->body();
 
         $deleteItems[] = $response;
-        $this->output->info("Audio directory Cleaned");
+        $this->output->info('Audio directory Cleaned');
 
         dump($deleteItems);
+
         return $response;
     }
 
@@ -50,10 +50,9 @@ class ClearClassifierCommand extends Command
         $fails = [];
         $pass = [];
         /** @var Song $song */
-        foreach ($allSongs as $song){
-
+        foreach ($allSongs as $song) {
             $base = $song->path;
-            $local = "http://localhost:8899/";
+            $local = 'http://localhost:8899/';
             $url = str_replace('mage.tech', 'localhost', $base);
 
             try {
@@ -68,8 +67,7 @@ class ClearClassifierCommand extends Command
                         $song->delete();
                     }
                 }
-
-            }catch (\Exception $exception){
+            } catch (\Exception $exception) {
                 info($exception->getMessage());
             }
         }

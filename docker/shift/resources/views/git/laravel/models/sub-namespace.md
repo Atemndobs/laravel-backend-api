@@ -1,0 +1,1 @@
+Namespace models under App\Models

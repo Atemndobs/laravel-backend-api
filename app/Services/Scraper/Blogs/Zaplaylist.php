@@ -12,10 +12,10 @@ class Zaplaylist
     use Tools;
 
     /**
-     * @param array $searchTerms
+     * @param  array  $searchTerms
      * @return array
      */
-    public function getSongsFromZaplaylist(array $searchTerms) : array
+    public function getSongsFromZaplaylist(array $searchTerms): array
     {
         //https://zaplaylist.com/?s=Big+Flexa
         if (empty($searchTerms)) {
@@ -29,10 +29,10 @@ class Zaplaylist
             // if only title search option is set, get song links
             if (array_key_exists('title', $searchOptions)) {
                 $songLinks = $this->getSongLinks($searchOptions['title']);
-            } else if (array_key_exists('artist', $searchOptions)) {
+            } elseif (array_key_exists('artist', $searchOptions)) {
                 // if only artist search option is set, get artist links
                 $songLinks = $this->getArtistLinksFromZaplaylist($searchOptions['artist']);
-            }else{
+            } else {
                 $songLinks = $this->getSongLinks($searchOptions['artist']);
             }
             $songLinks = $this->filterDownloadUrls($songLinks);
@@ -40,8 +40,7 @@ class Zaplaylist
             if (empty($songLinks)) {
                 return [];
             }
-        }
-        else {
+        } else {
             $songLinks = $this->getSongLinksFromMultipleOptions($searchOptions);
         }
 
@@ -49,18 +48,19 @@ class Zaplaylist
     }
 
     /**
-     * @param string $artist
+     * @param  string  $artist
      * @return array
      */
     private function getArtistLinksFromZaplaylist(string $artist): array
     {
         $songLinks = $this->getSongLinks($artist);
+
         return $this->filterDownloadUrls($songLinks);
     }
 
     /**
-     * @param array $songLinks
-     * @param string $title
+     * @param  array  $songLinks
+     * @param  string  $title
      * @return array
      */
     private function filterSongLinksByTitle(array $songLinks, string $title): array
@@ -68,20 +68,21 @@ class Zaplaylist
         // replace + with - in title
         $title = str_replace('+', '-', $title);
         $title = Str::slug($title, '-');
+
         return array_filter($songLinks, function ($link) use ($title) {
             return str_contains($link, $title);
         });
     }
 
     /**
-     * @param mixed $songFoundUrl
+     * @param  mixed  $songFoundUrl
      * @return string
      */
     public function downloadZaplaylist(mixed $songFoundUrl): string
     {
         $res = $this->client->request('GET', $songFoundUrl);
         $downloadUrls = $res->filter('a')->each(function ($node) {
-            return $node->attr('href') . '';
+            return $node->attr('href').'';
         });
         $downloadUrls = array_unique($downloadUrls);
         $downloadUrls = $this->filterDownloadUrls($downloadUrls, '.mp3');
@@ -89,11 +90,12 @@ class Zaplaylist
         $fileName = explode('/', $downloadUrl);
         $fileName = Arr::last($fileName);
         $this->download($fileName, $downloadUrl);
+
         return $downloadUrl;
     }
 
     /**
-     * @param array $searchTerms
+     * @param  array  $searchTerms
      * @return array
      */
     public function getSearchOptions(array $searchTerms): array
@@ -102,24 +104,25 @@ class Zaplaylist
         $searchUrl = 'https://zaplaylist.com/?';
         foreach ($searchTerms as $search => $term) {
             $term = Str::slug($term, '+');
-            $artist = $search === 'artist' ? $searchUrl . "s=$term" : null;
+            $artist = $search === 'artist' ? $searchUrl."s=$term" : null;
             if ($artist !== null) {
                 $searchOptions['artist'] = $artist;
             }
-            $title = $search === 'title' ? $searchUrl . "s=$term" : null;
+            $title = $search === 'title' ? $searchUrl."s=$term" : null;
             if ($title !== null) {
                 $searchOptions['title'] = $title;
             }
-            $mixtape = $search === 'mixtape' ? $searchUrl . "s=$term" : null;
+            $mixtape = $search === 'mixtape' ? $searchUrl."s=$term" : null;
             if ($mixtape !== null) {
                 $searchOptions['mixtape'] = $mixtape;
             }
         }
+
         return $searchOptions;
     }
 
     /**
-     * @param array $searchOptions
+     * @param  array  $searchOptions
      * @return array
      */
     public function getSongLinksFromMultipleOptions(array $searchOptions): array
@@ -134,11 +137,12 @@ class Zaplaylist
         if (count($songLinks) > 1) {
             $songLinks = $this->filterSongLinksByTitle($songLinks, $searchOptions['title']);
         }
+
         return [Arr::first($songLinks)];
     }
 
     /**
-     * @param array $songLinks
+     * @param  array  $songLinks
      * @return array
      */
     public function downloadMultipleSongs(array $songLinks): array
@@ -149,6 +153,7 @@ class Zaplaylist
             $downloadLink = $this->downloadZaplaylist($songLink);
             $res[] = $downloadLink;
         }
+
         return $res;
     }
 }

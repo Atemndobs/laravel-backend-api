@@ -14,24 +14,25 @@ use Spatie\Permission\Traits\HasRoles;
 class UpUser extends BaseUpUser
 {
     use CrudTrait, HasRoles, Search, Searchable, HasApiTokens, HasFactory, Notifiable;
+
     protected $table = 'up_users';
 
-	protected $hidden = [
-		'password',
-		'reset_password_token',
-		'confirmation_token'
-	];
+    protected $hidden = [
+        'password',
+        'reset_password_token',
+        'confirmation_token',
+    ];
 
-	protected $fillable = [
-		'username',
-		'email',
-		'provider',
-		'password',
-		'reset_password_token',
-		'confirmation_token',
-		'confirmed',
-		'blocked',
-		'created_by_id',
-		'updated_by_id'
-	];
+    protected $fillable = [
+        'username',
+        'email',
+        'provider',
+        'password',
+        'reset_password_token',
+        'confirmation_token',
+        'confirmed',
+        'blocked',
+        'created_by_id',
+        'updated_by_id',
+    ];
 }

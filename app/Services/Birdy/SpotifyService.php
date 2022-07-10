@@ -6,10 +6,10 @@ use App\Models\Song;
 use SpotifyWebAPI\Session;
 use SpotifyWebAPI\SpotifyWebAPI;
 
-
 class SpotifyService
 {
     public Song $song;
+
     public SpotifyWebAPI $spotify;
 
     public function __construct()
@@ -51,7 +51,7 @@ class SpotifyService
     public function getGenreByArtist(string $author)
     {
         $genres = [];
-        if ($author === 'unknown'){
+        if ($author === 'unknown') {
             return  ['remix'];
         }
         $artists = $this->spotify->search($author, 'artist')->artists->items;
@@ -61,14 +61,13 @@ class SpotifyService
             }
             $genres[] = [
                 'name' => $artist->name,
-                'genres' => $artist->genres
+                'genres' => $artist->genres,
             ];
         }
 
-        if (count($genres) === 1 && strtoupper($genres[0]['name'] )=== strtoupper($author)) {
+        if (count($genres) === 1 && strtoupper($genres[0]['name']) === strtoupper($author)) {
             return  $genres[0]['genres'];
         }
-
 
         if (count($genres) >= 1) {
             foreach ($genres as $genre) {
@@ -81,20 +80,21 @@ class SpotifyService
                     return $genre['genres'];
                 }
 
-                if ($perc >= 80.0 ){
+                if ($perc >= 80.0) {
                     return $genre['genres'];
                 }
             }
         }
-        if (count($genres) === 0){
+        if (count($genres) === 0) {
             return $genres;
         }
+
         return [];
     }
 
     /**
      * @param $author
-     * @param array $genres
+     * @param  array  $genres
      * @return array
      */
     public function getBestMatch($author, array $genres): array
@@ -102,11 +102,9 @@ class SpotifyService
         $matchingGenres = [];
         foreach ($genres as $genre) {
             if ($author === $genre) {
-
             }
         }
 
         return $matchingGenres;
     }
-
 }

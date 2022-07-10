@@ -31,6 +31,7 @@ class createUsageDataCommand extends Command
         $catalogService = new CatalogService();
         $catalogService->createUsageData();
         $this->info('Catalog usage data created');
+
         return 0;
     }
 }

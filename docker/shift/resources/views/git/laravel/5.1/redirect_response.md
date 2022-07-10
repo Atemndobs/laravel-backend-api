@@ -1,0 +1,1 @@
+Shift `RedirectResponse` to helper

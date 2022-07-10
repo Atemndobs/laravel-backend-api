@@ -15,37 +15,33 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $newdate= date('d M, Y', strtotime(now('CET')));
-        $logFile = 'schedule_'.($newdate) . '.log';
+        $newdate = date('d M, Y', strtotime(now('CET')));
+        $logFile = 'schedule_'.($newdate).'.log';
 
         $schedule->command('queue:work --max-jobs=1 --stop-when-empty')
             ->everyMinute()
-            ->appendOutputTo('storage/logs/scheduler.log')
-        ;
+            ->appendOutputTo('storage/logs/scheduler.log');
 
         $schedule->command('queue:work database --queue=analyze --stop-when-empty')
             ->everyMinute()
-            ->appendOutputTo('storage/logs/scheduler.log')
-        ;
+            ->appendOutputTo('storage/logs/scheduler.log');
 
         $schedule->command('queue:clear')
             ->everyThirtyMinutes()
-            ->appendOutputTo('storage/logs/scheduler.log')
-        ;
+            ->appendOutputTo('storage/logs/scheduler.log');
 
         $schedule->command('queue:flush')
             ->everyThirtyMinutes()
-            ->appendOutputTo('storage/logs/scheduler.log')
-        ;
+            ->appendOutputTo('storage/logs/scheduler.log');
 
-/*        $schedule->command('song:import')
-            ->everyThirtyMinutes()
-            ->appendOutputTo('storage/logs/scheduler.log')
-        ;
-        $schedule->command('song:classify')
-            ->everyThirtyMinutes()
-            ->appendOutputTo('storage/logs/scheduler.log')
-        ;*/
+        /*        $schedule->command('song:import')
+                    ->everyThirtyMinutes()
+                    ->appendOutputTo('storage/logs/scheduler.log')
+                ;
+                $schedule->command('song:classify')
+                    ->everyThirtyMinutes()
+                    ->appendOutputTo('storage/logs/scheduler.log')
+                ;*/
     }
 
     /**

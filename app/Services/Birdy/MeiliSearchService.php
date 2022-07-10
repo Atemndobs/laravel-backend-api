@@ -21,11 +21,11 @@ class MeiliSearchService
         $songIndex = $this->meiliSearch->index('songs')->resetSettings();
         $songs = Song::search($searchTerm)->paginate(10);
         $matches = Song::search($searchTerm)->get();
+
         return $matches;
     }
 
-
-    public function setSearchSettings(Indexes $songIndex) : Indexes
+    public function setSearchSettings(Indexes $songIndex): Indexes
     {
         $songIndex->updateFilterableAttributes([
             'bpm',
@@ -67,7 +67,7 @@ class MeiliSearchService
             'path',
             'slug',
             'image',
-            'related_songs'
+            'related_songs',
         ]);
 
         $songIndex->updateRankingRules([
@@ -78,7 +78,7 @@ class MeiliSearchService
             'energy',
             'happy:asc',
             'sad:dsc',
-            'relaxed'
+            'relaxed',
         ]);
 
         return $songIndex;
@@ -91,20 +91,20 @@ class MeiliSearchService
 
         $res = $songIndex->search('', [
             'filter' => "$attribute > 70",
-            'sort' => ['bpm:asc']
+            'sort' => ['bpm:asc'],
         ]);
 
         return $res->getHits();
-
     }
 
     /**
      * @return Indexes
      */
-    public function getSongIndex() : Indexes
+    public function getSongIndex(): Indexes
     {
         $songIndex = $this->meiliSearch->index('songs');
         $this->setSearchSettings($songIndex);
+
         return $songIndex;
     }
 }

@@ -1,0 +1,1 @@
+Please don't hesitate to [report a bug](https://github.com/laravel-shift/workbench-issues/issues/new?assignees=&labels=pending&template=bug_report.md), [request a feature](https://github.com/laravel-shift/workbench-issues/issues/new?assignees=&labels=pending&template=feature_request.md), or share your :heart: for the Shift Workbench on [Twitter](https://twitter.com/laravelshift).

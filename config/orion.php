@@ -3,10 +3,10 @@
 return [
     'namespaces' => [
         'models' => 'App\\Models\\',
-        'controllers' => 'App\\Http\\Controllers\\Api\\'
+        'controllers' => 'App\\Http\\Controllers\\Api\\',
     ],
     'auth' => [
-      //  'guard' => 'api'
+        //  'guard' => 'api'
     ],
     'specs' => [
         'info' => [
@@ -33,5 +33,5 @@ return [
     ],
     'search' => [
         'case_sensitive' => true, // TODO: set to "false" by default in 3.0 release
-    ]
+    ],
 ];

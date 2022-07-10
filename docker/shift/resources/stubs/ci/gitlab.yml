@@ -1,0 +1,112 @@
+image: php:8.0
+
+variables:
+  MYSQL_DATABASE: test
+  MYSQL_ALLOW_EMPTY_PASSWORD: 1
+  DB_CONNECTION: mysql
+  DB_HOST: mysql
+  DB_DATABASE: test
+  DB_USERNAME: root
+  DB_PASSWORD: ''
+
+cache:
+  - key:
+      files:
+        - composer.lock
+      prefix: composer
+    paths:
+      - vendor/
+  - key:
+      files:
+        - package-json.lock
+      prefix: npm
+    paths:
+      - .npm/
+
+stages:
+  - lint
+  - build
+  - analyze
+  - test
+
+syntax:
+  stage: lint
+  image: overtrue/phplint:8.0
+  cache: []
+  script:
+    - /root/.composer/vendor/bin/phplint .
+
+style:
+  stage: lint
+  image:
+    name: cytopia/php-cs-fixer:3-php8.0
+    entrypoint: ['']
+  cache: []
+  script:
+    - php-cs-fixer fix --using-cache=no --verbose --dry-run
+
+composer:
+  stage: build
+  script:
+    - apt-get update -yqq
+    - apt-get install git wget zip unzip zlib1g-dev libzip-dev -yqq
+    - docker-php-ext-install pdo_mysql zip
+    - wget https://composer.github.io/installer.sig -O - -q | tr -d '\n' > installer.sig
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php -r "if (hash_file('SHA384', 'composer-setup.php') === file_get_contents('installer.sig')) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    - php composer-setup.php
+    - php -r "unlink('composer-setup.php'); unlink('installer.sig');"
+    - php composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress
+    - php artisan dusk:chrome-driver 88
+
+phpstan:
+  stage: analyze
+  image: ghcr.io/phpstan/phpstan:latest
+  script:
+    - analyze
+
+psalm:
+  stage: analyze
+  script:
+    - composer require --dev vimeo/psalm
+    - psalm
+
+phpunit:
+  stage: test
+  services:
+    - mysql:8.0
+  script:
+    - apt-get update -yqq
+    - apt-get install zip unzip zlib1g-dev libzip-dev -yqq
+    - docker-php-ext-install pdo_mysql zip
+    - cp .env.example .env
+    - php artisan key:generate
+    - php artisan test
+
+dusk:
+  stage: test
+  image: edbizarro/gitlab-ci-pipeline-php:8.0-chromium
+  services:
+    - mysql:8.0
+  variables:
+    APP_URL: http://127.0.0.1:8000
+    SESSION_DOMAIN: 127.0.0.1
+    CACHE_DRIVER: array
+    TELESCOPE_ENABLED: '0'
+  artifacts:
+    when: on_failure
+    paths:
+      - tests/Browser/screenshots
+      - tests/Browser/console
+      - storage/logs
+  before_script: []
+  script:
+    - cp .env.example .env
+    - php artisan key:generate
+    - php artisan migrate:fresh --seed
+    - npm ci --cache .npm --no-progress --no-save --no-optional --prefer-offline
+    - npm run production
+    - php artisan serve --no-reload > storage/logs/server.log 2>&1 &
+    - ./vendor/laravel/dusk/bin/chromedriver-linux --port=9515 &
+    - sleep 5
+    - php artisan dusk

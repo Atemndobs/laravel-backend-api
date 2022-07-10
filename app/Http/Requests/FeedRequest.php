@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Orion\Http\Requests\Request;
 
 class FeedRequest extends Request
@@ -15,7 +14,7 @@ class FeedRequest extends Request
     public function authorize()
     {
         // only allow updates if the user is logged in
-      //  return backpack_auth()->check();
+        //  return backpack_auth()->check();
         return true;
     }
 

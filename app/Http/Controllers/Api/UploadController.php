@@ -11,27 +11,27 @@ use Illuminate\Http\Request;
 
 /**
  * Class SongController
- * @package App\Http\Controllers\Api
  */
-class UploadController extends Controller{
-
+class UploadController extends Controller
+{
     public Request $request;
+
     public UploadService $uploadService;
+
     public StrapiSongService $strapiSongService;
 
     /**
-     * @param uploadService $uploadService
-     * @param Song $song
-     * @param Request $request
-     * @param StrapiSongService $strapiSongService
+     * @param  uploadService  $uploadService
+     * @param  Song  $song
+     * @param  Request  $request
+     * @param  StrapiSongService  $strapiSongService
      */
     public function __construct(
         UploadService $uploadService,
         Song $song,
         Request $request,
         StrapiSongService $strapiSongService
-    )
-    {
+    ) {
         $this->uploadService = $uploadService;
         $this->song = $song;
         $this->request = $request;
@@ -44,9 +44,10 @@ class UploadController extends Controller{
     public function upload(Request $request)
     {
         $data = $request->path;
-        if (is_array($data)){
-           return $this->uploadService->batchUpload($data);
+        if (is_array($data)) {
+            return $this->uploadService->batchUpload($data);
         }
+
         return $this->uploadService->uploadSong($data);
     }
 
@@ -59,36 +60,34 @@ class UploadController extends Controller{
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return void
      */
-    public function strapiUploadsWebhook(Request $request) : void
+    public function strapiUploadsWebhook(Request $request): void
     {
         $payload = $request->all();
 
-
-        if ($payload['event'] === "media.create"){
+        if ($payload['event'] === 'media.create') {
             $song = $payload['media'];
             $res = $this->strapiSongService->importStrapiSong($song);
             $title = $res[0]->title;
-            info("Imported : " . $title);
+            info('Imported : '.$title);
             AnalyzeSongJob::dispatch($title)->onConnection('database')->onQueue('analyze');
         }
 
-        if ($payload['event'] === "media.update"){
+        if ($payload['event'] === 'media.update') {
             $song = $payload['media'];
             $res = $this->strapiSongService->importStrapiSong($song);
 
-            info("Imported : " . $res[0]->path);
+            info('Imported : '.$res[0]->path);
         }
 
-        if ($payload['event'] === "media.delete"){
+        if ($payload['event'] === 'media.delete') {
             $track = $payload['media'];
-            $song =   Song::where('title', '=', $track['name'])->first();
+            $song = Song::where('title', '=', $track['name'])->first();
             $song->delete();
 
-            info("Deleted : " . $song->title);
+            info('Deleted : '.$song->title);
         }
-
     }
 }

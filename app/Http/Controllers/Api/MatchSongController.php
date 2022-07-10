@@ -13,19 +13,21 @@ class MatchSongController extends Controller
      * @var Request
      */
     public Request $request;
+
     /**
      * @var Song
      */
     public Song $song;
+
     /**
      * @var BirdyMatchService
      */
     public BirdyMatchService $birdyMatchService;
 
     /**
-     * @param Request $request
-     * @param Song $song
-     * @param BirdyMatchService $birdyMatchService
+     * @param  Request  $request
+     * @param  Song  $song
+     * @param  BirdyMatchService  $birdyMatchService
      */
     public function __construct(Request $request, Song $song, BirdyMatchService $birdyMatchService)
     {
@@ -34,7 +36,6 @@ class MatchSongController extends Controller
         $this->birdyMatchService = $birdyMatchService;
     }
 
-
     /**
      * @return array|string[]
      */
@@ -42,6 +43,7 @@ class MatchSongController extends Controller
     {
         $title = $this->request->title;
         $res = $this->birdyMatchService->getSongmatch($title);
+
         return response($res);
     }
 

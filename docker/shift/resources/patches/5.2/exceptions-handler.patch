@@ -1,0 +1,12 @@
+diff --git a/app/Exceptions/Handler.php b/app/Exceptions/Handler.php
+--- a/app/Exceptions/Handler.php
++++ b/app/Exceptions/Handler.php
+@@ -33,7 +33,7 @@ class Handler extends ExceptionHandler
+      */
+     public function report(Exception $e)
+     {
+-        return parent::report($e);
++        parent::report($e);
+     }
+ 
+     /**

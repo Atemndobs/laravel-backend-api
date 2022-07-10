@@ -19,7 +19,7 @@ return [
     'central_domains' => [
         '127.0.0.1',
         'localhost',
-       // 'saas.test', // Add the ones that you use. I use this one with Laravel Valet.
+        // 'saas.test', // Add the ones that you use. I use this one with Laravel Valet.
     ],
 
     /**

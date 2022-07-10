@@ -1,0 +1,1 @@
+Unindent vendor mail templates

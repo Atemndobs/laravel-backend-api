@@ -33,13 +33,13 @@ class createCatalogCommand extends Command
         $catalogService = new CatalogService();
         $id = $this->argument('id');
 
-          if ($id === null){
-                $catalog = $catalogService->creatCatalog();
-          } else {
-                $catalog = [$catalogService->convertSongToCatalog($id)];
-          }
-          $this->info('Catalog created');
-          $this->table(['id' , 'item_name', 'item_category', 'description', ], $catalog);
+        if ($id === null) {
+            $catalog = $catalogService->creatCatalog();
+        } else {
+            $catalog = [$catalogService->convertSongToCatalog($id)];
+        }
+        $this->info('Catalog created');
+        $this->table(['id', 'item_name', 'item_category', 'description'], $catalog);
 
         return 0;
     }

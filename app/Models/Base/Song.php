@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Song
- * 
+ *
  * @property int $id
  * @property string|null $title
  * @property bool|null $analyzed
@@ -41,32 +41,29 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * @property int|null $created_by_id
  * @property int|null $updated_by_id
- * 
  * @property AdminUser|null $admin_user
- *
- * @package App\Models\Base
  */
 class Song extends Model
 {
-	protected $table = 'songs';
+    protected $table = 'songs';
 
-	protected $casts = [
-		'analyzed' => 'bool',
-		'bpm' => 'float',
-		'energy' => 'float',
-		'happy' => 'float',
-		'sad' => 'float',
-		'aggressiveness' => 'float',
-		'danceability' => 'float',
-		'relaxed' => 'float',
-		'genre' => 'json',
-		'played' => 'bool',
-		'created_by_id' => 'int',
-		'updated_by_id' => 'int'
-	];
+    protected $casts = [
+        'analyzed' => 'bool',
+        'bpm' => 'float',
+        'energy' => 'float',
+        'happy' => 'float',
+        'sad' => 'float',
+        'aggressiveness' => 'float',
+        'danceability' => 'float',
+        'relaxed' => 'float',
+        'genre' => 'json',
+        'played' => 'bool',
+        'created_by_id' => 'int',
+        'updated_by_id' => 'int',
+    ];
 
-	public function admin_user()
-	{
-		return $this->belongsTo(AdminUser::class, 'updated_by_id');
-	}
+    public function admin_user()
+    {
+        return $this->belongsTo(AdminUser::class, 'updated_by_id');
+    }
 }

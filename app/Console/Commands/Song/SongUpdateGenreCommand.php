@@ -5,7 +5,6 @@ namespace App\Console\Commands\Song;
 use App\Models\Song;
 use App\Services\Birdy\SpotifyService;
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class SongUpdateGenreCommand extends Command
 {
@@ -33,8 +32,8 @@ class SongUpdateGenreCommand extends Command
         $spotifyService = new SpotifyService();
         $author = $this->argument('author');
 
-        $genres = [] ;
-        if ($author !== null ) {
+        $genres = [];
+        if ($author !== null) {
             $genres = $spotifyService->getGenreByArtist($author);
             dump($genres);
             $song = Song::query()->where('author', '=', $author)->first(
@@ -51,6 +50,7 @@ class SongUpdateGenreCommand extends Command
             $song->save();
             $displayGenres = json_encode($genres);
             $this->output->info("$author : $displayGenres");
+
             return 0;
         }
 
@@ -59,18 +59,19 @@ class SongUpdateGenreCommand extends Command
             ->get();
 
         if (count($songs) === 0) {
-            $this->output->info("song:genre | No songs to update");
-            ray("song:genre | No songs to update")->green();
+            $this->output->info('song:genre | No songs to update');
+            ray('song:genre | No songs to update')->green();
+
             return 0;
         }
 
-        $this->info("Found ".count($songs)." songs to update");
+        $this->info('Found '.count($songs).' songs to update');
         /** @var Song $song */
         foreach ($songs as $song) {
             $author = $song->author;
             if ($author === 'unknown') {
-                $genres = ["remix"];
-            }else{
+                $genres = ['remix'];
+            } else {
                 $genres = $spotifyService->getGenreByArtist($author);
                 sleep(5);
             }
@@ -83,8 +84,8 @@ class SongUpdateGenreCommand extends Command
                 ->get());
             $this->line("<fg=red;bg=cyan>$left songs left</>");
             ray("Artist => $author  |  genres => $genre | $left songs pending genres")->blue();
-
         }
+
         return 0;
     }
 }

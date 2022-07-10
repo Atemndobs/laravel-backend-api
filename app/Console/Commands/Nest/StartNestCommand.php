@@ -27,7 +27,8 @@ class StartNestCommand extends Command
      */
     public function handle()
     {
-       shell_exec('cd ../nested &&  /usr/local/bin/npm run start ');
+        shell_exec('cd ../nested &&  /usr/local/bin/npm run start ');
+
         return 0;
     }
 }

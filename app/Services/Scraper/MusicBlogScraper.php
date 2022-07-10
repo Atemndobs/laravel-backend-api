@@ -11,7 +11,7 @@ class MusicBlogScraper
     use Tools;
 
     /**
-     * @param Crawler $crawler
+     * @param  Crawler  $crawler
      * @return string|null
      */
     public function getNotJustOKAudio(Crawler $crawler): ?string
@@ -21,26 +21,28 @@ class MusicBlogScraper
     }
 
     /**
-     * @param string $link
+     * @param  string  $link
      * @return array
      */
     protected function getAudio(string $link): array
     {
         $crawler = $this->client->request('GET', $link);
-        return $crawler->filter('audio')->each(function ($node){
+
+        return $crawler->filter('audio')->each(function ($node) {
             return $node->text();
         });
     }
 
     /**
      * Source = Website e.g Fakaza, Tooxclusive
-     * @param string $baseUrl
-     * @param string $downloadPage
+     *
+     * @param  string  $baseUrl
+     * @param  string  $downloadPage
      * @return array
      */
-    public function getMusicFromSource(string $baseUrl = 'https://fakaza.com/', string $downloadPage ='download-mp3' ): array
+    public function getMusicFromSource(string $baseUrl = 'https://fakaza.com/', string $downloadPage = 'download-mp3'): array
     {
-        $downloadLink = $baseUrl . $downloadPage;
+        $downloadLink = $baseUrl.$downloadPage;
 
         $songLinks = $this->getSongLinks($downloadLink);
 
@@ -48,16 +50,15 @@ class MusicBlogScraper
         foreach ($songLinks as $key => $songLink) {
             if ($songLink === $baseUrl
                 || $songLink === $downloadLink
-                || !str_contains($songLink, $baseUrl)
+                || ! str_contains($songLink, $baseUrl)
                 || str_contains($songLink, 'news')
                 || str_contains($songLink, 'contact')
                 || str_contains($songLink, 'editorial')
                 || str_contains($songLink, 'disclaimer')
                 || str_contains($songLink, 'artists-z-music-list')
-            ){
+            ) {
                 unset($songLinks[$key]);
             }
-
         }
 
         foreach ($songLinks as $songLink) {
@@ -70,7 +71,7 @@ class MusicBlogScraper
                 $split = explode('/', $assetLink);
                 $size = count($split);
                 $title = '';
-                foreach ($split as $i => $part){
+                foreach ($split as $i => $part) {
                     if ($i === $size - 1) {
                         $title = $part;
                     }
@@ -80,7 +81,6 @@ class MusicBlogScraper
                 $this->download($path, $assetLink);
                 $collectedSongs[] = $assetLink;
             }
-
         }
         $collectedSongs = array_unique($collectedSongs);
 

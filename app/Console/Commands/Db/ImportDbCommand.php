@@ -27,7 +27,8 @@ class ImportDbCommand extends Command
      */
     public function handle()
     {
-        shell_exec("php artisan db");
+        shell_exec('php artisan db');
+
         return 0;
     }
 }

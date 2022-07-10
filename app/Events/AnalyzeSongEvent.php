@@ -5,7 +5,6 @@ namespace App\Events;
 use App\Services\MoodAnalysisService;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -32,7 +31,6 @@ class AnalyzeSongEvent implements ShouldBroadcast
      */
     public function broadcastOn(): Channel|PrivateChannel|array
     {
-
         return new Channel('analyze-song');
     }
 
@@ -41,8 +39,7 @@ class AnalyzeSongEvent implements ShouldBroadcast
         (new MoodAnalysisService())->getAnalysis($this->title);
 
         return [
-            'song' => $this->title
+            'song' => $this->title,
         ];
     }
-
 }

@@ -1,0 +1,1 @@
+Configure Tailwind UI variants

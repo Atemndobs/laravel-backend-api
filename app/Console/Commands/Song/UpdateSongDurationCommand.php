@@ -28,14 +28,16 @@ class UpdateSongDurationCommand extends Command
      */
     public function handle(): int
     {
-         $updateService = new SongUpdateService();
-         $slug = $this->argument('slug');
-         if ($slug !== null) {
-             $this->info("prepare updating |  $slug");
-             $updateService->updateDuration($slug);
-             return 0;
-            }
-         $updateService->updateDuration();
+        $updateService = new SongUpdateService();
+        $slug = $this->argument('slug');
+        if ($slug !== null) {
+            $this->info("prepare updating |  $slug");
+            $updateService->updateDuration($slug);
+
+            return 0;
+        }
+        $updateService->updateDuration();
+
         return 0;
     }
 }

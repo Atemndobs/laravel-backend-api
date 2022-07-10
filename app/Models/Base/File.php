@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class File
- * 
+ *
  * @property int $id
  * @property string|null $name
  * @property Carbon|null $created_at
@@ -33,33 +33,30 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $preview_url
  * @property string|null $provider
  * @property array|null $provider_metadata
- * 
  * @property AdminUser|null $admin_user
  * @property FilesRelatedMorph $files_related_morph
- *
- * @package App\Models\Base
  */
 class File extends Model
 {
-	protected $table = 'files';
+    protected $table = 'files';
 
-	protected $casts = [
-		'created_by_id' => 'int',
-		'updated_by_id' => 'int',
-		'width' => 'int',
-		'height' => 'int',
-		'formats' => 'json',
-		'size' => 'float',
-		'provider_metadata' => 'json'
-	];
+    protected $casts = [
+        'created_by_id' => 'int',
+        'updated_by_id' => 'int',
+        'width' => 'int',
+        'height' => 'int',
+        'formats' => 'json',
+        'size' => 'float',
+        'provider_metadata' => 'json',
+    ];
 
-	public function admin_user()
-	{
-		return $this->belongsTo(AdminUser::class, 'updated_by_id');
-	}
+    public function admin_user()
+    {
+        return $this->belongsTo(AdminUser::class, 'updated_by_id');
+    }
 
-	public function files_related_morph()
-	{
-		return $this->hasOne(FilesRelatedMorph::class);
-	}
+    public function files_related_morph()
+    {
+        return $this->hasOne(FilesRelatedMorph::class);
+    }
 }

@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<ruleset name="Shift">
+    <description>Sniffs used by Shift to automated code conversions.</description>
+</ruleset>

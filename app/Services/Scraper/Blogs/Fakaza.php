@@ -7,5 +7,4 @@ use App\Services\Scraper\Tools;
 class Fakaza
 {
     use Tools;
-
 }

@@ -34,9 +34,8 @@ class SongSearchCommand extends Command
         $artist = $this->option('artist');
         $title = $this->option('title');
 
-
-        if ($source === null || $source === 'db'){
-           $res =  $searchService->searchDb($artist, $title);
+        if ($source === null || $source === 'db') {
+            $res = $searchService->searchDb($artist, $title);
         }
 
         if ($source === 'web') {
@@ -44,6 +43,7 @@ class SongSearchCommand extends Command
         }
 
         dump($res);
+
         return 0;
     }
 }

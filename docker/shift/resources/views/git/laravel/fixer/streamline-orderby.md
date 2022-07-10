@@ -1,0 +1,1 @@
+Streamline calls to `orderBy`

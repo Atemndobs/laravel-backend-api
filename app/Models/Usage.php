@@ -14,14 +14,15 @@ use Spatie\Permission\Traits\HasRoles;
 class Usage extends BaseUsage
 {
     use CrudTrait, HasRoles, Search, Searchable, HasApiTokens, HasFactory, Notifiable;
+
     protected $table = 'usages';
 
-	protected $fillable = [
-		'has_played',
-		'play_count',
-		'like',
-		'published_at',
-		'created_by_id',
-		'updated_by_id'
-	];
+    protected $fillable = [
+        'has_played',
+        'play_count',
+        'like',
+        'published_at',
+        'created_by_id',
+        'updated_by_id',
+    ];
 }

@@ -41,12 +41,13 @@ class DbImportDumpCommand extends Command
             $count = count($files);
             if ($count === 0) {
                 $this->info('No files found');
+
                 return 0;
             }
             $latestDate = 0;
-            $latestFile  = '';
+            $latestFile = '';
             $data = [];
-            if ($count > 1){
+            if ($count > 1) {
                 $dates = [];
                 foreach ($files as $file) {
                     // get the latest file by date in file name
@@ -64,7 +65,7 @@ class DbImportDumpCommand extends Command
                         'date' => $date->format('Y-m-d H:i:s'),
                     ];
                 }
-            }else{
+            } else {
                 $latestFile = basename($files[0]);
                 $this->info("only one file in backup folder | $latestFile)");
                 // ask to continue or not
@@ -73,13 +74,16 @@ class DbImportDumpCommand extends Command
                 if ($answer == 'y') {
                     $this->downloadFileFromBackupFolder($latestFile);
                     $this->line("<fg=blue>Restored Backup from :   $latestFile  </>");
+
                     return 0;
                 }
-                $this->line("<fg=red> Backup Restore Aborted !!!</>");
+                $this->line('<fg=red> Backup Restore Aborted !!!</>');
+
                 return 0;
             }
-        }else{
-            $this->line("<fg=red> Backup Restore Aborted !!!</>");
+        } else {
+            $this->line('<fg=red> Backup Restore Aborted !!!</>');
+
             return 0;
         }
 
@@ -96,9 +100,9 @@ class DbImportDumpCommand extends Command
             $this->info('Restoring latest backup');
             $this->downloadFileFromBackupFolder($latestFile);
             $date = Carbon::createFromTimestamp($latestDate);
-            $date= $date->format('Y-m-d-H-i-s');
+            $date = $date->format('Y-m-d-H-i-s');
             $this->line("<fg=blue> Restored $latestFile from $date  </>");
-        }else{
+        } else {
             // chose backup to restore
             $import = $this->choice('Select file to import', $files);
             $fileName = basename($import);
@@ -111,8 +115,8 @@ class DbImportDumpCommand extends Command
     }
 
     /**
-     * @param string $filepath
-     * @param string $destination
+     * @param  string  $filepath
+     * @param  string  $destination
      * @return bool|string
      */
     public function unzipFile(string $filepath, string $destination): bool|string
@@ -124,21 +128,22 @@ class DbImportDumpCommand extends Command
             $zip->extractTo($destination);
             $unzippedFile = $zip->getNameIndex(0);
             $zip->close();
-            return $destination . $unzippedFile;
+
+            return $destination.$unzippedFile;
         } else {
             return false;
         }
     }
 
     /**
-     * @param string $latestFile
+     * @param  string  $latestFile
      * @return void
      */
     public function downloadFileFromBackupFolder(string $latestFile): void
     {
-// download latest file from backup folder
-        $this->info('Downloading file: ' . $latestFile);
-        $file = storage_path('app/backups/' . $latestFile);
+        // download latest file from backup folder
+        $this->info('Downloading file: '.$latestFile);
+        $file = storage_path('app/backups/'.$latestFile);
         $this->info('File downloaded');
         // unzip file
         $this->info('Unzipping file');

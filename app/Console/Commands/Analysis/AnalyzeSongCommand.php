@@ -28,12 +28,13 @@ class AnalyzeSongCommand extends Command
      */
     public function handle()
     {
-        $slug =$this->argument('slug');
+        $slug = $this->argument('slug');
         (new MoodAnalysisService())->getAnalysis($slug);
 
         $this->output->info("$slug : analysis is in progress");
         info("$slug : analysis is in progress");
-        $this->info("job is has been queued");
+        $this->info('job is has been queued');
+
         return 0;
     }
 }

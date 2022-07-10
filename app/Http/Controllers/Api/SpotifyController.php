@@ -11,7 +11,7 @@ class SpotifyController extends Controller
     public SpotifyService $spotifyService;
 
     /**
-     * @param SpotifyService $spotifyService
+     * @param  SpotifyService  $spotifyService
      */
     public function __construct(SpotifyService $spotifyService)
     {
@@ -19,7 +19,7 @@ class SpotifyController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return array|string[]
      */
     public function getArtistGenre(Request $request)

@@ -66,9 +66,28 @@ services:
         environment:
             DOCKER_BUILDKIT: 1
         ports:
-            - 8888:8888
+            - 9999:8888
         volumes:
             - ./../recommenders:/app
+        networks:
+            - sail
+# docker run -v /home/atem/sites/curator/laravel:/project:delegated  -e SHIFT_TOKEN=1de6f5bf67bb2ef2975910bceb154f175e70c81a -e GIT_AUTHOR="Atem" -e GIT_EMAIL="atemndobs@yahoo.com" shift
+# create docer container from docker/shift/DockerFile and add environment variables  SHIFT_TOKEN=1de6f5bf67bb2ef2975910bceb154f175e70c81a , GIT_AUTHOR="Atem" , GIT_EMAIL="atemndobs@yahoo.com" and bind mount this project to /project in the container
+# mount shift/loader.sh  to /run/loader.sh in the container
+    shift:
+        container_name: shift
+        build:
+            context: ./docker/shift
+            dockerfile: DockerFile
+        environment:
+            SHIFT_TOKEN: 1de6f5bf67bb2ef2975910bceb154f175e70c81a
+         #   GIT_AUTHOR: "Atem"
+          #  GIT_EMAIL: "atemndobs@yahoo.com"
+        image: shift
+        volumes:
+            - ./:/project
+            - ./docker/shift/loader.sh:/run/loader.sh
+          #  - ./docker/shift/:/opt/shift/
         networks:
             - sail
 

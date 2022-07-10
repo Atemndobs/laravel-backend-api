@@ -21,7 +21,7 @@ RUN if [ "${VIRTUAL_ENV}" != "conda" ] && [ "${VIRTUAL_ENV}" != "venv" ] && [ "$
 RUN apt-get update && \
     apt-get install -y curl build-essential
 RUN apt-get install -y libpython3.7-dev
-RUN apt-get install -y python3-dev  
+RUN apt-get install -y python3-dev
 
 # Install Anaconda
 ARG ANACONDA="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
@@ -182,8 +182,18 @@ RUN if [ "${VIRTUAL_ENV}" = "conda" ]; then python -m ipykernel install --user -
 RUN if [ "${VIRTUAL_ENV}" = "venv" ] || [ "${VIRTUAL_ENV}" = "virtualenv" ]; then source $HOME/${VIRTUAL_ENV}/bin/activate; \
     python -m ipykernel install --user --name venv --display-name "Python (venv)"; fi
 
+# install pyspark using pip
+RUN if [ "${VIRTUAL_ENV}" = "conda" ]; then pip install pyspark; fi
+
 ARG HOME
 WORKDIR ${HOME}
 
+# Add Tini. Tini operates as a process subreaper for jupyter. This prevents kernel crashes.
+ ENV TINI_VERSION v0.6.0
+ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+ RUN chmod +x /usr/bin/tini
+ ENTRYPOINT ["/usr/bin/tini", "--"]
+ CMD ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root"]
+
 EXPOSE 8888
-CMD ["jupyter", "notebook"]
+CMD ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root"]

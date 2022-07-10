@@ -1,0 +1,68 @@
+From 9157dc1ee84bd6901c186083faefb2f79a2709f0 Mon Sep 17 00:00:00 2001
+From: Norgul <Norgul@users.noreply.github.com>
+Date: Mon, 5 Oct 2020 22:04:37 +0200
+Subject: [PATCH] Update logging.php
+
+Added `LOG_LEVEL` env variable
+---
+ config/logging.php | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/config/logging.php b/config/logging.php
+index 088c204e29..6aa77fe280 100644
+--- a/config/logging.php
++++ b/config/logging.php
+@@ -44,13 +44,13 @@
+         'single' => [
+             'driver' => 'single',
+             'path' => storage_path('logs/laravel.log'),
+-            'level' => 'debug',
++            'level' => env('LOG_LEVEL', 'debug'),
+         ],
+
+         'daily' => [
+             'driver' => 'daily',
+             'path' => storage_path('logs/laravel.log'),
+-            'level' => 'debug',
++            'level' => env('LOG_LEVEL', 'debug'),
+             'days' => 14,
+         ],
+
+@@ -59,12 +59,12 @@
+             'url' => env('LOG_SLACK_WEBHOOK_URL'),
+             'username' => 'Laravel Log',
+             'emoji' => ':boom:',
+-            'level' => 'critical',
++            'level' => env('LOG_LEVEL', 'critical'),
+         ],
+
+         'papertrail' => [
+             'driver' => 'monolog',
+-            'level' => 'debug',
++            'level' => env('LOG_LEVEL', 'debug'),
+             'handler' => SyslogUdpHandler::class,
+             'handler_with' => [
+                 'host' => env('PAPERTRAIL_URL'),
+@@ -74,6 +74,7 @@
+
+         'stderr' => [
+             'driver' => 'monolog',
++            'level' => env('LOG_LEVEL', 'debug'),
+             'handler' => StreamHandler::class,
+             'formatter' => env('LOG_STDERR_FORMATTER'),
+             'with' => [
+@@ -83,12 +83,12 @@
+
+         'syslog' => [
+             'driver' => 'syslog',
+-            'level' => 'debug',
++            'level' => env('LOG_LEVEL', 'debug'),
+         ],
+
+         'errorlog' => [
+             'driver' => 'errorlog',
+-            'level' => 'debug',
++            'level' => env('LOG_LEVEL', 'debug'),
+         ],
+
+         'null' => [

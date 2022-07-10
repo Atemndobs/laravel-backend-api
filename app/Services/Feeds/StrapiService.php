@@ -18,7 +18,7 @@ class StrapiService
         $body = $data;
         $source = $url;
 
-        if (is_array($data)){
+        if (is_array($data)) {
             $source = $data['url'] ?? $url;
             $body = $data['url'] ? $data['body'] : $data;
         }
@@ -32,18 +32,17 @@ class StrapiService
 
         $request = Http::withHeaders([
             'Accept' => 'application/json',
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ])->post($resource, [
-            'data' => $payload
+            'data' => $payload,
         ]);
 
         return $request->json();
     }
 
-
     /**
-     * @param string $type
-     * @param int $id
+     * @param  string  $type
+     * @param  int  $id
      * @return mixed
      */
     public function getById(string $type, int $id): array
@@ -59,20 +58,22 @@ class StrapiService
                 $response = $data['attributes'];
             }
         }
+
         return $response;
     }
 
     /**
-     * @param string $type
-     * @param int $id
-     * @param string $field
+     * @param  string  $type
+     * @param  int  $id
+     * @param  string  $field
      * @return string
      */
-    public function getByField(string $type, int $id, string $field) : string
+    public function getByField(string $type, int $id, string $field): string
     {
-        if (Arr::exists($this->getById($type, $id),$field)) {
+        if (Arr::exists($this->getById($type, $id), $field)) {
             return $this->getById($type, $id)[$field];
         }
+
         return "The field $field does not exit";
     }
 }

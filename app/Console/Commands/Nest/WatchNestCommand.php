@@ -32,23 +32,24 @@ class WatchNestCommand extends Command
         //  # * * * * * /usr/bin/php8.1 artisan nest:watch >> ~/sites/curator/laravel/storage/logs/helathCheck.log 2>&1
         try {
             $healthCheck = $this->healthCheck();
-            if ($healthCheck->status() === 200){
+            if ($healthCheck->status() === 200) {
                 $header = [
                     'status',
-                    'time'
+                    'time',
                 ];
 
                 $data = [
                     [
                         'status' => $healthCheck->status(),
-                        'response' => now('CET')
-                    ]
+                        'response' => now('CET'),
+                    ],
                 ];
                 $this->output->table($header, $data);
-                return ;
+
+                return;
             }
-        }catch (HttpClientException $exception){
-           // $this->output->info($exception->getMessage());
+        } catch (HttpClientException $exception) {
+            // $this->output->info($exception->getMessage());
             $this->reStartNest();
         }
 
@@ -57,25 +58,24 @@ class WatchNestCommand extends Command
 
     public function healthCheck()
     {
-        $url = "http://127.0.0.1:3000/song";
+        $url = 'http://127.0.0.1:3000/song';
+
         return Http::get($url);
     }
 
     public function reStartNest()
     {
-        $processes =  shell_exec('ps -aef | grep "nest" | grep node');
+        $processes = shell_exec('ps -aef | grep "nest" | grep node');
         $systems = explode("\n", $processes);
 
         $candidates = [];
-        foreach ($systems as $system){
-
-            if ($system == null){
+        foreach ($systems as $system) {
+            if ($system == null) {
                 continue;
             }
-            $systemProcesses = explode(" ", $system);
-            foreach ($systemProcesses as $ky => $str){
-
-                if ($str == null){
+            $systemProcesses = explode(' ', $system);
+            foreach ($systemProcesses as $ky => $str) {
+                if ($str == null) {
                     unset($systemProcesses[$ky]);
                 }
             }
@@ -84,9 +84,9 @@ class WatchNestCommand extends Command
         }
 
         $deleted = implode(' ', $candidates);
-       // shell_exec("kill  $deleted");
+        // shell_exec("kill  $deleted");
         shell_exec('cd ../nested && /usr/local/bin/npm run start');
 
-        $this->output->caution('Deleted processess  : ' . implode(' | ', $candidates));
+        $this->output->caution('Deleted processess  : '.implode(' | ', $candidates));
     }
 }

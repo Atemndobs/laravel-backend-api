@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Models\Song;
 use App\Policies\SongPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -15,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-      //  Song::class => SongPolicy::class,
+        //  Song::class => SongPolicy::class,
     ];
 
     /**

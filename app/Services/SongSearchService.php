@@ -13,7 +13,6 @@ class SongSearchService
         $index = $meiliSearchService->getSongIndex();
         $search = $index->search($artist)->getHits();
 
-
         if ($title === 'null') {
             // dd($search);
             return $search;
@@ -34,11 +33,8 @@ class SongSearchService
         $query = Str::slug($artist, '+');
         if ($site === 'hiphopkit') {
             $search_url = "search?q=${query}&folder=music";
-            $url = $base_search_url . $search_url;
+            $url = $base_search_url.$search_url;
             dump($url);
         }
-
     }
 }
-
-

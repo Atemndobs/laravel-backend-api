@@ -3,16 +3,13 @@
 namespace App\Services;
 
 use App\Models\Song;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Psy\Util\Str;
-use function Psy\sh;
 
 class SongUpdateService
 {
     /**
-     * @param Song $song
+     * @param  Song  $song
      * @return Song
      */
     public function updateBpmAndKey(Song $song): Song
@@ -21,18 +18,19 @@ class SongUpdateService
 
         $song->key = $key;
         $song->scale = $chords_scale;
-        $song->energy = (float)$energy;
+        $song->energy = (float) $energy;
         $song->bpm = $bpm;
         $song->author = $author;
         $song->save();
 
         $slug = $song->slug;
         shell_exec("rm storage/app/public/$slug.json");
+
         return $song;
     }
 
     /**
-     * @param Song $song
+     * @param  Song  $song
      * @return Song
      */
     public function updateBpm(Song $song): Song
@@ -45,16 +43,16 @@ class SongUpdateService
         $bpm = round($bpm, 1);
         $song->bpm = $bpm;
         $song->save();
+
         return $song;
     }
 
     /**
-     * @param Song $song
+     * @param  Song  $song
      * @return Song
      */
     public function updateKey(Song $song): Song
     {
-
         [$chords_scale, $key] = $this->extracted($song);
 
         $song->key = $key;
@@ -63,21 +61,23 @@ class SongUpdateService
 
         $slug = $song->slug;
         shell_exec("rm storage/app/public/$slug.json");
+
         return $song;
     }
 
     /**
-     * @param Song $song
+     * @param  Song  $song
      * @return string
      */
     public function getFilePath(Song $song): string
     {
         $path = $song->path;
+
         return str_replace('http://mage.tech:8899/storage/', '', $path);
     }
 
     /**
-     * @param Song $song
+     * @param  Song  $song
      * @return array
      */
     public function extracted(Song $song): array
@@ -87,21 +87,22 @@ class SongUpdateService
         dump($file);
         $slug = $song->slug;
         $shell = shell_exec(" ./storage/app/public/streaming_extractor_music storage/app/public/$file storage/app/public/$slug.json 2>&1");
-        $shellRes = explode(" ", $shell);
+        $shellRes = explode(' ', $shell);
 
         dd($shellRes);
 
-        $error = str_contains($shell, "error = Operation not permitted");
-        $error2 = str_contains($shell, "File does not exist ");
+        $error = str_contains($shell, 'error = Operation not permitted');
+        $error2 = str_contains($shell, 'File does not exist ');
 
         if ($error || $error2) {
             dump($error);
             $path = str_replace('mp3', '.mp3', $slug);
             shell_exec("rm storage/app/public/audio/$path");
             $song->delete();
-            return array(0, 0, 0, 0, 0);
+
+            return [0, 0, 0, 0, 0];
         }
-        if ($shellRes[1] === "1:") {
+        if ($shellRes[1] === '1:') {
             dump($shell);
         }
 
@@ -114,14 +115,14 @@ class SongUpdateService
 
         $chords_key = $res->tonal->chords_key;
         $chords_scale = $res->tonal->chords_scale;
-        $chord = $chords_key . $chords_scale;
+        $chord = $chords_key.$chords_scale;
 
         $energy = $res->lowlevel->spectral_energy->max;
         $bpm = round($res->rhythm->bpm * 2) / 2;
 
         $album = $res->metadata->tags->album ?? '';
         $author = $res->metadata->tags->artist ?? '';
-        if ($author !== "") {
+        if ($author !== '') {
             $author = $res->metadata->tags->artist[0];
         } else {
             $author = $song->author;
@@ -137,7 +138,8 @@ class SongUpdateService
             'album' => $album,
             'energy' => $energy,
         ]);
-        return array($chords_scale, $energy, $bpm, $author, $key);
+
+        return [$chords_scale, $energy, $bpm, $author, $key];
     }
 
     public function updateDuration(array|string $slug = null)
@@ -147,7 +149,7 @@ class SongUpdateService
         } else {
             $songs[] = Song::query()->where('slug', $slug)->first();
         }
-        dump("found " . count($songs) . " songs");
+        dump('found '.count($songs).' songs');
         $completed = [];
         /** @var Song $song */
         foreach ($songs as $song) {
@@ -161,13 +163,13 @@ class SongUpdateService
                 $song->save();
             } catch (\Exception $e) {
                 dump($e->getMessage());
-              continue;
+                continue;
             }
             // get info from id3v2 tags
             try {
                 $this->getInfoFromId3v2Tags($fileInfo, $song);
                 $song->save();
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 dump($e->getMessage());
                 continue;
             }
@@ -180,22 +182,23 @@ class SongUpdateService
                 continue;
             }
 
-            $completed[] =  $song->slug;
+            $completed[] = $song->slug;
         }
+
         return $completed;
     }
 
     /**
      * @param $data
-     * @param Song|null $song
+     * @param  Song|null  $song
      * @return void
      */
     public function setImageFromSong($data, Song|null $song): void
     {
-// get image from picture data in comments tag
+        // get image from picture data in comments tag
         $image = $data;
         // save image to storage/app/public/images/
-        $imageName = $song->slug . '.jpg';
+        $imageName = $song->slug.'.jpg';
         $imagePath = "storage/app/public/images/$imageName";
         file_put_contents($imagePath, $image);
         // save image path as asset  to database
@@ -207,7 +210,7 @@ class SongUpdateService
     }
 
     /**
-     * @param mixed $songPath
+     * @param  mixed  $songPath
      * @return array
      */
     public function getAnalyze(mixed $songPath): array
@@ -215,17 +218,18 @@ class SongUpdateService
         $path = str_replace('http://mage.tech:8899/storage/', '', $songPath);
         $getID3 = new \getID3;
         $fileInfo = $getID3->analyze("storage/app/public/$path");
+
         return $fileInfo;
     }
 
     /**
      * @param $fileInfo
-     * @param Song|null $song
+     * @param  Song|null  $song
      * @return void
      */
     public function getInfoFromId3v2Tags($fileInfo, Song|null $song): void
     {
-         $idv = $fileInfo['tags']['id3v2'] ?? null;
+        $idv = $fileInfo['tags']['id3v2'] ?? null;
         if (count($idv) < 5) {
             $title = $idv['title'][0] ?? null;
             // remove everything after the | in the title
@@ -234,7 +238,8 @@ class SongUpdateService
             }
             $title = trim($title);
             $song->title = $title;
-           return ;
+
+            return;
         }
         $genres = $idv['genre'];
         $artist = $idv['artist'];

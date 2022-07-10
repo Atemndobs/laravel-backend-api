@@ -1,0 +1,1 @@
+Update Eloquent method visibility

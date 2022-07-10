@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class FileRequest extends \Orion\Http\Requests\Request
 {
     /**

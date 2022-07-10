@@ -2,13 +2,8 @@
 
 namespace App\Console\Commands\Analysis;
 
-use App\Jobs\ClassifySongJob;
-use App\Models\Song;
 use App\Services\MoodAnalysisService;
-use Illuminate\Bus\Batch;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Bus;
-use const Widmogrod\Monad\Writer\log;
 
 class ClassifySongsCommand extends Command
 {
@@ -35,25 +30,24 @@ class ClassifySongsCommand extends Command
     {
         $unClassified = (new MoodAnalysisService())->classifySongs();
 
-        $this->output->info("Queued tracks");
+        $this->output->info('Queued tracks');
         $headers = [
             'title',
-            'status'
+            'status',
         ];
 
         $data = [];
-        foreach ( $unClassified as $title) {
+        foreach ($unClassified as $title) {
             $data[] = [
                 'title' => $title,
-                'status' =>'imported'
+                'status' => 'imported',
             ];
             info("$title : has been imported");
         }
 
-
         $this->output->table($headers, $data);
-        info("=========================================CLASSIFY_COMPLETE====================================");
-        return "job has been queued";
-    }
+        info('=========================================CLASSIFY_COMPLETE====================================');
 
+        return 'job has been queued';
+    }
 }

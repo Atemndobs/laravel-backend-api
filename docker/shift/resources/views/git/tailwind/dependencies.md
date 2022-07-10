@@ -1,0 +1,1 @@
+Bump Tailwind dependencies

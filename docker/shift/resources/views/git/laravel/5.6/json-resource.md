@@ -1,0 +1,1 @@
+Shift deprecated Resource class 

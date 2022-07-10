@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands\Song;
 
-use App\Models\File;
 use App\Models\Song;
 use App\Services\MoodAnalysisService;
 use App\Services\Strapi\StrapiSongService;
@@ -10,7 +9,6 @@ use App\Services\UploadService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Jobs\RabbitMQJob;
 
 class ImportSongCommand extends Command
 {
@@ -48,12 +46,13 @@ class ImportSongCommand extends Command
         DB::table('jobs')->delete();
         DB::table('failed_jobs')->delete();
 
-        if($source === 'strapi'){
+        if ($source === 'strapi') {
             $songs = (new StrapiSongService())->importStrapiUploads();
-        foreach ($songs as $song){
-            $data[] = $song->title;
-        }
-        dump($data);
+            foreach ($songs as $song) {
+                $data[] = $song->title;
+            }
+            dump($data);
+
             return 0;
         }
         //(new StrapiSongService())->importStrapiUploads();
@@ -63,14 +62,14 @@ class ImportSongCommand extends Command
             $unClassified[] = $title;
             $data[] = [
                 'title' => $title,
-                'status' =>'imported',
+                'status' => 'imported',
             ];
             info("$title : has been imported");
         }
 
         $headers = [
             'title',
-            'status'
+            'status',
         ];
 
         $deletableBody = [];
@@ -82,30 +81,55 @@ class ImportSongCommand extends Command
 
         $total = count($unClassified);
         $this->output->info("imported $total songs from $source");
-        info("=========================================IMPORT_DONE==========================================");
+        info('=========================================IMPORT_DONE==========================================');
+
         return 0;
     }
 
     public function cleanDb(UploadService $uploadService)
     {
         $deletableBody = [];
-        /** @var  string $deletable */
-        foreach ($uploadService->getDeletables() as $deletable){
+        /** @var string $deletable */
+        foreach ($uploadService->getDeletables() as $deletable) {
             $deletableBody[] = ['deletable' => $deletable];
         }
+
         return $deletableBody;
     }
 
     public function cleanFiles($files): array
     {
         $result = [];
-        foreach ($files as $file){
-            if (str_contains($file, 'audio')){
-                $file= str_replace('audio/', '', $file);
+        $skipped = [];
+        $images = [];
+        $others = [];
+        foreach ($files as $file) {
+            // collect files containing .jpg extension in an $images array
+            if (str_contains($file, '.jpg')) {
+                $images[] = $file;
+            }
+            // collect files not containing "models" in an $others array
+            if (!str_contains($file, '.jpg') && !str_contains($file, '.mp3')) {
+                $others[] = $file;
+            }
+            if (strpos($file, '.mp3') === false) {
+                $skipped[] = $file;
+                continue;
+            }
+
+            if (str_contains($file, 'audio')) {
+                $file = str_replace('audio/', '', $file);
                 $result[] = $file;
             }
         }
-       return $result;
+        dump(['skipped' => $skipped]);
+        $countSkipped = count($skipped);
+        $countImages = count($images);
+        $countOthers = count($others);
+        dump("skipped $countSkipped files");
+        dump("skipped $countImages images");
+        dump("skipped $countOthers other files");
+        return $result;
     }
 
     public function downloadStrapiSong()

@@ -15,13 +15,15 @@ class MultipleSheeExport implements WithMultipleSheets
     {
         $this->data = $data;
     }
+
     /**
      * @return array
      */
     public function sheets(): array
     {
         $sheets = [];
-            $sheets[] = new UsersExportService($this->data);
+        $sheets[] = new UsersExportService($this->data);
+
         return $sheets;
     }
 }

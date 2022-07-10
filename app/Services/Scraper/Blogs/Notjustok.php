@@ -4,5 +4,4 @@ namespace App\Services\Scraper\Blogs;
 
 class Notjustok
 {
-
 }

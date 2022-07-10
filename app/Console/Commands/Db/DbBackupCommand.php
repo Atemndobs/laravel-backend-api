@@ -44,7 +44,7 @@ class DbBackupCommand extends Command
                     unlink($file);
                 }
                 $this->info('All files deleted');
-            }else{
+            } else {
                 $backupFiles = glob(storage_path('app/backups/*'));
                 // chose files to delete from $files array
                 foreach ($backupFiles as $file) {
@@ -52,8 +52,8 @@ class DbBackupCommand extends Command
                     $cancel = 'select enter to continue with backup';
 
                     $cleanupFiles = [];
-                    foreach ($backupFiles as $key =>$deleteFile) {
-                        $cleanupFiles[$key+1] = $deleteFile;
+                    foreach ($backupFiles as $key => $deleteFile) {
+                        $cleanupFiles[$key + 1] = $deleteFile;
                     }
 
                     $cleanupFiles[] = $cancel;
@@ -63,7 +63,7 @@ class DbBackupCommand extends Command
                     if (empty($filesToDelete)) {
                         break;
                     }
-                    if ($filesToDelete  === $cancel) {
+                    if ($filesToDelete === $cancel) {
                         break;
                     }
                     // delete files from backup folder
@@ -80,17 +80,17 @@ class DbBackupCommand extends Command
                     unlink($filesToDelete);
                 }
             }
-
         } else {
             $this->info('Backup folder is empty');
         }
-        $this->call("backup:run", [
-            "--only-db" => true,
-            "--only-files" => false,
-            "--disable-notifications" => true,
-            "--no-compression",
+        $this->call('backup:run', [
+            '--only-db' => true,
+            '--only-files' => false,
+            '--disable-notifications' => true,
+            '--no-compression',
         ]);
         $this->info('Backup database done');
+
         return 0;
     }
 }

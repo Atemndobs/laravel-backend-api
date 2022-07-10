@@ -5,7 +5,6 @@ use BeyondCode\LaravelWebSockets\Facades\WebSocketsRouter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
-use App\Http\Controllers\Api\SongApiController;
 
 /*
 |--------------------------------------------------------------------------

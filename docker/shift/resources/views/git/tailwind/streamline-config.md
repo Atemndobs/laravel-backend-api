@@ -1,0 +1,1 @@
+Streamline Tailwind config file

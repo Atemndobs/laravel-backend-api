@@ -39,45 +39,48 @@ class SongUpdateBpmCommand extends Command
             $this->info("prepare updating |  $song->slug");
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
             $this->info($updatedSong->bpm);
+
             return 0;
         }
         $songs = Song::where('bpm', '=', 0)->get();
-        $this->info(count($songs) . ' songs found');
+        $this->info(count($songs).' songs found');
         $updatedSongs = [];
 
         /** @var Song $song */
         foreach ($songs as $position => $song) {
             $number = $position + 1;
             $left = count($songs) - $position;
-            $this->info("prepare updating | $song->slug | $number song out of " . count($songs) . "| $left songs left");
+            $this->info("prepare updating | $song->slug | $number song out of ".count($songs)."| $left songs left");
 
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
             $updatedSongs[] = $updatedSong->bpm;
         }
 
         dump($updatedSongs);
+
         return 0;
     }
 
     /**
-     * @param bool $bpm
-     * @param bool $key
-     * @param SongUpdateService $updateService
+     * @param  bool  $bpm
+     * @param  bool  $key
+     * @param  SongUpdateService  $updateService
      * @param $song
      * @return Song
      */
     public function getUpdatedSong(bool $bpm, bool $key, SongUpdateService $updateService, $song): Song
     {
         $updatedSong = new Song();
-        if (!$bpm && !$key) {
+        if (! $bpm && ! $key) {
             $updatedSong = $updateService->updateBpmAndKey($song);
         }
-        if ($bpm && !$key) {
+        if ($bpm && ! $key) {
             $updatedSong = $updateService->updateBpm($song);
         }
-        if ($key && !$bpm) {
+        if ($key && ! $bpm) {
             $updatedSong = $updateService->updateKey($song);
         }
+
         return $updatedSong;
     }
 }

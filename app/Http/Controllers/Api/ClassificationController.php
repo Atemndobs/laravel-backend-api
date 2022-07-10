@@ -14,19 +14,20 @@ use Illuminate\Http\Response;
 class ClassificationController extends Controller
 {
     public Request $request;
+
     protected ClassifyService $classifyService;
+
     protected Song $song;
 
     /**
-     * @param ClassifyService $classifyService
-     * @param Song $song
+     * @param  ClassifyService  $classifyService
+     * @param  Song  $song
      */
     public function __construct(
         ClassifyService $classifyService,
-        Song            $song,
-        Request         $request
-    )
-    {
+        Song $song,
+        Request $request
+    ) {
         $this->classifyService = $classifyService;
         $this->song = $song;
         $this->request = $request;
@@ -53,14 +54,15 @@ class ClassificationController extends Controller
                 'error' => $e->getMessage(),
             ];
         }
+
         return $response;
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
-    public function findByTitle(Request $request) : Response
+    public function findByTitle(Request $request): Response
     {
         $slug = $request->slug;
         $song = Song::where('slug', '=', $slug)->first();
@@ -68,14 +70,16 @@ class ClassificationController extends Controller
         if ($song) {
             $msg = [
                 'id' => $song->id,
-                'path'=> $song->path
+                'path' => $song->path,
             ];
+
             return \response($msg, 200);
         }
 
         $msg = [
-            'SONG_NOT_FOUND' => "$slug does not exist , Please upload and try again"
+            'SONG_NOT_FOUND' => "$slug does not exist , Please upload and try again",
         ];
+
         return \response($msg, 404);
     }
 }

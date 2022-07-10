@@ -1,0 +1,1 @@
+Convert `config()` to `theme()`

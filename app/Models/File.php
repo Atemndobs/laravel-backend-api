@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -19,6 +18,7 @@ class File extends \App\Models\Base\File
     */
 
     protected $table = 'files';
+
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];

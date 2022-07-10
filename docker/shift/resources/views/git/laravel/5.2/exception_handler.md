@@ -1,0 +1,1 @@
+Add new exceptions to `$dontReport` property

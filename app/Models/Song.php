@@ -10,13 +10,12 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 use Laravel\Scout\Searchable;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * Class Song
@@ -47,48 +46,45 @@ use Laravel\Scout\Searchable;
  * @property int|null $updated_by_id
  * @property string|null $slug
  * @property string|null $duration
- *
- *
  * @property AdminUser|null $admin_user
- *
- * @package App\Models
  */
 class Song extends \App\Models\Base\Song
 {
     use CrudTrait, HasRoles, Search, Searchable, HasApiTokens, HasFactory, Notifiable;
-	protected $table = 'songs';
 
-	protected $casts = [
-		'bpm' => 'float',
-		'danceability' => 'float',
-		'happy' => 'float',
-		'sad' => 'float',
-		'relaxed' => 'float',
-		'aggressiveness' => 'float',
-		'energy' => 'float',
-		'created_by_id' => 'int',
-		'updated_by_id' => 'int',
+    protected $table = 'songs';
+
+    protected $casts = [
+        'bpm' => 'float',
+        'danceability' => 'float',
+        'happy' => 'float',
+        'sad' => 'float',
+        'relaxed' => 'float',
+        'aggressiveness' => 'float',
+        'energy' => 'float',
+        'created_by_id' => 'int',
+        'updated_by_id' => 'int',
         'extension' => 'string',
-        'genre' => 'array'
-	];
+        'genre' => 'array',
+    ];
 
-	protected $dates = [
-		'published_at'
-	];
+    protected $dates = [
+        'published_at',
+    ];
 
-	protected $fillable = [
-		'title',
+    protected $fillable = [
+        'title',
         'analyzed',
-		'key',
+        'key',
         'scale',
-		'bpm',
+        'bpm',
         'energy',
-		'happy',
-		'sad',
-		'relaxed',
-		'aggressiveness',
+        'happy',
+        'sad',
+        'relaxed',
+        'aggressiveness',
         'danceability',
-		'path',
+        'path',
         'related_songs',
         'extension',
         'status',
@@ -97,92 +93,91 @@ class Song extends \App\Models\Base\Song
         'link',
         'image',
         'source',
-	];
+    ];
 
     public function admin_user()
-	{
-		return $this->belongsTo(AdminUser::class, 'updated_by_id');
-	}
-
-/*    public function uploadFileToDisk($value, $attribute_name, $disk, $destination_path)
     {
-
-        // if a new file is uploaded, delete the file from the disk
-        if (request()->hasFile($attribute_name) &&
-            $this->{$attribute_name} &&
-            $this->{$attribute_name} != null) {
-            Storage::disk($disk)->delete($this->{$attribute_name});
-            $this->attributes[$attribute_name] = null;
-        }
-
-
-        // if the file input is empty, delete the file from the disk
-        if (is_null($value) && $this->{$attribute_name} != null) {
-            Storage::disk($disk)->delete($this->{$attribute_name});
-            $this->attributes[$attribute_name] = null;
-        }
-
-        //      dd($attribute_name);
-        // if a new file is uploaded, store it on disk and its filename in the database
-        if (request()->hasFile($attribute_name) && request()->file($attribute_name)->isValid()) {
-
-            // 1. Generate a new file name
-            $file = request()->file($attribute_name);
-           // $new_file_name = md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
-            $new_file_name = $file->getClientOriginalName();
-            str_replace('&', '-', $new_file_name);
-
-            // 2. Move the new file to the correct path
-            $file_path = $file->storeAs($destination_path, $new_file_name, $disk);
-
-           // $full_path = asset('storage/'.$file_path);
-
-            $full_path = asset(Storage::url($file_path));
-            // 3. Save the complete path to the database
-            $this->attributes[$attribute_name] = $full_path;
-        }
+        return $this->belongsTo(AdminUser::class, 'updated_by_id');
     }
 
-    public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
-    {
-        if (! is_array($this->{$attribute_name})) {
-            $attribute_value = json_decode($this->{$attribute_name}, true) ?? [];
-        } else {
-            $attribute_value = $this->{$attribute_name};
-        }
-        $files_to_clear = request()->get('clear_'.$attribute_name);
+    /*    public function uploadFileToDisk($value, $attribute_name, $disk, $destination_path)
+        {
 
-        // if a file has been marked for removal,
-        // delete it from the disk and from the d
-        if ($files_to_clear) {
-            foreach ($files_to_clear as $key => $filename) {
-                \Storage::disk($disk)->delete($filename);
-                $attribute_value = Arr::where($attribute_value, function ($value, $key) use ($filename) {
-                    return $value != $filename;
-                });
+            // if a new file is uploaded, delete the file from the disk
+            if (request()->hasFile($attribute_name) &&
+                $this->{$attribute_name} &&
+                $this->{$attribute_name} != null) {
+                Storage::disk($disk)->delete($this->{$attribute_name});
+                $this->attributes[$attribute_name] = null;
+            }
+
+
+            // if the file input is empty, delete the file from the disk
+            if (is_null($value) && $this->{$attribute_name} != null) {
+                Storage::disk($disk)->delete($this->{$attribute_name});
+                $this->attributes[$attribute_name] = null;
+            }
+
+            //      dd($attribute_name);
+            // if a new file is uploaded, store it on disk and its filename in the database
+            if (request()->hasFile($attribute_name) && request()->file($attribute_name)->isValid()) {
+
+                // 1. Generate a new file name
+                $file = request()->file($attribute_name);
+               // $new_file_name = md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
+                $new_file_name = $file->getClientOriginalName();
+                str_replace('&', '-', $new_file_name);
+
+                // 2. Move the new file to the correct path
+                $file_path = $file->storeAs($destination_path, $new_file_name, $disk);
+
+               // $full_path = asset('storage/'.$file_path);
+
+                $full_path = asset(Storage::url($file_path));
+                // 3. Save the complete path to the database
+                $this->attributes[$attribute_name] = $full_path;
             }
         }
-        // if a new file is uploaded, store it on disk and its filename in the database
-        if (request()->hasFile($attribute_name)) {
-            foreach (request()->file($attribute_name) as $file) {
-                if ($file->isValid()) {
-                    // $new_file_name = md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
-                    $new_file_name = $file->getClientOriginalName();
-                    str_replace('&', '-', $new_file_name);
 
-                    // 2. Move the new file to the correct path
-                    $file_path = $file->storeAs($destination_path, $new_file_name, $disk);
+        public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
+        {
+            if (! is_array($this->{$attribute_name})) {
+                $attribute_value = json_decode($this->{$attribute_name}, true) ?? [];
+            } else {
+                $attribute_value = $this->{$attribute_name};
+            }
+            $files_to_clear = request()->get('clear_'.$attribute_name);
 
-                    // $full_path = asset('storage/'.$file_path);
-
-                    $full_path = asset(Storage::url($file_path));
-
-                    // 3. Add the public path to the database
-                    $attribute_value[] = $file_path;
+            // if a file has been marked for removal,
+            // delete it from the disk and from the d
+            if ($files_to_clear) {
+                foreach ($files_to_clear as $key => $filename) {
+                    \Storage::disk($disk)->delete($filename);
+                    $attribute_value = Arr::where($attribute_value, function ($value, $key) use ($filename) {
+                        return $value != $filename;
+                    });
                 }
             }
-        }
-        $this->attributes[$attribute_name] = json_encode($attribute_value);
-    }*/
+            // if a new file is uploaded, store it on disk and its filename in the database
+            if (request()->hasFile($attribute_name)) {
+                foreach (request()->file($attribute_name) as $file) {
+                    if ($file->isValid()) {
+                        // $new_file_name = md5($file->getClientOriginalName().random_int(1, 9999).time()).'.'.$file->getClientOriginalExtension();
+                        $new_file_name = $file->getClientOriginalName();
+                        str_replace('&', '-', $new_file_name);
 
+                        // 2. Move the new file to the correct path
+                        $file_path = $file->storeAs($destination_path, $new_file_name, $disk);
+
+                        // $full_path = asset('storage/'.$file_path);
+
+                        $full_path = asset(Storage::url($file_path));
+
+                        // 3. Add the public path to the database
+                        $attribute_value[] = $file_path;
+                    }
+                }
+            }
+            $this->attributes[$attribute_name] = json_encode($attribute_value);
+        }*/
 }

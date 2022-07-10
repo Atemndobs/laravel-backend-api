@@ -1,13 +1,13 @@
 <?php
 
 // Import User From Magento API
+
 namespace App\Console\Commands\Db;
 
 use App\Services\Birdy\UserImportService;
 use App\Services\MultipleSheeExport;
 use App\Services\UsersExportService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -50,8 +50,7 @@ class ImportUserCommand extends Command
 
         $sizeCalc = $pageSize ?? $size;
 
-        $pages = $totalDevData/$sizeCalc;
-
+        $pages = $totalDevData / $sizeCalc;
 
         $import = new UserImportService();
 
@@ -67,37 +66,32 @@ class ImportUserCommand extends Command
 
         $importedData = [];
 
-
-        if ($currentPage != 0 || $page != 0){
+        if ($currentPage != 0 || $page != 0) {
             $i = $currentPage ?? $page;
-            $importedData =  $import->getUserData($i, $size, $field);
+            $importedData = $import->getUserData($i, $size, $field);
             dd($importedData);
         }
 
-
-        if ($limit === 'max'){
+        if ($limit === 'max') {
             for ($currentPage = 1; $currentPage <= $pages; $currentPage++) {
                 $this->getImportedDataPerPage($currentPage, $import, $size, $field, $importedData);
                 sleep(5);
                 dump('Sleeping 5 sec');
             }
-
         }
 
         dd('DONE');
 
-
-      //  $importedData = $this->getData($pages, $limit, $import, $size, $field, $importedData);
-
+        //  $importedData = $this->getData($pages, $limit, $import, $size, $field, $importedData);
     }
 
     /**
-     * @param float|int $pages
-     * @param mixed $limit
-     * @param UserImportService $import
-     * @param int $size
-     * @param string $field
-     * @param array $importedData
+     * @param  float|int  $pages
+     * @param  mixed  $limit
+     * @param  UserImportService  $import
+     * @param  int  $size
+     * @param  string  $field
+     * @param  array  $importedData
      * @return false|string
      */
     public function getData(float|int $pages, int $limit, UserImportService $import, int $size, string $field, array $importedData)
@@ -109,25 +103,25 @@ class ImportUserCommand extends Command
 
             $importedData[] = $import->getUserData($currentPage, $size, $field);
         }
-        $data =  json_encode($importedData);
+        $data = json_encode($importedData);
         Storage::put("data/$limit.json", $data);
 
         return $data;
     }
 
     /**
-     * @param int $currentPage
-     * @param UserImportService $import
-     * @param int $size
-     * @param string $field
-     * @param array $importedData
+     * @param  int  $currentPage
+     * @param  UserImportService  $import
+     * @param  int  $size
+     * @param  string  $field
+     * @param  array  $importedData
      * @return array
      */
     public function getImportedDataPerPage(int $currentPage, UserImportService $import, int $size, string $field, array $importedData): array
     {
         dump(['currenct page : ' => $currentPage]);
         $importedData[] = $import->getUserData($currentPage, $size, $field);
-        Storage::append("data/data.json", json_encode($importedData));
+        Storage::append('data/data.json', json_encode($importedData));
         $finish = [];
 //
 //        if ($currentPage === 3){
@@ -135,8 +129,10 @@ class ImportUserCommand extends Command
 //        }
 
         // id,group_id,store_id,extension_attributes
-        foreach ($importedData[0] as $key =>  $datum){
-            if ($key === 'page') continue;
+        foreach ($importedData[0] as $key => $datum) {
+            if ($key === 'page') {
+                continue;
+            }
             $finish[] = [
                 $datum->id ?? null,
                 $datum->group_id ?? null,
@@ -147,9 +143,8 @@ class ImportUserCommand extends Command
         Excel::download((new UsersExportService($finish)), 'users.xlsx');
         Excel::download((new UsersExportService($finish)), 'users.csv');
 
-     //   Excel::download((new MultipleSheeExport($finish)), 'users.xlsx');
+        //   Excel::download((new MultipleSheeExport($finish)), 'users.xlsx');
 
         return $importedData;
     }
-
 }

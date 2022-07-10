@@ -1,0 +1,1 @@
+Normalize `@apply` utility names

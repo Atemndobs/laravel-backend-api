@@ -1,0 +1,1 @@
+Ignore temporary framework files

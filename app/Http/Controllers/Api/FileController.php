@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Models\File;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Orion\Concerns\DisableAuthorization;
 use Orion\Concerns\DisablePagination;
 use Orion\Http\Controllers\Controller;
-use Orion\Concerns\DisableAuthorization;
 
 class FileController extends Controller
 {
@@ -14,9 +14,8 @@ class FileController extends Controller
     use DisablePagination;
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     protected $model = File::class;
-
 }

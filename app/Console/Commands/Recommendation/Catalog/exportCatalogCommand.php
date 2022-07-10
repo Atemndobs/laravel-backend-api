@@ -32,7 +32,8 @@ class exportCatalogCommand extends Command
         $fileName = $this->argument('fileName');
         // export catalog to csv using catalogService
         $catalog = $catalogService->exportCatalog("$fileName" ?? 'catalog.csv');
-        $this->table(['id', 'item_id', 'item_name', 'item_category', 'description', ], $catalog);
+        $this->table(['id', 'item_id', 'item_name', 'item_category', 'description'], $catalog);
+
         return 0;
     }
 }

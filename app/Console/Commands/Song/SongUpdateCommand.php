@@ -3,7 +3,6 @@
 namespace App\Console\Commands\Song;
 
 use App\Models\Song;
-use Doctrine\DBAL\Exception;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -34,64 +33,68 @@ class SongUpdateCommand extends Command
     {
         // http://localhost:3000/song
         $data = [];
-        $updated =[];
+        $updated = [];
         $songs = Song::all();
-        $base_url = "http://localhost:3000/music/update?id=";
+        $base_url = 'http://localhost:3000/music/update?id=';
 
         $id = $this->argument('id');
         if ($id !== null) {
             $song = Song::findOrFail($id);
 
-            if ($song !== null){
+            if ($song !== null) {
                 $this->updateSong($base_url, $song, $songs, $updated);
+
                 return 0;
             }
+
             return 0;
         }
 
         /** @var Song $song */
-        foreach ($songs as  $song){
-            if ($song->image === null){
+        foreach ($songs as  $song) {
+            if ($song->image === null) {
                 $total = $this->updateSong($base_url, $song, $songs, $updated);
                 sleep(20);
-            }else{
+            } else {
                 $updated[] = $song->title;
             }
 
             $data[] = [
-                'id' =>  $song->id,
-                'title' =>  $song->title,
-                'status' =>'updated',
+                'id' => $song->id,
+                'title' => $song->title,
+                'status' => 'updated',
             ];
         }
         $headers = [
             'id',
             'title',
-            'status'
+            'status',
         ];
 
         $this->output->table($headers, $data);
 
         $total = count($data);
         $this->output->info("Updated  $total songs");
-        info("=========================================UPDATE SONGS==========================================");
+        info('=========================================UPDATE SONGS==========================================');
+
         return 0;
     }
 
     /**
-     * @param string $base_url
-     * @param Model|Song $song
-     * @param Collection $songs
-     * @param array $updated
+     * @param  string  $base_url
+     * @param  Model|Song  $song
+     * @param  Collection  $songs
+     * @param  array  $updated
      * @return int
      */
     public function updateSong(string $base_url, Model|Song $song, Collection $songs, array $updated): int
     {
-        Http::get($base_url . $song->id);
+        Http::get($base_url.$song->id);
 
         $total = count($songs);
         $rest = $total - count($updated);
         $this->output->info("Updated  $song->title   | $rest songs left");
+
         return $total;
     }
 }

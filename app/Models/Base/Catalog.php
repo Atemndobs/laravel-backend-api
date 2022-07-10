@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Catalog
- * 
+ *
  * @property int $id
  * @property string|null $item_id
  * @property string|null $item_name
@@ -24,26 +24,23 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $published_at
  * @property int|null $created_by_id
  * @property int|null $updated_by_id
- * 
  * @property AdminUser|null $admin_user
- *
- * @package App\Models\Base
  */
 class Catalog extends Model
 {
-	protected $table = 'catalogs';
+    protected $table = 'catalogs';
 
-	protected $casts = [
-		'created_by_id' => 'int',
-		'updated_by_id' => 'int'
-	];
+    protected $casts = [
+        'created_by_id' => 'int',
+        'updated_by_id' => 'int',
+    ];
 
-	protected $dates = [
-		'published_at'
-	];
+    protected $dates = [
+        'published_at',
+    ];
 
-	public function admin_user()
-	{
-		return $this->belongsTo(AdminUser::class, 'updated_by_id');
-	}
+    public function admin_user()
+    {
+        return $this->belongsTo(AdminUser::class, 'updated_by_id');
+    }
 }

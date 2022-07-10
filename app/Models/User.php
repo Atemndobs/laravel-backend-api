@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Search;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

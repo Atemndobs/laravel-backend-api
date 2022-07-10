@@ -6,21 +6,16 @@ use App\Models\File;
 use App\Models\Song;
 use App\Services\UploadService;
 use Dbfx\LaravelStrapi\LaravelStrapi;
-use Http\Client\Exception;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use function Psy\debug;
-use const Widmogrod\Monad\Writer\log;
 
 class StrapiSongService
 {
-    public string $baseUrl ;
+    public string $baseUrl;
+
     public LaravelStrapi $laravelStrapi;
 
-    /**
-     */
     public function __construct()
     {
         $this->baseUrl = config('strapi.url');
@@ -28,7 +23,6 @@ class StrapiSongService
 
         $this->laravelStrapi = new LaravelStrapi();
     }
-
 
     /**
      * @return array
@@ -42,15 +36,15 @@ class StrapiSongService
             $response = Http::get('http://host.docker.internal:1337/api/upload/files');
             $strapiUploads = $response->json();
             $prepareImports = $this->prepareImports($strapiUploads);
-
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             info($exception->getMessage());
         }
+
         return $prepareImports;
     }
 
     /**
-     * @param array $song
+     * @param  array  $song
      * @return array
      */
     public function importStrapiSong(array $song)
@@ -59,7 +53,7 @@ class StrapiSongService
     }
 
     /**
-     * @param string $title
+     * @param  string  $title
      * @return mixed
      */
     public function existing(string $title)
@@ -75,28 +69,29 @@ class StrapiSongService
     {
         $response = [];
         $uploadService = new UploadService();
-        foreach ($strapiUploads as $upload){
+        foreach ($strapiUploads as $upload) {
             $response = $this->importAndSave($upload, $response, $uploadService);
         }
+
         return $response;
     }
 
     /**
-     * @param mixed $upload
-     * @param array $response
-     * @param UploadService $uploadService
+     * @param  mixed  $upload
+     * @param  array  $response
+     * @param  UploadService  $uploadService
      * @return array
      */
     protected function importAndSave(mixed $upload, array $response, UploadService $uploadService): array
     {
-        $base = "http://mage.tech:1337";
+        $base = 'http://mage.tech:1337';
         $song = new Song();
 
         if ($existing = $this->existing($upload['name'])) {
             $response[] = $existing;
         } else {
             $song->title = $upload['name'];
-            $song->path = $base . $upload['url'];
+            $song->path = $base.$upload['url'];
             $song->link = $upload['hash'];
             $song->source = $upload['provider'];
             $song->status = 'queued';
@@ -108,8 +103,8 @@ class StrapiSongService
             $new_file_name .= $ext;
             $song->slug = Str::slug($new_file_name, '_');
 
-            $api_url = env('APP_URL') . '/api/songs/match/';
-            $song->related_songs = $api_url . $song->slug;
+            $api_url = env('APP_URL').'/api/songs/match/';
+            $song->related_songs = $api_url.$song->slug;
 
             $uploadService->fillSong(
                 $song->source,
@@ -123,6 +118,7 @@ class StrapiSongService
 
             $this->dowloadStrapiSong($song);
         }
+
         return $response;
     }
 
@@ -130,7 +126,7 @@ class StrapiSongService
     {
         $slug = $song->slug;
         $url = $song->path;
-       // $req_url = str_replace('http://mage.tech', 'http://localhost', $url);
+        // $req_url = str_replace('http://mage.tech', 'http://localhost', $url);
         $req_url = str_replace('http://mage.tech', 'http://host.docker.internal', $url);
 
         $full_path = $this->getSongByLink($slug, $req_url);
@@ -143,16 +139,17 @@ class StrapiSongService
 
     public function deleteStrapiFile(Song $song)
     {
-        $file =  File::where('name', '=', $song->title)->first() ;
+        $file = File::where('name', '=', $song->title)->first();
         $id = $file->id;
         $req = Http::delete("http://host.docker.internal:1337/api/upload/files/$id");
         $file->delete();
+
         return $req->status();
     }
 
     /**
-     * @param string|null $slug
-     * @param array|string|null $req_url
+     * @param  string|null  $slug
+     * @param  array|string|null  $req_url
      * @return string
      */
     public function getSongByLink(?string $slug, array|string|null $req_url): string
@@ -163,6 +160,7 @@ class StrapiSongService
         $filename = "$new_file_name.$ext";
 
         file_put_contents("storage/app/public/audio/$filename", fopen($req_url, 'r'));
+
         return asset(Storage::url("audio/$filename"));
     }
 }

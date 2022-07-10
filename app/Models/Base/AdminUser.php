@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class AdminUser
- * 
+ *
  * @property int $id
  * @property string|null $firstname
  * @property string|null $lastname
@@ -45,7 +45,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * @property int|null $created_by_id
  * @property int|null $updated_by_id
- * 
  * @property \App\Models\AdminUser|null $admin_user
  * @property Collection|AdminPermission[] $admin_permissions
  * @property Collection|AdminRole[] $admin_roles
@@ -65,112 +64,110 @@ use Illuminate\Database\Eloquent\Model;
  * @property Collection|UpPermission[] $up_permissions
  * @property Collection|UpRole[] $up_roles
  * @property Collection|UpUser[] $up_users
- *
- * @package App\Models\Base
  */
 class AdminUser extends Model
 {
-	protected $table = 'admin_users';
+    protected $table = 'admin_users';
 
-	protected $casts = [
-		'is_active' => 'bool',
-		'blocked' => 'bool',
-		'created_by_id' => 'int',
-		'updated_by_id' => 'int'
-	];
+    protected $casts = [
+        'is_active' => 'bool',
+        'blocked' => 'bool',
+        'created_by_id' => 'int',
+        'updated_by_id' => 'int',
+    ];
 
-	public function admin_user()
-	{
-		return $this->belongsTo(\App\Models\AdminUser::class, 'updated_by_id');
-	}
+    public function admin_user()
+    {
+        return $this->belongsTo(\App\Models\AdminUser::class, 'updated_by_id');
+    }
 
-	public function admin_permissions()
-	{
-		return $this->hasMany(AdminPermission::class, 'updated_by_id');
-	}
+    public function admin_permissions()
+    {
+        return $this->hasMany(AdminPermission::class, 'updated_by_id');
+    }
 
-	public function admin_roles()
-	{
-		return $this->hasMany(AdminRole::class, 'updated_by_id');
-	}
+    public function admin_roles()
+    {
+        return $this->hasMany(AdminRole::class, 'updated_by_id');
+    }
 
-	public function admin_users()
-	{
-		return $this->hasMany(\App\Models\AdminUser::class, 'updated_by_id');
-	}
+    public function admin_users()
+    {
+        return $this->hasMany(\App\Models\AdminUser::class, 'updated_by_id');
+    }
 
-	public function admin_users_roles_link()
-	{
-		return $this->hasOne(AdminUsersRolesLink::class, 'user_id');
-	}
+    public function admin_users_roles_link()
+    {
+        return $this->hasOne(AdminUsersRolesLink::class, 'user_id');
+    }
 
-	public function audiences()
-	{
-		return $this->hasMany(Audience::class, 'updated_by_id');
-	}
+    public function audiences()
+    {
+        return $this->hasMany(Audience::class, 'updated_by_id');
+    }
 
-	public function comments_comments()
-	{
-		return $this->hasMany(CommentsComment::class, 'updated_by_id');
-	}
+    public function comments_comments()
+    {
+        return $this->hasMany(CommentsComment::class, 'updated_by_id');
+    }
 
-	public function comments_comment_reports()
-	{
-		return $this->hasMany(CommentsCommentReport::class, 'updated_by_id');
-	}
+    public function comments_comment_reports()
+    {
+        return $this->hasMany(CommentsCommentReport::class, 'updated_by_id');
+    }
 
-	public function files()
-	{
-		return $this->hasMany(File::class, 'updated_by_id');
-	}
+    public function files()
+    {
+        return $this->hasMany(File::class, 'updated_by_id');
+    }
 
-	public function i18n_locales()
-	{
-		return $this->hasMany(I18nLocale::class, 'updated_by_id');
-	}
+    public function i18n_locales()
+    {
+        return $this->hasMany(I18nLocale::class, 'updated_by_id');
+    }
 
-	public function music()
-	{
-		return $this->hasMany(Music::class, 'updated_by_id');
-	}
+    public function music()
+    {
+        return $this->hasMany(Music::class, 'updated_by_id');
+    }
 
-	public function navigations()
-	{
-		return $this->hasMany(Navigation::class, 'updated_by_id');
-	}
+    public function navigations()
+    {
+        return $this->hasMany(Navigation::class, 'updated_by_id');
+    }
 
-	public function navigations_items()
-	{
-		return $this->hasMany(NavigationsItem::class, 'updated_by_id');
-	}
+    public function navigations_items()
+    {
+        return $this->hasMany(NavigationsItem::class, 'updated_by_id');
+    }
 
-	public function navigations_items_relateds()
-	{
-		return $this->hasMany(NavigationsItemsRelated::class, 'updated_by_id');
-	}
+    public function navigations_items_relateds()
+    {
+        return $this->hasMany(NavigationsItemsRelated::class, 'updated_by_id');
+    }
 
-	public function songs()
-	{
-		return $this->hasMany(Song::class, 'updated_by_id');
-	}
+    public function songs()
+    {
+        return $this->hasMany(Song::class, 'updated_by_id');
+    }
 
-	public function strapi_api_tokens()
-	{
-		return $this->hasMany(StrapiApiToken::class, 'updated_by_id');
-	}
+    public function strapi_api_tokens()
+    {
+        return $this->hasMany(StrapiApiToken::class, 'updated_by_id');
+    }
 
-	public function up_permissions()
-	{
-		return $this->hasMany(UpPermission::class, 'updated_by_id');
-	}
+    public function up_permissions()
+    {
+        return $this->hasMany(UpPermission::class, 'updated_by_id');
+    }
 
-	public function up_roles()
-	{
-		return $this->hasMany(UpRole::class, 'updated_by_id');
-	}
+    public function up_roles()
+    {
+        return $this->hasMany(UpRole::class, 'updated_by_id');
+    }
 
-	public function up_users()
-	{
-		return $this->hasMany(UpUser::class, 'updated_by_id');
-	}
+    public function up_users()
+    {
+        return $this->hasMany(UpUser::class, 'updated_by_id');
+    }
 }
