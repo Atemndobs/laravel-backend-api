@@ -7,6 +7,8 @@ use App\Jobs\ClassifySongJob;
 use App\Models\Song;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Exceptions\SongException\NotAnalyzedException;
+use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\ArrayShape;
 
 class ClassifyService
 {
@@ -74,12 +76,12 @@ class ClassifyService
      * @return array|Song
      * @throws NotAnalyzedException
      */
-    public function reClassify(array|string|null $slug = ''): Song|array
+    public function reClassify(array|string|null $slug = null): Song|array
     {
-        if ($slug == '') {
-            $songs = Song::where('analyzed', '=', true);
+        if ($slug == null) {
+            $songs = Song::where('analyzed', '=', true)->get();
         } else {
-            $songs = Song::where('slug', '=', $slug)->get('slug');
+            $songs = Song::where('slug', '=', $slug)->get();
             if ($songs->count() == 0) {
                 throw new ModelNotFoundException("$slug does not exist , Please upload and try again");
             }
@@ -87,24 +89,65 @@ class ClassifyService
                 throw new ModelNotFoundException("$slug is not unique , Please upload and try again");
             }
             $song = $songs->first();
-            dump([
-                'analyzed' => $song->analyzed,
-                'int_vale' => $song->analyzed == 1,
-                'slug' => $song->slug]);
-            if ((int)$song->analyzed !== 1) {
-
-                dump(['analyzed' => $song->analyzed, 'slug' => $song->slug]);
+            $analyzed = DB::table('songs')->where('slug', '=', $slug)->first()->analyzed;
+            if (!$analyzed) {
                 $message = "Song $slug is not analyzed yet, please analyze it first";
                 throw new NotAnalyzedException($message);
             }
             /** @var Song $song */
             if ($song->status == 're-classified' || $song->classification_properties != null) {
                 $message = "Song $slug is already classified";
-                throw new NotClassifiedException($message);
+                return [$this->buildResponse($song->toArray(), $song)];
             }
-            return $song->toArray();
+        }
+        // reclassify songs
+        $response = [];
+        if (count($songs) > 1) {
+            foreach ($songs as $song) {
+
+                // create classification properties array with emotion, danceability, aggressiveness, energy,
+                // if mood_happy is > 0.5 emotion is happy, else sad
+                // if danceability > 50%, danceability is true, if danceability < 50%, danceability is false
+                // if energy > 50%, energy is high, if energy < 50%, energy is low
+                // if relaxed > 50%, relaxed is true, if relaxed < 50%, relaxed is false
+                /** @var Song $song */
+                $classification_properties = [
+                    'emotion' => $song->happy > 0.5 ? 'happy' : 'sad',
+                    'energy' => $song->energy > 0.5 ? 'high' : 'low',
+                    'danceability' => $song->danceability > 0.5,
+                    'relaxed' => $song->relaxed > 0.5,
+                ];
+                $song->status = 're-classified';
+                $song->classification_properties = $classification_properties;
+                $song->save();
+                $savedSong = $song->toArray();
+                $response[] = $this->buildResponse($savedSong, $song);
+            }
         }
 
-        return $songs->get('slug')->toArray();
+        return $response;
+    }
+
+    /**
+     * @param array $savedSong
+     * @param Song $song
+     * @return array
+     */
+    #[ArrayShape(['slug' => "mixed", 'classification_properties' => "false|string", 'values' => "false|string"])]
+    public function buildResponse(array $savedSong, Song $song): array
+    {
+        return [
+            'slug' => $savedSong['slug'],
+            'classification_properties' => json_encode($savedSong['classification_properties']),
+            'values' => json_encode(
+                [
+                    'moood_happy' => $song['happy'],
+                    'moood_sad' => $song['sad'],
+                    'energy' => $song['energy'],
+                    'danceability' => $song['danceability'],
+                    'relaxed' => $song['relaxed'],
+                ]
+            )
+        ];
     }
 }

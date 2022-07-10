@@ -54,23 +54,23 @@ services:
             - sail
 #DOCKER_BUILDKIT=1 docker build -t recommenders:cpu --build-arg ENV=cpu --build-arg VIRTUAL_ENV=conda --name=recommenders "."   && docker run -p 8888:8888 -d recommenders:cpu
 
-    recommenders:
-        container_name: recommenders
-        build:
-            context: ./docker/recommenders
-            dockerfile: Dockerfile
-            args:
-                ENV: cpu
-                VIRTUAL_ENV: conda
-        image: recommenders:cpu
-        environment:
-            DOCKER_BUILDKIT: 1
-        ports:
-            - 9999:8888
-        volumes:
-            - ./../recommenders:/app
-        networks:
-            - sail
+#    recommenders:
+#        container_name: recommenders
+#        build:
+#            context: ./docker/recommenders
+#            dockerfile: Dockerfile
+#            args:
+#                ENV: cpu
+#                VIRTUAL_ENV: conda
+#        image: recommenders:cpu
+#        environment:
+#            DOCKER_BUILDKIT: 1
+#        ports:
+#            - 9999:8888
+#        volumes:
+#            - ./../recommenders:/app
+#        networks:
+#            - sail
 # docker run -v /home/atem/sites/curator/laravel:/project:delegated  -e SHIFT_TOKEN=1de6f5bf67bb2ef2975910bceb154f175e70c81a -e GIT_AUTHOR="Atem" -e GIT_EMAIL="atemndobs@yahoo.com" shift
 # create docer container from docker/shift/DockerFile and add environment variables  SHIFT_TOKEN=1de6f5bf67bb2ef2975910bceb154f175e70c81a , GIT_AUTHOR="Atem" , GIT_EMAIL="atemndobs@yahoo.com" and bind mount this project to /project in the container
 # mount shift/loader.sh  to /run/loader.sh in the container

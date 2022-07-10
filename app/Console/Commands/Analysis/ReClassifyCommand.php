@@ -13,7 +13,7 @@ class ReClassifyCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'song:reclassify {slug?}';
+    protected $signature = 'song:reclassify {slug?} {--all}';
 
     /**
      * The console command description.
@@ -30,9 +30,47 @@ class ReClassifyCommand extends Command
     public function handle()
     {
         $slug = $this->argument('slug');
+        $all = $this->option('all');
         $classifyService = new ClassifyService();
+        // if slug is empty, write console info : no slug given, all songs will be reclassified
+
+        // start progress bar
+
+        if (empty($slug)) {
+            $this->info('No slug given, all songs will be reclassified');
+            if ($all) {
+                $this->info('All songs will be reclassified');
+                return $this->classify($classifyService, $slug);
+            }
+            $answer = $this->ask('Are you sure you want to reclassify all songs? (y/n)');
+            if ($answer != 'y') {
+                $this->error('Aborting');
+                return 1;
+            }
+        }else{
+            $this->info('Reclassifying song with slug: '.$slug);
+        }
+        return $this->classify($classifyService, $slug);
+
+    }
+
+    /**
+     * @param ClassifyService $classifyService
+     * @param array|string|null $slug
+     * @return int
+     */
+    public function classify(ClassifyService $classifyService, array|string|null $slug): int
+    {
+        $bar = $this->output->createProgressBar(100);
+        $bar->start();
+        $this->newLine();
+
         try {
             $classifiedSongs = $classifyService->reClassify($slug);
+            $this->table(['slug', 'classification_properties', 'values'], $classifiedSongs);
+            $this->newLine();
+            $bar->finish();
+            return 0;
         } catch (NotAnalyzedException $e) {
             $this->error($e->getMessage());
             $this->table(['slug', 'message'], [
@@ -40,9 +78,5 @@ class ReClassifyCommand extends Command
             ]);
             return 1;
         }
-
-        // table of classified songs
-        $this->table(['slug', 'classification_properties',], $classifiedSongs);
-        return 0;
     }
 }
