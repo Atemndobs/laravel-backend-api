@@ -10,6 +10,7 @@ use ZipArchive;
 class DbImportDumpCommand extends Command
 {
     use Tools;
+
     /**
      * The name and signature of the console command.
      *

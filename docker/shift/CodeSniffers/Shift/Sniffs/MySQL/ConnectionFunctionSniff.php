@@ -31,6 +31,7 @@ class ConnectionFunctionSniff extends \PHP_CodeSniffer\Standards\Generic\Sniffs\
 
         if (count($arguments) == 5) {
             $phpcsFile->addError($error, $stackPtr, $type, $data);
+
             return;
         }
 
@@ -40,7 +41,7 @@ class ConnectionFunctionSniff extends \PHP_CodeSniffer\Standards\Generic\Sniffs\
             $phpcsFile->fixer->replaceToken($stackPtr, $this->forbiddenFunctions[$pattern]);
 
             if (count($arguments) > 3) {
-                for ($i = $arguments[3]; $i < $tokens[$open_parenthesis]['parenthesis_closer']; ++$i) {
+                for ($i = $arguments[3]; $i < $tokens[$open_parenthesis]['parenthesis_closer']; $i++) {
                     $phpcsFile->fixer->replaceToken($i, '');
                 }
             }

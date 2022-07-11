@@ -6,7 +6,7 @@ use Rector\Php72\Rector\Assign\ListEachRector;
 use Rector\Php72\Rector\Assign\ReplaceEachAssignmentWithKeyCurrentRector;
 use Rector\Php72\Rector\While_\WhileEachToForeachRector;
 
-return static function (\Rector\Config\RectorConfig $rectorConfig): void {
+return static function (Rector\Config\RectorConfig $rectorConfig): void {
     $skip = [
         'vendor/',
         'node_modules/',

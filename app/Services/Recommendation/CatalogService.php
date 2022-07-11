@@ -91,7 +91,7 @@ class CatalogService
                 'features_list' => $catalog->features_list,
             ];
         }
-        if (!$file_name) {
+        if (! $file_name) {
             $file_name = 'catalog.csv';
         }
         $file = fopen($file_name, 'w');

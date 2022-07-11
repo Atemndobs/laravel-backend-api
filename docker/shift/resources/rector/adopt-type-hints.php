@@ -11,7 +11,7 @@ use Rector\Php80\Rector\FunctionLike\UnionTypesRector;
 use Rector\TypeDeclaration\Rector\FunctionLike\ParamTypeDeclarationRector;
 use Rector\TypeDeclaration\Rector\FunctionLike\ReturnTypeDeclarationRector;
 
-return static function (\Rector\Config\RectorConfig $rectorConfig): void {
+return static function (Rector\Config\RectorConfig $rectorConfig): void {
     $skip = [
         'vendor/',
         'node_modules/',

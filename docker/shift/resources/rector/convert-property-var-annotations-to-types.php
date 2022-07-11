@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Rector\Php74\Rector\Property\TypedPropertyRector;
 
-return static function (\Rector\Config\RectorConfig $rectorConfig): void {
+return static function (Rector\Config\RectorConfig $rectorConfig): void {
     $skip = [
         'vendor/',
         'node_modules/',

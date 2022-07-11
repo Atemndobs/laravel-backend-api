@@ -6,7 +6,7 @@ use Rector\Php70\Rector\Assign\ListSplitStringRector;
 use Rector\Php70\Rector\Assign\ListSwapArrayOrderRector;
 use Rector\Php71\Rector\List_\ListToArrayDestructRector;
 
-return static function (\Rector\Config\RectorConfig $rectorConfig): void {
+return static function (Rector\Config\RectorConfig $rectorConfig): void {
     $skip = [
         'vendor/',
         'node_modules/',

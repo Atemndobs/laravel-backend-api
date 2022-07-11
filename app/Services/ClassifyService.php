@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
-use App\Exceptions\SongException\NotClassifiedException;
+use App\Exceptions\SongException\NotAnalyzedException;
 use App\Jobs\ClassifySongJob;
 use App\Models\Song;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Exceptions\SongException\NotAnalyzedException;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -35,6 +34,7 @@ class ClassifyService
             ];
         }
         ClassifySongJob::dispatch($track);
+
         return [
             'status' => 'qeued',
             'track' => $track,
@@ -72,8 +72,9 @@ class ClassifyService
     }
 
     /**
-     * @param array|string|null $slug
+     * @param  array|string|null  $slug
      * @return array|Song
+     *
      * @throws NotAnalyzedException
      */
     public function reClassify(array|string|null $slug = null): Song|array
@@ -90,13 +91,14 @@ class ClassifyService
             }
             $song = $songs->first();
             $analyzed = DB::table('songs')->where('slug', '=', $slug)->first()->analyzed;
-            if (!$analyzed) {
+            if (! $analyzed) {
                 $message = "Song $slug is not analyzed yet, please analyze it first";
                 throw new NotAnalyzedException($message);
             }
             /** @var Song $song */
             if ($song->status == 're-classified' || $song->classification_properties != null) {
                 $message = "Song $slug is already classified";
+
                 return [$this->buildResponse($song->toArray(), $song)];
             }
         }
@@ -129,11 +131,11 @@ class ClassifyService
     }
 
     /**
-     * @param array $savedSong
-     * @param Song $song
+     * @param  array  $savedSong
+     * @param  Song  $song
      * @return array
      */
-    #[ArrayShape(['slug' => "mixed", 'classification_properties' => "false|string", 'values' => "false|string"])]
+    #[ArrayShape(['slug' => 'mixed', 'classification_properties' => 'false|string', 'values' => 'false|string'])]
     public function buildResponse(array $savedSong, Song $song): array
     {
         return [
@@ -147,7 +149,7 @@ class ClassifyService
                     'danceability' => $song['danceability'],
                     'relaxed' => $song['relaxed'],
                 ]
-            )
+            ),
         ];
     }
 }

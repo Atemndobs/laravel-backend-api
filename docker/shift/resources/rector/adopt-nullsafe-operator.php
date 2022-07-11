@@ -16,7 +16,7 @@ use PhpParser\Node\Expr\Ternary;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-if (!class_exists(ShiftNullsafeOperatorRector::class)) {
+if (! class_exists(ShiftNullsafeOperatorRector::class)) {
     final class ShiftNullsafeOperatorRector extends AbstractRector
     {
         /**
@@ -53,15 +53,15 @@ if (!class_exists(ShiftNullsafeOperatorRector::class)) {
 
         private function shouldSkipTernary(Ternary $ternary): bool
         {
-            if (!$this->canTernaryReturnNull($ternary)) {
+            if (! $this->canTernaryReturnNull($ternary)) {
                 return true;
             }
 
-            if (!$ternary->cond instanceof Identical && !$ternary->cond instanceof NotIdentical) {
+            if (! $ternary->cond instanceof Identical && ! $ternary->cond instanceof NotIdentical) {
                 return true;
             }
 
-            if (!$this->hasNullComparison($ternary->cond)) {
+            if (! $this->hasNullComparison($ternary->cond)) {
                 return true;
             }
 
@@ -80,7 +80,7 @@ if (!class_exists(ShiftNullsafeOperatorRector::class)) {
             if ($this->valueResolver->isNull($expr)) {
                 if ($this->isMethodCallOrPropertyFetch($if)) {
                     /** @var MethodCall|PropertyFetch $if */
-                    return !$this->nodeComparator->areNodesEqual($if->var, $object);
+                    return ! $this->nodeComparator->areNodesEqual($if->var, $object);
                 }
 
                 return false;
@@ -88,7 +88,7 @@ if (!class_exists(ShiftNullsafeOperatorRector::class)) {
 
             if ($this->isMethodCallOrPropertyFetch($expr)) {
                 /** @var MethodCall|PropertyFetch $expr */
-                return !$this->nodeComparator->areNodesEqual($expr->var, $object);
+                return ! $this->nodeComparator->areNodesEqual($expr->var, $object);
             }
 
             return false;

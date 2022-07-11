@@ -20,7 +20,7 @@ class TranslateMethodsSniff implements \PHP_CodeSniffer\Sniffs\Sniff
         // tokens to listen for.
         $string = '<?php ';
         foreach ($this->forbiddenMethodNames as $name) {
-            $string .= $name . '();';
+            $string .= $name.'();';
         }
 
         $register = [];
@@ -56,7 +56,6 @@ class TranslateMethodsSniff implements \PHP_CodeSniffer\Sniffs\Sniff
         }
 
         $this->addError($phpcsFile, $stackPtr, $function);
-
     }
 
     protected function addError($phpcsFile, $stackPtr, $function, $pattern = null)

@@ -26,12 +26,12 @@ $files = file($argv[1], FILE_IGNORE_NEW_LINES);
 $classes = [];
 
 foreach ($files as $path) {
-    $contents = file_get_contents(getcwd() . '/' . $path);
+    $contents = file_get_contents(getcwd().'/'.$path);
 
     $matches = [];
     $count = preg_match_all('/(App::|app->)makeWith\(([^,]+),\s*(.+?)\);/', $contents, $matches, PREG_SET_ORDER);
 
-    if (!$count) {
+    if (! $count) {
         continue;
     }
 
@@ -43,7 +43,7 @@ foreach ($files as $path) {
         $class_name = substr($match[2], 0, -7);
 
         $imports = [];
-        $found = preg_match('/^use\s*(.+?\\\\' . $class_name . ');$/m', $contents, $imports);
+        $found = preg_match('/^use\s*(.+?\\\\'.$class_name.');$/m', $contents, $imports);
 
         if ($found) {
             $class_name = $imports[1];
@@ -62,7 +62,7 @@ foreach ($files as $path) {
             });
 
         try {
-            $ast = $parser->parse('<?php ' . $match[3] . ';');
+            $ast = $parser->parse('<?php '.$match[3].';');
         } catch (PhpParser\Error $e) {
             echo 'Unable to parse: ', $match[3], PHP_EOL, ' in: ', $path, PHP_EOL, PHP_EOL;
             continue;
@@ -81,7 +81,7 @@ foreach ($files as $path) {
             })
             ->all();
 
-        $contents = str_replace($match[0], $match[1] . 'makeWith(' . $match[2] . ', [' . implode(', ', $values) . ']);', $contents);
+        $contents = str_replace($match[0], $match[1].'makeWith('.$match[2].', ['.implode(', ', $values).']);', $contents);
     }
 
     file_put_contents($path, $contents);

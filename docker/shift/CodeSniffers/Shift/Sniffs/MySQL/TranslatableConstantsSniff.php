@@ -23,7 +23,7 @@ class TranslatableConstantsSniff implements \PHP_CodeSniffer\Sniffs\Sniff
     {
         $tokens = $phpcsFile->getTokens();
         $constant = $tokens[$stackPtr]['content'];
-        if (!in_array($constant, array_keys($this->constants))) {
+        if (! in_array($constant, array_keys($this->constants))) {
             return;
         }
 

@@ -5,7 +5,6 @@ require 'vendor/autoload.php';
 $classes = array_merge(controller_methods(), middleware_methods());
 echo json_encode($classes);
 
-
 // helpers...
 function class_from_path($path)
 {
@@ -23,7 +22,7 @@ function controller_methods()
         try {
             $class = new ReflectionClass(class_from_path($file));
         } catch (ReflectionException $e) {
-            error_log('could not reflect class: ' . class_from_path($file) . ' in: ' . $file);
+            error_log('could not reflect class: '.class_from_path($file).' in: '.$file);
             continue;
         }
 
@@ -41,7 +40,7 @@ function controller_methods()
                     try {
                         $is_request = is_request_parameter($parameter);
                     } catch (ReflectionException $exception) {
-                        error_log($exception->getMessage() . ' for ' . $file);
+                        error_log($exception->getMessage().' for '.$file);
                         $is_request = false;
                     }
 
@@ -67,7 +66,7 @@ function middleware_methods()
 {
     global $argv;
 
-    if (!isset($argv[2])) {
+    if (! isset($argv[2])) {
         return [];
     }
 
@@ -81,7 +80,7 @@ function middleware_methods()
             continue;
         }
 
-        if (!$class->hasMethod('handle')) {
+        if (! $class->hasMethod('handle')) {
             continue;
         }
         $method = $class->getMethod('handle');
@@ -109,7 +108,7 @@ function is_request_parameter(ReflectionParameter $parameter)
         return false;
     }
 
-    if (!$parameter->getType() instanceof ReflectionNamedType) {
+    if (! $parameter->getType() instanceof ReflectionNamedType) {
         return false;
     }
 
@@ -134,7 +133,7 @@ function is_form_request_parameter(?ReflectionParameter $parameter)
         return false;
     }
 
-    if (!$parameter->getType() instanceof ReflectionNamedType) {
+    if (! $parameter->getType() instanceof ReflectionNamedType) {
         return false;
     }
 

@@ -24,6 +24,7 @@ class FetchFieldFunctionSniff extends \PHP_CodeSniffer\Standards\Generic\Sniffs\
         $has_second_argument = $phpcsFile->findNext(T_COMMA, ($open_parenthesis + 1), $tokens[$open_parenthesis]['parenthesis_closer']);
         if ($has_second_argument !== false) {
             $phpcsFile->addError($error, $stackPtr, $type, $data);
+
             return;
         }
 

@@ -11,7 +11,7 @@ use PhpParser\Node\Stmt\Property;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-if (!class_exists(RemoveLaravelDocblocks::class)) {
+if (! class_exists(RemoveLaravelDocblocks::class)) {
     final class RemoveLaravelDocblocks extends AbstractRector
     {
         private $methodComments = [
@@ -210,7 +210,7 @@ if (!class_exists(RemoveLaravelDocblocks::class)) {
             // This could be handy if we need to determine the type of file (based on path/name)
             // $this->file->getSmartFileInfo()->getRealPath()
 
-            if (!$node->getDocComment()) {
+            if (! $node->getDocComment()) {
                 return $node;
             }
 
@@ -236,7 +236,7 @@ if (!class_exists(RemoveLaravelDocblocks::class)) {
 
         private function refactorMethod(ClassMethod $method): ClassMethod
         {
-            if (!isset($this->methodComments[$method->name->name])) {
+            if (! isset($this->methodComments[$method->name->name])) {
                 return $method;
             }
 
@@ -245,7 +245,7 @@ if (!class_exists(RemoveLaravelDocblocks::class)) {
 
         private function refactorProperty(Property $property): Property
         {
-            if (!isset($this->propertyComments[$property->props[0]->name->name])) {
+            if (! isset($this->propertyComments[$property->props[0]->name->name])) {
                 return $property;
             }
 
@@ -254,7 +254,7 @@ if (!class_exists(RemoveLaravelDocblocks::class)) {
 
         private function refactorConstant(ClassConst $constant): ClassConst
         {
-            if (!isset($this->constantComments[$constant->consts[0]->name->name])) {
+            if (! isset($this->constantComments[$constant->consts[0]->name->name])) {
                 return $constant;
             }
 

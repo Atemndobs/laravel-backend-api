@@ -59,12 +59,12 @@ class ExplicitLinkFunctionsSniff extends \PHP_CodeSniffer\Standards\Generic\Snif
                     $phpcsFile->fixer->addContent($open_parenthesis, '$mysqli_link, ');
                 } else {
                     $parameter = '';
-                    for ($i = $next_token; $i < $tokens[$open_parenthesis]['parenthesis_closer']; ++$i) {
+                    for ($i = $next_token; $i < $tokens[$open_parenthesis]['parenthesis_closer']; $i++) {
                         $parameter .= $tokens[$i]['content'];
                         $phpcsFile->fixer->replaceToken($i, '');
                     }
 
-                    $phpcsFile->fixer->addContent($open_parenthesis, trim(ltrim($parameter, ',')) . ', ');
+                    $phpcsFile->fixer->addContent($open_parenthesis, trim(ltrim($parameter, ',')).', ');
                 }
             } else {
                 $next_token = $phpcsFile->findNext(T_WHITESPACE, ($open_parenthesis + 1), $tokens[$open_parenthesis]['parenthesis_closer'], true);

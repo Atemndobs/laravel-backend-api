@@ -4,10 +4,9 @@ namespace App\Console\Commands\Db;
 
 trait Tools
 {
-
     /**
-     * @param bool|array $files
-     * @param int $count
+     * @param  bool|array  $files
+     * @param  int  $count
      * @return mixed
      */
     public function backupTable(bool|array $files, int $count): mixed
@@ -20,7 +19,7 @@ trait Tools
             $date = date_create_from_format('Y-m-d-H-i-s', $fileDate);
             // if data is today's date, actualDate = Today, else date = YYYY-MM-DD
             // $date->format('Y-m-d') == date('Y-m-d') ? 'Today' : $date->format('Y-m-d')
-            $actualDate = $date->format('Y-m-d') == date('Y-m-d') ? "<fg=green>Today at </>" : "<fg=yellow>{$date->format('Y-m-d')}</>";
+            $actualDate = $date->format('Y-m-d') == date('Y-m-d') ? '<fg=green>Today at </>' : "<fg=yellow>{$date->format('Y-m-d')}</>";
 
             // styles black, red, green, yellow, blue, magenta, cyan, white, default, gray, bright-red, bright-green,
             //  bright-yellow, bright-blue, bright-magenta, bright-cyan, bright-white
@@ -34,6 +33,7 @@ trait Tools
             ];
         }
         $this->table(['file', 'name', 'date', 'time'], $data);
+
         return $file;
     }
 }

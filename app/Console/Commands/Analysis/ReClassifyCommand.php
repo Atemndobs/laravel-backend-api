@@ -40,23 +40,25 @@ class ReClassifyCommand extends Command
             $this->info('No slug given, all songs will be reclassified');
             if ($all) {
                 $this->info('All songs will be reclassified');
+
                 return $this->classify($classifyService, $slug);
             }
             $answer = $this->ask('Are you sure you want to reclassify all songs? (y/n)');
             if ($answer != 'y') {
                 $this->error('Aborting');
+
                 return 1;
             }
-        }else{
+        } else {
             $this->info('Reclassifying song with slug: '.$slug);
         }
-        return $this->classify($classifyService, $slug);
 
+        return $this->classify($classifyService, $slug);
     }
 
     /**
-     * @param ClassifyService $classifyService
-     * @param array|string|null $slug
+     * @param  ClassifyService  $classifyService
+     * @param  array|string|null  $slug
      * @return int
      */
     public function classify(ClassifyService $classifyService, array|string|null $slug): int
@@ -70,12 +72,14 @@ class ReClassifyCommand extends Command
             $this->table(['slug', 'classification_properties', 'values'], $classifiedSongs);
             $this->newLine();
             $bar->finish();
+
             return 0;
         } catch (NotAnalyzedException $e) {
             $this->error($e->getMessage());
             $this->table(['slug', 'message'], [
                 [$slug, $e->getMessage()],
             ]);
+
             return 1;
         }
     }

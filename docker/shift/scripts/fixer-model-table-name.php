@@ -13,12 +13,12 @@ foreach ($files as $file) {
         continue;
     }
 
-    if (!$class->isSubclassOf('Illuminate\\Database\\Eloquent\\Model')) {
+    if (! $class->isSubclassOf('Illuminate\\Database\\Eloquent\\Model')) {
         continue;
     }
 
     $properties = $class->getDefaultProperties();
-    if (!isset($properties['table'])) {
+    if (! isset($properties['table'])) {
         continue;
     }
 
@@ -27,7 +27,6 @@ foreach ($files as $file) {
         'table' => $properties['table'],
     ];
 }
-
 
 echo json_encode($models);
 

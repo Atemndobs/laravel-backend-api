@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 class DbBackupCommand extends Command
 {
     use Tools;
+
     /**
      * The name and signature of the console command.
      *

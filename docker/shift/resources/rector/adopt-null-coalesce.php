@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Rector\Php70\Rector\Ternary\TernaryToNullCoalescingRector;
 use Rector\Php74\Rector\Assign\NullCoalescingOperatorRector;
 
-return static function (\Rector\Config\RectorConfig $rectorConfig): void {
+return static function (Rector\Config\RectorConfig $rectorConfig): void {
     $skip = [
         'vendor/',
         'node_modules/',

@@ -13,11 +13,11 @@ function unguarded_models($file_list)
         try {
             $class = new ReflectionClass(class_from_path($file));
         } catch (ReflectionException $e) {
-            error_log('could not reflect class: ' . $file);
+            error_log('could not reflect class: '.$file);
             continue;
         }
 
-        if (!$class->isSubclassOf('Illuminate\\Database\\Eloquent\\Model')) {
+        if (! $class->isSubclassOf('Illuminate\\Database\\Eloquent\\Model')) {
             continue;
         }
 

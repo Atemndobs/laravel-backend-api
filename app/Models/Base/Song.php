@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Song
- * 
+ *
  * @property int $id
  * @property string|null $title
  * @property string|null $author
@@ -45,40 +45,37 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $created_by_id
  * @property int|null $updated_by_id
  * @property array|null $classification_properties
- * 
  * @property AdminUser|null $admin_user
  * @property Collection|Usage[] $usages
- *
- * @package App\Models\Base
  */
 class Song extends Model
 {
-	protected $table = 'songs';
+    protected $table = 'songs';
 
-	protected $casts = [
-		'bpm' => 'float',
-		'duration' => 'float',
-		'danceability' => 'float',
-		'happy' => 'float',
-		'sad' => 'float',
-		'relaxed' => 'float',
-		'aggressiveness' => 'float',
-		'energy' => 'float',
-		'analyzed' => 'bool',
-		'genre' => 'json',
-		'played' => 'bool',
-		'created_by_id' => 'int',
-		'updated_by_id' => 'int',
-		'classification_properties' => 'json'
-	];
+    protected $casts = [
+        'bpm' => 'float',
+        'duration' => 'float',
+        'danceability' => 'float',
+        'happy' => 'float',
+        'sad' => 'float',
+        'relaxed' => 'float',
+        'aggressiveness' => 'float',
+        'energy' => 'float',
+        'analyzed' => 'bool',
+        'genre' => 'json',
+        'played' => 'bool',
+        'created_by_id' => 'int',
+        'updated_by_id' => 'int',
+        'classification_properties' => 'json',
+    ];
 
-	public function admin_user()
-	{
-		return $this->belongsTo(AdminUser::class, 'updated_by_id');
-	}
+    public function admin_user()
+    {
+        return $this->belongsTo(AdminUser::class, 'updated_by_id');
+    }
 
-	public function usages()
-	{
-		return $this->belongsToMany(Usage::class, 'usages_songs_links');
-	}
+    public function usages()
+    {
+        return $this->belongsToMany(Usage::class, 'usages_songs_links');
+    }
 }

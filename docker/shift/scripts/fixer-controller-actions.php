@@ -15,7 +15,7 @@ function controller_methods()
         try {
             $class = new ReflectionClass($controller);
         } catch (ReflectionException $e) {
-            error_log('could not reflect class: ' . $controller);
+            error_log('could not reflect class: '.$controller);
             continue;
         }
 
@@ -36,7 +36,7 @@ function controller_methods()
                             $request = 'Illuminate\\Http\\Request';
                         }
                     } catch (ReflectionException $exception) {
-                        error_log($exception->getMessage() . ' for ' . $controller);
+                        error_log($exception->getMessage().' for '.$controller);
                     }
 
                     if ($parameter->hasType()) {
@@ -68,14 +68,13 @@ function controller_methods()
     return $classes;
 }
 
-
 function is_class(ReflectionParameter $parameter, string $class)
 {
     if (is_null($parameter->getType())) {
         return false;
     }
 
-    if (!$parameter->getType() instanceof ReflectionNamedType) {
+    if (! $parameter->getType() instanceof ReflectionNamedType) {
         return false;
     }
 
@@ -92,7 +91,7 @@ function is_subclass(ReflectionParameter $parameter, string $subclass)
         return false;
     }
 
-    if (!$parameter->getType() instanceof ReflectionNamedType) {
+    if (! $parameter->getType() instanceof ReflectionNamedType) {
         return false;
     }
 

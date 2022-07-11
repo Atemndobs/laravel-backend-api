@@ -109,7 +109,7 @@ class ImportSongCommand extends Command
                 $images[] = $file;
             }
             // collect files not containing "models" in an $others array
-            if (!str_contains($file, '.jpg') && !str_contains($file, '.mp3')) {
+            if (! str_contains($file, '.jpg') && ! str_contains($file, '.mp3')) {
                 $others[] = $file;
             }
             if (strpos($file, '.mp3') === false) {
@@ -129,6 +129,7 @@ class ImportSongCommand extends Command
         dump("skipped $countSkipped files");
         dump("skipped $countImages images");
         dump("skipped $countOthers other files");
+
         return $result;
     }
 

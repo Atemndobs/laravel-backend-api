@@ -2,7 +2,6 @@
 
 namespace Shift\Sniffs\Laravel;
 
-
 class AppBindingsSniff extends \PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\ForbiddenFunctionsSniff
 {
     public $forbiddenFunctions = [

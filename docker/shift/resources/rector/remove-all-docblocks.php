@@ -17,7 +17,7 @@ use PhpParser\Node\Stmt\Trait_;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-if (!class_exists(RemoveAllDocblocks::class)) {
+if (! class_exists(RemoveAllDocblocks::class)) {
     final class RemoveAllDocblocks extends AbstractRector
     {
         public function getNodeTypes(): array

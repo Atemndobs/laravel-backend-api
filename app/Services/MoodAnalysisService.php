@@ -49,7 +49,7 @@ class MoodAnalysisService
         $skipped = [];
         /** @var Song $song */
         foreach ($songs as $song) {
-           // $song->save();
+            // $song->save();
             if ($song->analyzed === null && $song->duration < 600 && $song->duration !== null) {
                 $song->status = 'queued';
                 $unClassified[] = $song->slug;
@@ -60,7 +60,7 @@ class MoodAnalysisService
                 $skipped[] = [
                     'song' => $song->slug,
                     'duration' => $song->duration,
-                    'status' => $song->status
+                    'status' => $song->status,
                 ];
             }
         }
@@ -70,6 +70,7 @@ class MoodAnalysisService
             info("$slug : has been queued");
         }
         dump($skipped);
+
         return $unClassified;
     }
 }

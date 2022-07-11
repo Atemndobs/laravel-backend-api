@@ -91,7 +91,7 @@ class UploadService
             $song = new Song();
             try {
                 $file_name = $this->getFullSongPath($file, $song);
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 $error[] = [
                     'error' => $e->getMessage(),
                     'file' => $file,
