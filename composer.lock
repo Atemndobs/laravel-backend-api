@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bce2b3885982bbf89e78ef3f345d677b",
+    "content-hash": "9ea24065be24ec84c8eaa06e78d5c83e",
     "packages": [
         {
             "name": "aerni/laravel-spotify",
@@ -12940,6 +12940,54 @@
             "time": "2022-03-08T14:47:39+00:00"
         },
         {
+            "name": "jetbrains/phpstorm-stubs",
+            "version": "v2022.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JetBrains/phpstorm-stubs.git",
+                "reference": "066fa5b3cd989b9c4fb1793d5ad20af5ab0e2b3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/066fa5b3cd989b9c4fb1793d5ad20af5ab0e2b3c",
+                "reference": "066fa5b3cd989b9c4fb1793d5ad20af5ab0e2b3c",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "@stable",
+                "nikic/php-parser": "@stable",
+                "php": "^8.0",
+                "phpdocumentor/reflection-docblock": "@stable",
+                "phpunit/phpunit": "@stable"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "PhpStormStubsMap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "PHP runtime & extensions header files for PhpStorm",
+            "homepage": "https://www.jetbrains.com/phpstorm",
+            "keywords": [
+                "autocomplete",
+                "code",
+                "inference",
+                "inspection",
+                "jetbrains",
+                "phpstorm",
+                "stubs",
+                "type"
+            ],
+            "support": {
+                "source": "https://github.com/JetBrains/phpstorm-stubs/tree/v2022.1"
+            },
+            "time": "2022-03-08T07:40:50+00:00"
+        },
+        {
             "name": "knuckleswtf/scribe",
             "version": "3.33.0",
             "source": {
@@ -13312,6 +13360,85 @@
                 "source": "https://github.com/laravel/sail"
             },
             "time": "2022-03-07T15:35:47+00:00"
+        },
+        {
+            "name": "league/container",
+            "version": "3.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/container.git",
+                "reference": "048ab87810f508dbedbcb7ae941b606eb8ee353b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/container/zipball/048ab87810f508dbedbcb7ae941b606eb8ee353b",
+                "reference": "048ab87810f508dbedbcb7ae941b606eb8ee353b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0 || ^8.0",
+                "psr/container": "^1.0.0 || ^2.0.0"
+            },
+            "provide": {
+                "psr/container-implementation": "^1.0"
+            },
+            "replace": {
+                "orno/di": "~2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0",
+                "roave/security-advisories": "dev-master",
+                "scrutinizer/ocular": "^1.8",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev",
+                    "dev-3.x": "3.x-dev",
+                    "dev-2.x": "2.x-dev",
+                    "dev-1.x": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Container\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Phil Bennett",
+                    "email": "philipobenito@gmail.com",
+                    "homepage": "http://www.philipobenito.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A fast and intuitive dependency injection container.",
+            "homepage": "https://github.com/thephpleague/container",
+            "keywords": [
+                "container",
+                "dependency",
+                "di",
+                "injection",
+                "league",
+                "provider",
+                "service"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/container/issues",
+                "source": "https://github.com/thephpleague/container/tree/3.3.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/philipobenito",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-03-16T09:42:56+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -14395,6 +14522,136 @@
             "time": "2022-03-08T06:52:28+00:00"
         },
         {
+            "name": "phpunitgen/console",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paul-thebaud/phpunitgen-console.git",
+                "reference": "2322bb43a73178cd4bce82fdd6d71ede1ae96b35"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paul-thebaud/phpunitgen-console/zipball/2322bb43a73178cd4bce82fdd6d71ede1ae96b35",
+                "reference": "2322bb43a73178cd4bce82fdd6d71ede1ae96b35",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "league/container": "^3.3",
+                "league/flysystem": "^3.0",
+                "php": "~8.0.12 || ~8.1.0",
+                "phpunitgen/core": "^3.0",
+                "symfony/console": "^4.4 || ^5.0 || ^6.0",
+                "symfony/stopwatch": "^4.3 || ^5.0 || ^6.0",
+                "symfony/yaml": "^4.3 || ^5.0 || ^6.0",
+                "tightenco/collect": "^8.0 || ^9.0"
+            },
+            "require-dev": {
+                "laravel/framework": "^9.0",
+                "mockery/mockery": "^1.3",
+                "orchestra/testbench": "^7.0",
+                "phpunit/phpunit": "^9.1"
+            },
+            "bin": [
+                "bin/phpunitgen"
+            ],
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "PhpUnitGen\\Console\\Adapters\\Laravel\\PhpUnitGenServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpUnitGen\\Console\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Thébaud",
+                    "email": "paul.thebaud29@gmail.com"
+                },
+                {
+                    "name": "Killian Hascoët",
+                    "email": "killianh@live.fr"
+                }
+            ],
+            "description": "The PhpUnitGen command line features for tests generation.",
+            "keywords": [
+                "generation",
+                "generator",
+                "test"
+            ],
+            "support": {
+                "issues": "https://github.com/paul-thebaud/phpunitgen-core/issues",
+                "source": "https://github.com/paul-thebaud/phpunitgen-console"
+            },
+            "time": "2022-04-28T20:54:40+00:00"
+        },
+        {
+            "name": "phpunitgen/core",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paul-thebaud/phpunitgen-core.git",
+                "reference": "0d7c41037fcdd33f2098eb4b7ae77d745d2c722f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paul-thebaud/phpunitgen-core/zipball/0d7c41037fcdd33f2098eb4b7ae77d745d2c722f",
+                "reference": "0d7c41037fcdd33f2098eb4b7ae77d745d2c722f",
+                "shasum": ""
+            },
+            "require": {
+                "league/container": "^3.2",
+                "php": "~8.0.12 || ~8.1.0",
+                "phpdocumentor/reflection-docblock": "^5.2",
+                "roave/better-reflection": "^5.0",
+                "tightenco/collect": "^8.0 || ^9.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.3",
+                "phpunit/phpunit": "^9.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpUnitGen\\Core\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Thébaud",
+                    "email": "paul.thebaud29@gmail.com"
+                },
+                {
+                    "name": "Killian Hascoët",
+                    "email": "killianh@live.fr"
+                }
+            ],
+            "description": "The PhpUnitGen core features for tests generation.",
+            "keywords": [
+                "generation",
+                "generator",
+                "test"
+            ],
+            "support": {
+                "issues": "https://github.com/paul-thebaud/phpunitgen-core/issues",
+                "source": "https://github.com/paul-thebaud/phpunitgen-core"
+            },
+            "time": "2022-04-28T20:37:42+00:00"
+        },
+        {
             "name": "pimple/pimple",
             "version": "v3.5.0",
             "source": {
@@ -14509,6 +14766,119 @@
                 "source": "https://github.com/reliese/laravel"
             },
             "time": "2022-03-14T09:11:37+00:00"
+        },
+        {
+            "name": "roave/better-reflection",
+            "version": "5.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Roave/BetterReflection.git",
+                "reference": "2845ee759d8e916b3cee1b77bc1186eaf942d640"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Roave/BetterReflection/zipball/2845ee759d8e916b3cee1b77bc1186eaf942d640",
+                "reference": "2845ee759d8e916b3cee1b77bc1186eaf942d640",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "jetbrains/phpstorm-stubs": "2022.1",
+                "nikic/php-parser": "^4.13.2",
+                "php": "~8.0.12 || ~8.1.0",
+                "roave/signature": "^1.5"
+            },
+            "conflict": {
+                "thecodingmachine/safe": "<1.1.3"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^9.0.0",
+                "phpstan/phpstan": "^1.5.5",
+                "phpunit/phpunit": "^9.5.20",
+                "roave/infection-static-analysis-plugin": "^1.18.0",
+                "vimeo/psalm": "^4.22"
+            },
+            "suggest": {
+                "composer/composer": "Required to use the ComposerSourceLocator"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Roave\\BetterReflection\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Titcumb",
+                    "email": "james@asgrim.com",
+                    "homepage": "https://github.com/asgrim"
+                },
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com",
+                    "homepage": "https://ocramius.github.io/"
+                },
+                {
+                    "name": "Gary Hockin",
+                    "email": "gary@roave.com",
+                    "homepage": "https://github.com/geeh"
+                },
+                {
+                    "name": "Jaroslav Hanslík",
+                    "email": "kukulich@kukulich.cz",
+                    "homepage": "https://github.com/kukulich"
+                }
+            ],
+            "description": "Better Reflection - an improved code reflection API",
+            "support": {
+                "issues": "https://github.com/Roave/BetterReflection/issues",
+                "source": "https://github.com/Roave/BetterReflection/tree/5.4.0"
+            },
+            "time": "2022-04-14T19:25:48+00:00"
+        },
+        {
+            "name": "roave/signature",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Roave/Signature.git",
+                "reference": "b100e2c40e51f3c56a0b29faf3e7ca75c33df60b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Roave/Signature/zipball/b100e2c40e51f3c56a0b29faf3e7ca75c33df60b",
+                "reference": "b100e2c40e51f3c56a0b29faf3e7ca75c33df60b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "7.4.*|8.0.*|8.1.*"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^9.0",
+                "infection/infection": "^0.25.1",
+                "phpunit/phpunit": "^9.5.9",
+                "vimeo/psalm": "^4.10.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Roave\\Signature\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Sign and verify stuff",
+            "support": {
+                "issues": "https://github.com/Roave/Signature/issues",
+                "source": "https://github.com/Roave/Signature/tree/1.5.0"
+            },
+            "time": "2021-09-18T13:37:44+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -16400,6 +16770,60 @@
                 }
             ],
             "time": "2021-07-28T10:34:58+00:00"
+        },
+        {
+            "name": "tightenco/collect",
+            "version": "v9.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tighten/collect.git",
+                "reference": "c0cfde437006f58e00539300a7d655eb55e4b536"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tighten/collect/zipball/c0cfde437006f58e00539300a7d655eb55e4b536",
+                "reference": "c0cfde437006f58e00539300a7d655eb55e4b536",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0",
+                "symfony/var-dumper": "^3.4 || ^4.0 || ^5.0 || ^6.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "nesbot/carbon": "^2.23.0",
+                "phpunit/phpunit": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Collect/Support/helpers.php",
+                    "src/Collect/Support/alias.php"
+                ],
+                "psr-4": {
+                    "Tightenco\\Collect\\": "src/Collect"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "Collect - Illuminate Collections as a separate package.",
+            "keywords": [
+                "collection",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/tighten/collect/issues",
+                "source": "https://github.com/tighten/collect/tree/v9.16.0"
+            },
+            "time": "2022-06-06T21:05:56+00:00"
         },
         {
             "name": "zbateson/mail-mime-parser",

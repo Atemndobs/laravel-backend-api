@@ -48,18 +48,19 @@
     "require-dev": {
         "backpack/generators": "^3.1",
         "fakerphp/faker": "^1.9.1",
+        "jasonmccreary/laravel-test-assertions": "^2.0",
         "knuckleswtf/scribe": "^3.33",
         "laravel-shift/blueprint": "^2.3",
+        "laravel-shift/factory-generator": "dev-master",
         "laravel/pint": "^0.2.3",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
+        "phpunitgen/console": "^4.0",
         "reliese/laravel": "^1.1",
         "spatie/laravel-ignition": "^1.0",
-        "spatie/laravel-ray": "^1.29",
-        "jasonmccreary/laravel-test-assertions": "^2.0",
-        "laravel-shift/factory-generator": "dev-master"
+        "spatie/laravel-ray": "^1.29"
     },
     "autoload": {
         "psr-4": {

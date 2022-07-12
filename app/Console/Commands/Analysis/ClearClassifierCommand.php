@@ -33,7 +33,23 @@ class ClearClassifierCommand extends Command
         $deleteItems = [];
         $deleteItems[] = $this->cleanSongDb();
         $url = 'http://host.docker.internal:3000/music/delete';
-        $response = Http::get($url)->body();
+        $ask = $this->ask('Are you sure you want to delete all songs?', 'yes');
+        if ($ask === 'no') {
+            $this->error('Song Delete Aborted');
+            return 1;
+        }
+
+        try {
+            $response = Http::get($url)->body();
+        }catch (\Exception $e) {
+            $response = 'Error: ' . $e->getMessage();
+            $this->error($response);
+            $this->info('Please run the following command manually first then try again:');
+           // $this->line('<fg=blue>' . 'cd ~/sites/curator/music-player && npm run serve --fix &' . '</>'); //  => alias fe
+            $this->line('<fg=blue>' . 'cd ~/sites/curator/nested && npm run start:dev &' . '</>'); // ex
+            $this->info('OR simple run the alias: ex');
+            return 1;
+        }
 
         $deleteItems[] = $response;
         $this->output->info('Audio directory Cleaned');

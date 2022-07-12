@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
+use PhpUnitGen\Console\Adapters\Laravel\PhpUnitGenServiceProvider;
 
 return [
 
@@ -164,6 +165,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         App\Providers\TenancyServiceProvider::class, // <-- here
+        PhpUnitGenServiceProvider::class,
 
         /*
          * Package Service Providers...

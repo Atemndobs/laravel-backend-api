@@ -80,7 +80,10 @@ class ClassifyService
     public function reClassify(array|string|null $slug = null): Song|array
     {
         if ($slug == null) {
-            $songs = Song::where('analyzed', '=', true)->get();
+            // exit no slug provided
+            return [
+                'status' => 'No Slug Provided',
+            ];
         } else {
             $songs = Song::where('slug', '=', $slug)->get();
             if ($songs->count() == 0) {
@@ -102,32 +105,8 @@ class ClassifyService
                 return [$this->buildResponse($song->toArray(), $song)];
             }
         }
-        // reclassify songs
-        $response = [];
-        if (count($songs) > 1) {
-            foreach ($songs as $song) {
 
-                // create classification properties array with emotion, danceability, aggressiveness, energy,
-                // if mood_happy is > 0.5 emotion is happy, else sad
-                // if danceability > 50%, danceability is true, if danceability < 50%, danceability is false
-                // if energy > 50%, energy is high, if energy < 50%, energy is low
-                // if relaxed > 50%, relaxed is true, if relaxed < 50%, relaxed is false
-                /** @var Song $song */
-                $classification_properties = [
-                    'emotion' => $song->happy > 0.5 ? 'happy' : 'sad',
-                    'energy' => $song->energy > 0.5 ? 'high' : 'low',
-                    'danceability' => $song->danceability > 0.5,
-                    'relaxed' => $song->relaxed > 0.5,
-                ];
-                $song->status = 're-classified';
-                $song->classification_properties = $classification_properties;
-                $song->save();
-                $savedSong = $song->toArray();
-                $response[] = $this->buildResponse($savedSong, $song);
-            }
-        }
-
-        return $response;
+        return $this->buildClassificaton($song);
     }
 
     /**
@@ -151,5 +130,31 @@ class ClassifyService
                 ]
             ),
         ];
+    }
+
+    /**
+     * @param Song $song
+     * @return array
+     */
+    public function buildClassificaton(Song $song): array
+    {
+// create classification properties array with emotion, danceability, aggressiveness, energy,
+        // if mood_happy is > 0.5 emotion is happy, else sad
+        // if danceability > 50%, danceability is true, if danceability < 50%, danceability is false
+        // if energy > 50%, energy is high, if energy < 50%, energy is low
+        // if relaxed > 50%, relaxed is true, if relaxed < 50%, relaxed is false
+        /** @var Song $song */
+        $classification_properties = [
+            'emotion' => $song->happy > 0.5 ? 'happy' : 'sad',
+            'energy' => $song->energy > 0.5 ? 'high' : 'low',
+            'danceability' => $song->danceability > 0.5,
+            'relaxed' => $song->relaxed > 0.5,
+        ];
+        $song->status = 're-classified';
+        $song->classification_properties = $classification_properties;
+        $song->save();
+        $savedSong = $song->toArray();
+       // $response[] = $this->buildResponse($savedSong, $song);
+        return $this->buildResponse($savedSong, $song);
     }
 }

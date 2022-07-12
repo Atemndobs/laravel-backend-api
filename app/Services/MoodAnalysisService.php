@@ -17,6 +17,10 @@ class MoodAnalysisService
                 'status' => "$slug does not exist",
             ];
         }
+
+        /**
+         * @var Song $existingSong
+         */
         if ($existingSong->analyzed) {
             dump([
                 'analyzed' => $existingSong->analyzed,
@@ -49,19 +53,24 @@ class MoodAnalysisService
         $skipped = [];
         /** @var Song $song */
         foreach ($songs as $song) {
-            // $song->save();
-            if ($song->analyzed === null && $song->duration < 600 && $song->duration !== null) {
-                $song->status = 'queued';
-                $unClassified[] = $song->slug;
-            }
 
-            if ($song->analyzed === null || $song->duration >= 600) {
+            if ($song->analyzed === null && $song->duration >= 600) {
                 $song->status = 'skipped';
+                $song->analyzed = false;
+                $song->save();
                 $skipped[] = [
                     'song' => $song->slug,
                     'duration' => $song->duration,
                     'status' => $song->status,
+                    'analyzed' => $song->analyzed,
                 ];
+                continue;
+            }
+            // $song->save();
+            if ($song->analyzed === null) {
+                $song->status = 'queued';
+                $song->save();
+                $unClassified[] = $song->slug;
             }
         }
 
