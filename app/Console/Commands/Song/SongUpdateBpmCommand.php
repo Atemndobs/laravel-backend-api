@@ -6,6 +6,7 @@ use App\Models\Song;
 use App\Services\SongUpdateService;
 use Illuminate\Console\Command;
 use League\CommonMark\Extension\CommonMark\Parser\Block\ThematicBreakParser;
+use function example\ask;
 
 class SongUpdateBpmCommand extends Command
 {
@@ -44,13 +45,26 @@ class SongUpdateBpmCommand extends Command
             }
             if ($song->bpm !== null) {
                 $this->info('Song bpm already set');
+                $res = $this->askWithCompletion('Do you want to update bpm?', ['y', 'n'], 'y');
+                if ($res === 'n') {
+                    $this->warn('Update skipped');
+                    return 0;
+                }
+
+                $this->withProgressBar(1, function () use ($song, $bpm, $key, $updateService, &$updatedSongs) {
+                $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
+                $updatedSongs[] = $updatedSong;
+                    $this->table(['slug', 'title', 'bpm', 'key', 'energy', 'scale'], [
+                        $updatedSong,
+                    ]);
+            });
 
                 return 0;
             }
             $this->info("prepare updating |  $song->slug");
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
 
-            $this->table(['slug', 'title', 'bpm', 'key'. 'energy', 'scale'], [
+            $this->table(['slug', 'title', 'bpm', 'key', 'energy', 'scale'], [
                 $updatedSong,
             ]);
 
@@ -97,7 +111,7 @@ class SongUpdateBpmCommand extends Command
         $bar->finish();
         $this->newLine();
         // table of updated songs
-        $this->table(['slug', 'title', 'bpm', 'key'. 'energy', 'scale'], $updatedSongs);
+        $this->table(['slug', 'title', 'bpm', 'key', 'energy', 'scale'], $updatedSongs);
         return 0;
     }
 
