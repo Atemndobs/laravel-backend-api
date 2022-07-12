@@ -34,6 +34,7 @@ Orion::resource('feeds', \App\Http\Controllers\Api\FeedController::class);
 Route::get('/classify', [\App\Http\Controllers\Api\ClassificationController::class, 'classify']);
 Route::get('/analyze/{track}', [\App\Http\Controllers\Api\ClassificationController::class, 'analyze']);
 Orion::resource('songs', \App\Http\Controllers\Api\SongController::class);
+Orion::resource('catalogs', \App\Http\Controllers\Api\CatalogController::class);
 Orion::resource('files', \App\Http\Controllers\Api\FileController::class);
 
 Route::get('classify/{slug}', [\App\Http\Controllers\Api\ClassificationController::class, 'findByTitle']);
