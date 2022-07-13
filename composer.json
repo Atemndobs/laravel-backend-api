@@ -20,6 +20,7 @@
         "dbfx/laravel-strapi": "*",
         "fabpot/goutte": "^4.0",
         "filament/filament": "^2.0",
+        "forestadmin/laravel-forestadmin": "^1.1",
         "fruitcake/laravel-cors": "^2.0.5",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
