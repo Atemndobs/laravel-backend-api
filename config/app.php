@@ -166,6 +166,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         App\Providers\TenancyServiceProvider::class, // <-- here
         PhpUnitGenServiceProvider::class,
+       // Studio\Totem\Providers\TotemServiceProvider::class,
+        \Studio\Totem\Providers\TotemServiceProvider::class,
 
         /*
          * Package Service Providers...

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
+use Studio\Totem\Totem;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,4 +28,9 @@ class AppServiceProvider extends ServiceProvider
         // $this->registerPolicies();
         //
     }
+
 }
+Totem::auth(function($request) {
+    // return true / false . For e.g.
+    return \auth()->guest();
+});
