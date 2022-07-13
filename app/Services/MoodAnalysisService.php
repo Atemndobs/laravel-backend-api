@@ -78,7 +78,7 @@ class MoodAnalysisService
             ClassifySongJob::dispatch($slug);
             info("$slug : has been queued");
         }
-        dump($skipped);
+       // dump($skipped);
 
         return $unClassified;
     }

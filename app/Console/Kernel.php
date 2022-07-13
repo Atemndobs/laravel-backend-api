@@ -33,15 +33,14 @@ class Kernel extends ConsoleKernel
         $schedule->command('queue:flush')
             ->everyThirtyMinutes()
             ->appendOutputTo('storage/logs/scheduler.log');
+/*        $schedule->command('song:import')
+            ->everyThirtyMinutes()
+            ->appendOutputTo('storage/logs/scheduler.log');
 
-        /*        $schedule->command('song:import')
-                    ->everyThirtyMinutes()
-                    ->appendOutputTo('storage/logs/scheduler.log')
-                ;
-                $schedule->command('song:classify')
-                    ->everyThirtyMinutes()
-                    ->appendOutputTo('storage/logs/scheduler.log')
-                ;*/
+        $schedule->command('song:bpm')
+            ->everyThirtyMinutes()
+            ->appendOutputTo('storage/logs/scheduler.log')
+        ;*/
     }
 
     /**

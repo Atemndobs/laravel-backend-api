@@ -97,6 +97,7 @@ services:
 #        extra_hosts:
 #            - 'host.docker.internal:host-gateway'
 
+
     mysql:
         image: 'mysql/mysql-server:8.0'
         restart: always
@@ -162,7 +163,6 @@ services:
             test: ["CMD", "redis-cli", "ping"]
             retries: 3
             timeout: 5s
-
 
     selenium:
         image: 'selenium/standalone-chrome'

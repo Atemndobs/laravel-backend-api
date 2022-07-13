@@ -51,12 +51,15 @@ class ImportSongCommand extends Command
             foreach ($songs as $song) {
                 $data[] = $song->title;
             }
-            dump($data);
 
             return 0;
         }
-        //(new StrapiSongService())->importStrapiUploads();
+        $bar = $this->output->createProgressBar(count($tracks));
+        $bar->start();
+        $this->call('rabbitmq:queue-delete', ['name' => 'default']);
+        $bar->advance();
         $queuedSongs = (new MoodAnalysisService())->classifySongs();
+        $bar->advance();
 
         foreach ($queuedSongs as $title) {
             $unClassified[] = $title;
@@ -83,6 +86,9 @@ class ImportSongCommand extends Command
         $this->output->info("imported $total songs from $source");
         info('=========================================IMPORT_DONE==========================================');
 
+        info('Updating BPMS');
+        $this->call('song:bpm');
+        $bar->finish();
         return 0;
     }
 
@@ -122,13 +128,15 @@ class ImportSongCommand extends Command
                 $result[] = $file;
             }
         }
-        dump(['skipped' => $skipped]);
+
         $countSkipped = count($skipped);
         $countImages = count($images);
         $countOthers = count($others);
-        dump("skipped $countSkipped files");
-        dump("skipped $countImages images");
-        dump("skipped $countOthers other files");
+
+//        dump(['skipped' => $skipped]);
+//        dump("skipped $countSkipped files");
+//        dump("skipped $countImages images");
+//        dump("skipped $countOthers other files");
 
         return $result;
     }

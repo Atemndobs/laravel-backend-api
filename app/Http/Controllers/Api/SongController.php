@@ -10,7 +10,7 @@ use Orion\Http\Controllers\Controller;
 class SongController extends Controller
 {
     use DisableAuthorization;
-    use DisablePagination;
+   // use DisablePagination;
 
     /**
      * @var string
