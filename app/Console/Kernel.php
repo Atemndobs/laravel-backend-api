@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Spatie\Health\Commands\RunHealthChecksCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -33,6 +34,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('queue:flush')
             ->everyThirtyMinutes()
             ->appendOutputTo('storage/logs/scheduler.log');
+
+        $schedule->command(RunHealthChecksCommand::class)
+            ->everyMinute();
 /*        $schedule->command('song:import')
             ->everyThirtyMinutes()
             ->appendOutputTo('storage/logs/scheduler.log');

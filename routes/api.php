@@ -5,6 +5,7 @@ use BeyondCode\LaravelWebSockets\Facades\WebSocketsRouter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
+use Spatie\Health\Http\Controllers\HealthCheckJsonResultsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,7 @@ use Orion\Facades\Orion;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('health', HealthCheckJsonResultsController::class);
 
 /*Route::prefix('feeder')->group(function () {
     Route::get('/{id?}', [\App\Http\Controllers\Feeds\FeedsController::class, 'index']);
