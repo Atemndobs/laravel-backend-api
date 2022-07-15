@@ -64,6 +64,7 @@ class SpotifyService
         if ($song === null) {
             $song = Song::query()->where('author', 'like', "%$author%")->first();
         }
+        /** @var Song $song */
         if ($song->genre !== null && count($song->genre) > 0) {
             $gen = json_encode($song->genre);
             $title = $song->title;
@@ -75,19 +76,24 @@ class SpotifyService
             $authors = explode(',', $author);
             foreach ($authors as $author) {
                try {
-                   $genres = array_merge($genres, $this->getArtistGenre($author));
+                   $genres = $this->getGenreByArtist($author);
+                   $song->genre = $genres;
+                   $song->save();
+                   continue;
                } catch (\Exception $e) {
                    dump($e->getMessage());
                }
             }
         }
 
-
         if (strpos($author, '/') !== false) {
             $authors = explode('/', $author);
             foreach ($authors as $author) {
                 try {
-                    $genres = array_merge($genres, $this->getArtistGenre($author));
+                    $genres = $this->getGenreByArtist($author);
+                    $song->genre = $genres;
+                    $song->save();
+                   continue;
                 } catch (\Exception $e) {
                     if ($e->getMessage() !== 'The access token expired') {
                         // sleep for a while to avoid rate limit

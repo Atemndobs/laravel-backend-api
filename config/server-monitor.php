@@ -13,6 +13,7 @@ return [
         'memcached' => Spatie\ServerMonitor\CheckDefinitions\Memcached::class,
         'mysql' => Spatie\ServerMonitor\CheckDefinitions\MySql::class,
     ],
+  //  'route' => 'servermonitor',
 
     /*
      * The default value for how often the checks will run,

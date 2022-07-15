@@ -93,6 +93,7 @@ class Song extends \App\Models\Base\Song
         'link',
         'image',
         'source',
+        'genre',
     ];
 
     public function admin_user()
