@@ -4,7 +4,7 @@
         "liana_version": "1.1.1",
         "stack": {
             "database_type": "mysql",
-            "orm_version": "9.4.1"
+            "orm_version": "9.20.0"
         }
     },
     "collections": [
