@@ -5,21 +5,23 @@ namespace App\Services;
 use App\Models\Song;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use JetBrains\PhpStorm\ArrayShape;
 use Psy\Util\Str;
 
 class SongUpdateService
 {
     /**
-     * @param  Song  $song
-     * @return Song
+     * @param Song $song
+     * @return array
      */
+    #[ArrayShape(['slug' => "null|string", 'title' => "null|string", 'bpm' => "mixed", 'key' => "mixed", 'energy' => "float|null", 'scale' => "mixed"])]
     public function updateBpmAndKey(Song $song): array
     {
         [$chords_scale, $energy, $bpm, $author, $key] = $this->extracted($song);
 
         $song->key = $key;
         $song->scale = $chords_scale;
-        $song->energy = (float) $energy;
+        $song->energy = (float)$energy;
         $song->bpm = $bpm;
         $song->author = $author;
         $song->save();
@@ -38,7 +40,7 @@ class SongUpdateService
     }
 
     /**
-     * @param  Song  $song
+     * @param Song $song
      * @return Song
      */
     public function updateBpm(Song $song): Song
@@ -56,7 +58,7 @@ class SongUpdateService
     }
 
     /**
-     * @param  Song  $song
+     * @param Song $song
      * @return Song
      */
     public function updateKey(Song $song): Song
@@ -74,7 +76,7 @@ class SongUpdateService
     }
 
     /**
-     * @param  Song  $song
+     * @param Song $song
      * @return string
      */
     public function getFilePath(Song $song): string
@@ -85,7 +87,7 @@ class SongUpdateService
     }
 
     /**
-     * @param  Song  $song
+     * @param Song $song
      * @return array
      */
     public function extracted(Song $song): array
@@ -119,7 +121,7 @@ class SongUpdateService
 
         $chords_key = $res->tonal->chords_key;
         $chords_scale = $res->tonal->chords_scale;
-        $chord = $chords_key.$chords_scale;
+        $chord = $chords_key . $chords_scale;
 
         $energy = $res->lowlevel->spectral_energy->max;
         $bpm = round($res->rhythm->bpm * 2) / 2;
@@ -132,16 +134,16 @@ class SongUpdateService
             $author = $song->author;
         }
 
-        dump([
-            'song' => $song->slug,
-            'bpm' => $bpm,
-            'scale' => $chords_scale,
-            'key' => $key,
-            'chord' => $chord,
-            'author' => $author,
-            'album' => $album,
-            'energy' => $energy,
-        ]);
+//        dump([
+//            'song' => $song->slug,
+//            'bpm' => $bpm,
+//            'scale' => $chords_scale,
+//            'key' => $key,
+//            'chord' => $chord,
+//            'author' => $author,
+//            'album' => $album,
+//            'energy' => $energy,
+//        ]);
 
         return [$chords_scale, $energy, $bpm, $author, $key];
     }
@@ -153,7 +155,7 @@ class SongUpdateService
         } else {
             $songs[] = Song::query()->where('slug', $slug)->first();
         }
-        dump('found '.count($songs).' songs');
+        dump('found ' . count($songs) . ' songs');
         $completed = [];
         /** @var Song $song */
         foreach ($songs as $song) {
@@ -194,7 +196,7 @@ class SongUpdateService
 
     /**
      * @param $data
-     * @param  Song|null  $song
+     * @param Song|null $song
      * @return void
      */
     public function setImageFromSong($data, Song|null $song): void
@@ -202,7 +204,7 @@ class SongUpdateService
         // get image from picture data in comments tag
         $image = $data;
         // save image to storage/app/public/images/
-        $imageName = $song->slug.'.jpg';
+        $imageName = $song->slug . '.jpg';
         $imagePath = "storage/app/public/images/$imageName";
         file_put_contents($imagePath, $image);
         // save image path as asset  to database
@@ -214,7 +216,7 @@ class SongUpdateService
     }
 
     /**
-     * @param  mixed  $songPath
+     * @param mixed $songPath
      * @return array
      */
     public function getAnalyze(mixed $songPath): array
@@ -228,13 +230,13 @@ class SongUpdateService
 
     /**
      * @param $fileInfo
-     * @param  Song|null  $song
+     * @param Song|null $song
      * @return void
      */
     public function getInfoFromId3v2Tags($fileInfo, Song|null $song): void
     {
         $idv = $fileInfo['tags']['id3v2'] ?? null;
-        if (count($idv) < 5) {
+        if ($idv && count($idv) < 5) {
             $title = $idv['title'][0] ?? null;
             // remove everything after the | in the title
             if (str_contains($title, '|')) {
@@ -245,9 +247,9 @@ class SongUpdateService
 
             return;
         }
-        $genres = $idv['genre'];
-        $artist = $idv['artist'];
-        $title = $idv['title'][0];
+        $genres = $idv['genre'] ?? $song->genre;
+        $artist = $idv['artist'] ?? $song->author;
+        $title = $idv['title'][0] ?? $song->title;
         // remove everything after the | in the title
         if (str_contains($title, '|')) {
             $title = substr($title, 0, strpos($title, '|'));
@@ -255,7 +257,7 @@ class SongUpdateService
         $title = trim($title);
         // replace spaces with underscores in the title
         // $title = str_replace(' ', '_', $title);
-        $comment = $idv['comment'][0];
+        $comment = $idv['comment'][0] ?? $song->comment;
         if ($song->genre === null) {
             $song->genre = $genres;
         }

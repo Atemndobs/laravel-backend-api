@@ -47,12 +47,16 @@ class SongUpdateGenreCommand extends Command
 
             if ($song === null) {
                 $song = Song::query()->where('author', 'like', "%$author%")->first();
-            }
 
-          //  dd($song->toArray());
+            }
+            if ($song->genre !== null) {
+                $gen = json_encode($song->genre);
+                $title = $song->title;
+                $this->info("$title by  $author : $gen");
+                return 0;
+            }
             $song->genre = $genres;
-            /// $song->get(['genre']);
-            $song->setAttribute();
+
             $song->save();
             $displayGenres = json_encode($genres);
             $this->output->info("$author : $displayGenres");
@@ -80,6 +84,12 @@ class SongUpdateGenreCommand extends Command
             } else {
                 $genres = $spotifyService->getGenreByArtist($author);
                 sleep(5);
+            }
+
+            if ($song->genre !== null) {
+                $gen = json_encode($song->genre);
+                $this->info("$author : $gen");
+                continue;
             }
             $song->genre = $genres;
             $song->save();

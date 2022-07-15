@@ -36,7 +36,7 @@ services:
 #        build:
 #            context: ./docker/strapi
 #            dockerfile: Dockerfile
-        image: atemndobs/strapi
+        image: atemndobs/strapi:1.0
         environment:
             DATABASE_CLIENT: mysql
             DATABASE_HOST: mysql
@@ -75,32 +75,10 @@ services:
 #            - sail
 #        extra_hosts:
 #            - 'host.docker.internal:host-gateway'
-# docker run -v /home/atem/sites/curator/laravel:/project:delegated  -e SHIFT_TOKEN=1de6f5bf67bb2ef2975910bceb154f175e70c81a -e GIT_AUTHOR="Atem" -e GIT_EMAIL="atemndobs@yahoo.com" shift
-# create docer container from docker/shift/DockerFile and add environment variables  SHIFT_TOKEN=1de6f5bf67bb2ef2975910bceb154f175e70c81a , GIT_AUTHOR="Atem" , GIT_EMAIL="atemndobs@yahoo.com" and bind mount this project to /project in the container
-# mount shift/loader.sh  to /run/loader.sh in the container
-#    shift:
-#        container_name: shift
-#        build:
-#            context: ./docker/shift
-#            dockerfile: DockerFile
-#        environment:
-#            SHIFT_TOKEN: 1de6f5bf67bb2ef2975910bceb154f175e70c81a
-#         #   GIT_AUTHOR: "Atem"
-#          #  GIT_EMAIL: "atemndobs@yahoo.com"
-#        image: shift
-#        volumes:
-#            - ./:/project
-#            - ./docker/shift/loader.sh:/run/loader.sh
-#          #  - ./docker/shift/:/opt/shift/
-#        networks:
-#            - sail
-#        extra_hosts:
-#            - 'host.docker.internal:host-gateway'
-
 
     mysql:
         image: 'mysql/mysql-server:8.0'
-        restart: always
+        #restart: always
         command: --default-authentication-plugin=mysql_native_password
         ports:
             - '${FORWARD_DB_PORT:-3307}:3306'

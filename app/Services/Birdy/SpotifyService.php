@@ -54,6 +54,55 @@ class SpotifyService
         if ($author === 'unknown') {
             return  ['remix'];
         }
+
+        if ($author == '') {
+            return 0;
+        }
+        $song = Song::query()->where('author', '=', $author)->first(
+            ['author', 'title', 'genre']
+        );
+        if ($song === null) {
+            $song = Song::query()->where('author', 'like', "%$author%")->first();
+        }
+        if ($song->genre !== null && count($song->genre) > 0) {
+            $gen = json_encode($song->genre);
+            $title = $song->title;
+            dump("$title by  $author : $gen");
+            return 0;
+        }
+
+        if (strpos($author, ',') !== false) {
+            $authors = explode(',', $author);
+            foreach ($authors as $author) {
+               try {
+                   $genres = array_merge($genres, $this->getArtistGenre($author));
+               } catch (\Exception $e) {
+                   dump($e->getMessage());
+               }
+            }
+        }
+
+
+        if (strpos($author, '/') !== false) {
+            $authors = explode('/', $author);
+            foreach ($authors as $author) {
+                try {
+                    $genres = array_merge($genres, $this->getArtistGenre($author));
+                } catch (\Exception $e) {
+                    if ($e->getMessage() !== 'The access token expired') {
+                        // sleep for a while to avoid rate limit
+                        sleep(10);
+                        $error = $e->getMessage();
+                        dump("Sleeping for 10 seconds to avoid rate limiting ... : Error : $error");
+                    } else {
+                        dump($e->getMessage());
+                        continue;
+                    }
+                    continue;
+                }
+            }
+        }
+
         $artists = $this->spotify->search($author, 'artist')->artists->items;
         foreach ($artists as $artist) {
             if (count($artist->genres) === 0) {

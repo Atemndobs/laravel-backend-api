@@ -31,11 +31,9 @@ Orion::resource('feeds', \App\Http\Controllers\Api\FeedController::class);
 
 });*/
 
-Route::group(['as' => 'api.'], function() {
-    Orion::resource('songs', \App\Http\Controllers\Api\SongController::class);
-    Orion::resource('catalogs', \App\Http\Controllers\Api\CatalogController::class);
-    Orion::resource('files', \App\Http\Controllers\Api\FileController::class);
-});
+Orion::resource('songs', \App\Http\Controllers\Api\SongController::class);
+Orion::resource('catalogs', \App\Http\Controllers\Api\CatalogController::class);
+Orion::resource('files', \App\Http\Controllers\Api\FileController::class);
 
 Route::get('/classify', [\App\Http\Controllers\Api\ClassificationController::class, 'classify']);
 Route::get('/analyze/{track}', [\App\Http\Controllers\Api\ClassificationController::class, 'analyze']);

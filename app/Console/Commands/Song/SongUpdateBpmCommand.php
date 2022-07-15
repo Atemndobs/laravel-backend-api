@@ -2,10 +2,12 @@
 
 namespace App\Console\Commands\Song;
 
+use App\Models\Catalog;
 use App\Models\Song;
 use App\Services\SongUpdateService;
 use Illuminate\Console\Command;
 use League\CommonMark\Extension\CommonMark\Parser\Block\ThematicBreakParser;
+use function Amp\call;
 use function example\ask;
 
 class SongUpdateBpmCommand extends Command
@@ -43,7 +45,9 @@ class SongUpdateBpmCommand extends Command
 
                 return 0;
             }
-            if ($song->bpm !== null) {
+
+            /** @var Song $song */
+            if ($song->bpm !== null || $song->bpm !== 0) {
                 $this->info('Song bpm already set');
                 $res = $this->askWithCompletion('Do you want to update bpm?', ['y', 'n'], 'y');
                 if ($res === 'n') {
@@ -77,21 +81,21 @@ class SongUpdateBpmCommand extends Command
             return 0;
         }
         $updatedSongs = [];
-
-        $bar = $this->output->createProgressBar(count($songs));
-        $this->newLine();
-        $bar->start();
+//
+//        $bar = $this->output->createProgressBar(count($songs));
+//        $this->newLine();
+//        $bar->start();
 
         $this->output->progressStart(count($songs));
         $this->newLine();
 
 
-        $bar->setBarWidth(100);
+       // $bar->setBarWidth(100);
         /** @var Song $song */
         foreach ($songs as $position => $song) {
             $number = $position + 1;
             $left = count($songs) - $position;
-            $this->info("prepare updating | $song->slug | $number song out of ".count($songs)."| $left songs left");
+            $this->info("updating | $song->slug | $number song out of ".count($songs)."| $left songs left");
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
             $updatedSongs[] = $updatedSong;
 //
@@ -100,18 +104,30 @@ class SongUpdateBpmCommand extends Command
 //                $updatedSongs[] = $updatedSong;
 //            });
 
-            $bar->setMessage("$song->slug | $number song out of ".count($songs)."| $left songs left");
+            //$bar->setMessage("$song->slug | $number song out of ".count($songs)."| $left songs left");
             $this->output->progressAdvance(1);
-            $this->newLine();
-            $bar->advance();
             $this->newLine();
         }
 
         $this->output->progressFinish();
-        $bar->finish();
         $this->newLine();
         // table of updated songs
         $this->table(['slug', 'title', 'bpm', 'key', 'energy', 'scale'], $updatedSongs);
+        $this->info("Updated songs: ".count($updatedSongs));
+
+        // alias s:search="sail artisan scout:import 'App\Models\Song' && sail artisan scout:index songs"
+        //alias s:catalog="sail artisan scout:import 'App\Models\Catalog' && sail artisan scout:index catalogs"
+
+        // index songs
+        $this->call('scout:import', ['model' => Song::class]);
+        $this->call('scout:index', ['model' => Song::class]);
+        $this->info('Scout index updated');
+
+        // index catalogs
+        $this->call('scout:import', ['model' => Catalog::class]);
+        $this->call('scout:index', ['model' => Catalog::class]);
+        $this->info('Scout index updated');
+
         return 0;
     }
 

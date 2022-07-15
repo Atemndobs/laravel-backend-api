@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Song;
 
+use App\Models\Catalog;
 use App\Models\Song;
 use App\Services\MoodAnalysisService;
 use App\Services\Strapi\StrapiSongService;
@@ -37,9 +38,10 @@ class ImportSongCommand extends Command
         $unClassified = [];
         $data = [];
         $allFiles = Storage::disk('public')->allFiles();
-
+        $this->info('Found ' . count($allFiles) . ' files');
         $uploadService = new UploadService();
         $tracks = $this->cleanFiles($allFiles);
+
         $uploadService->importSongs($tracks);
         $this->downloadStrapiSong();
 
@@ -75,13 +77,16 @@ class ImportSongCommand extends Command
             'status',
         ];
 
-        $deletableBody = [];
-        $deletableHeader = ['deletable'];
-        $deletableBody[] = $this->cleanDb($uploadService);
-        // $this->output->table($deletableHeader, $deletableBody);
+        // Remoce this part? ?
+//         $deletableBody = [];
+//        $deletableHeader = ['deletable'];
+//        $deletableBody[] = $this->cleanDb($uploadService);
+//        dump($deletableBody);
+//       //  $this->output->table($deletableHeader, $deletableBody);
 
         $this->output->table($headers, $data);
 
+        // to be checked
         $total = count($unClassified);
         $this->output->info("imported $total songs from $source");
         info('=========================================IMPORT_DONE==========================================');
@@ -89,6 +94,16 @@ class ImportSongCommand extends Command
         info('Updating BPMS');
         $this->call('song:bpm');
         $bar->finish();
+
+        // index songs
+        $this->call('scout:import', ['model' => Song::class]);
+       // $this->call('scout:index', ['table' => 'songs']);
+        $this->info('Song index updated');
+
+        // index catalogs
+        $this->call('scout:import', ['model' => Catalog::class]);
+        //$this->call('scout:index', ['model' => Catalog::class]);
+        $this->info('Catalog index updated');
         return 0;
     }
 
