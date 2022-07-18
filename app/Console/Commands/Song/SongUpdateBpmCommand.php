@@ -87,7 +87,6 @@ class SongUpdateBpmCommand extends Command
         /** @var Song $song */
         foreach ($songs as $position => $song) {
             // output with magenta color and gray bg
-            $this->line("<fg=magenta;bg=gray>Current BPM : $song->bpm</>");
             $this->output->text("<fg=magenta;bg=gray>Current BPM : $song->bpm</>");
             if ((float)$song->bpm != 0) {
                 $this->output->progressAdvance();
@@ -101,6 +100,10 @@ class SongUpdateBpmCommand extends Command
             $updatedSongs[] = $updatedSong;
             $this->output->progressAdvance(1);
             $this->newLine();
+            // end time in seconds
+            $end = time() - $start;
+            // progress in seconds
+            $this->warn("Time taken: ".($end)." seconds");
         }
 
         $this->output->progressFinish();
@@ -117,10 +120,6 @@ class SongUpdateBpmCommand extends Command
        // $this->call('scout:index', ['model' => Catalog::class]);
         $this->info('Scout index updated');
 
-        // end time in seconds
-        $end = time() - $start;
-        // progress in seconds
-        $this->warn("Time taken: ".($end)." seconds");
         return 0;
     }
 
