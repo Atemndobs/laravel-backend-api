@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Console\Commands;
 
-use App\Console\Commands\ServerMonitorCommand;
+use App\Console\Commands\Server\ServerMonitorCommand;
 use Tests\TestCase;
 
 /**
  * Class ServerMonitorCommandTest.
  *
- * @covers \App\Console\Commands\ServerMonitorCommand
+ * @covers \App\Console\Commands\Server\ServerMonitorCommand
  */
 final class ServerMonitorCommandTest extends TestCase
 {

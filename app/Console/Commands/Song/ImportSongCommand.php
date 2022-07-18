@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Song;
 
+use App\Jobs\ClassifySongJob;
 use App\Models\Catalog;
 use App\Models\Song;
 use App\Services\MoodAnalysisService;
@@ -35,6 +36,7 @@ class ImportSongCommand extends Command
     public function handle()
     {
         $source = $this->argument('source');
+        $source = $source ?? 'storage/audio';
         $unClassified = [];
         $data = [];
         $allFiles = Storage::disk('public')->allFiles();
@@ -56,12 +58,8 @@ class ImportSongCommand extends Command
 
             return 0;
         }
-        $bar = $this->output->createProgressBar(count($tracks));
-        $bar->start();
-        $this->call('rabbitmq:queue-delete', ['name' => 'default']);
-        $bar->advance();
-        $queuedSongs = (new MoodAnalysisService())->classifySongs();
-        $bar->advance();
+
+       $queuedSongs = $this->classifySongs();
 
         foreach ($queuedSongs as $title) {
             $unClassified[] = $title;
@@ -76,37 +74,25 @@ class ImportSongCommand extends Command
             'title',
             'status',
         ];
-
-        // Remoce this part? ?
-//         $deletableBody = [];
-//        $deletableHeader = ['deletable'];
-//        $deletableBody[] = $this->cleanDb($uploadService);
-//        dump($deletableBody);
-//       //  $this->output->table($deletableHeader, $deletableBody);
-
         $this->output->table($headers, $data);
-
-        // to be checked
+        $this->info('Unclassified songs:');
         $total = count($unClassified);
         $this->output->info("imported $total songs from $source");
         info('=========================================IMPORT_DONE==========================================');
 
         info('Updating BPMS');
         $this->call('song:bpm');
-        $bar->finish();
+        info('=========================================BPMS_DONE==========================================');
 
-        // index songs
-        $this->call('scout:import', ['model' => Song::class]);
-       // $this->call('scout:index', ['table' => 'songs']);
-        $this->info('Song index updated');
-
-        // index catalogs
-        $this->call('scout:import', ['model' => Catalog::class]);
-        //$this->call('scout:index', ['model' => Catalog::class]);
-        $this->info('Catalog index updated');
+        $delSongs = count($this->getDeleted());
+        $this->warn("$delSongs songs have been deleted from audio folder. Remember to download them from Blogs");
         return 0;
     }
 
+    /**
+     * @param UploadService $uploadService
+     * @return array
+     */
     public function cleanDb(UploadService $uploadService)
     {
         $deletableBody = [];
@@ -118,6 +104,10 @@ class ImportSongCommand extends Command
         return $deletableBody;
     }
 
+    /**
+     * @param $files
+     * @return array
+     */
     public function cleanFiles($files): array
     {
         $result = [];
@@ -147,15 +137,20 @@ class ImportSongCommand extends Command
         $countSkipped = count($skipped);
         $countImages = count($images);
         $countOthers = count($others);
-
-//        dump(['skipped' => $skipped]);
-//        dump("skipped $countSkipped files");
-//        dump("skipped $countImages images");
-//        dump("skipped $countOthers other files");
+        $this->info(json_encode(
+            [
+                "Skipped $countSkipped files",
+                "Found $countImages images",
+                "Found $countOthers other files",
+            ]
+        ));
 
         return $result;
     }
 
+    /**
+     * @return void
+     */
     public function downloadStrapiSong()
     {
         $allSongs = Song::all();
@@ -168,5 +163,97 @@ class ImportSongCommand extends Command
                 dump($done);
             }
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function classifySongs(): array
+    {
+        $songs = Song::all();
+        $unClassified = [];
+        $skipped = [];
+        $deleted = [];
+
+        $bar = $this->output->createProgressBar(count($songs));
+        $bar->start();
+        /** @var Song $song */
+        foreach ($songs as $song) {
+            $bar->advance();
+
+            // Remember to download these songs from Blogs
+            if (!$this->checkAudioFile($song)) {
+                if ($song->status === 'deleted' || $song->status === 'skipped' || $song->status === 'spotify-not-found') {
+                    continue;
+                }
+                $song->status = 'deleted';
+                $song->save();
+                $deleted[] = $song->title;
+                continue;
+            }
+            if ($song->analyzed === null && $song->duration >= 600) {
+                $song->status = 'skipped';
+                $song->analyzed = false;
+                $song->save();
+                $skipped[] = [
+                    'song' => $song->slug,
+                    'duration' => $song->duration,
+                    'status' => $song->status,
+                    'analyzed' => $song->analyzed,
+                ];
+                continue;
+            }
+            if ($song->analyzed === null) {
+                $song->status = 'queued';
+                $song->save();
+                $unClassified[] = $song->slug;
+            }
+        }
+        $this->newLine(1);
+        $this->info("$song->slug : is unclassified");
+        $bar->finish();
+
+
+        $bar2 = $this->output->createProgressBar(count($unClassified));
+        $bar2->start();
+        foreach ($unClassified as $slug) {
+            $bar2->advance();
+            ClassifySongJob::dispatch($slug);
+        }
+        $this->newLine(1);
+        info("$slug : has been queued");
+        $bar2->finish();
+
+        return $unClassified;
+    }
+
+    /**
+     * @param Song $song
+     * @return bool
+     */
+    public function checkAudioFile(Song $song)
+    {
+        $path = $song->path;
+        $path = str_replace('http://mage.tech:8899/storage/', '', $path);
+        $path = storage_path('app/public/' .  $path) ;
+        if (file_exists($path)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDeleted()
+    {
+        $songs = Song::all();
+        $deleted = [];
+        foreach ($songs as $song) {
+            if ($song->status === 'deleted') {
+                $deleted[] = $song->slug;
+            }
+        }
+        return $deleted;
     }
 }

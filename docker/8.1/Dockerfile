@@ -50,11 +50,6 @@ RUN apt-get update \
     && pecl channel-update pecl.php.net \
     && apt-get install libmpdec-dev \
     && pecl install decimal \
-   # && apt-get install -y librdkafka-dev \
-   # && pecl install rdkafka \
-    # && pecl channel-update pecl.php.net \
-    #&& pecl install simple_kafka_client \
-    #&& docker-php-ext-enable rdkafka \
     && git clone https://github.com/edenhill/librdkafka.git \
     && cd librdkafka \
     && ./configure \
@@ -64,6 +59,11 @@ RUN apt-get update \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN apt-get update
+RUN apt-get install -y ffmpeg
+RUN  python3 -m pip --version || apt-get install -y python3-pip
+RUN pip install spotdl
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
 

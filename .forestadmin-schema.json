@@ -4059,6 +4059,20 @@
             ],
             "segments": [],
             "actions": []
+        },
+        {
+            "name": "process",
+            "class": "App\\Models\\Process",
+            "old_name": "process",
+            "icon": null,
+            "is_read_only": false,
+            "is_virtual": false,
+            "is_searchable": true,
+            "only_for_relationships": false,
+            "pagination_type": "page",
+            "fields": [],
+            "segments": [],
+            "actions": []
         }
     ]
 }

@@ -162,4 +162,17 @@ class SpotifyService
 
         return $matchingGenres;
     }
+
+    public function getSongUlrByTitle(string $title)
+    {
+        // remove .mp3 from title
+        $title = str_replace('.mp3', '', $title);
+        // get song url from spotify using $title
+        $spotifyTrack = $this->spotify->search($title, 'track')->tracks->items[0];
+        $id = $spotifyTrack->id;
+        $track = $this->spotify->getTrack($id);
+        $artists = $track->artists;
+        $artist = $artists[0]->name;
+        return $track->external_urls->spotify;
+    }
 }

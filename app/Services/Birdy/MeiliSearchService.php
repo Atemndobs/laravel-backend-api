@@ -2,7 +2,6 @@
 
 namespace App\Services\Birdy;
 
-use App\Models\Song;
 use MeiliSearch\Client;
 use MeiliSearch\Endpoints\Indexes;
 
@@ -16,15 +15,10 @@ class MeiliSearchService
         $this->meiliSearch = new Client($url);
     }
 
-    public function seatchSong(string $searchTerm)
-    {
-        $songIndex = $this->meiliSearch->index('songs')->resetSettings();
-        $songs = Song::search($searchTerm)->paginate(10);
-        $matches = Song::search($searchTerm)->get();
-
-        return $matches;
-    }
-
+    /**
+     * @param Indexes $songIndex
+     * @return Indexes
+     */
     public function setSearchSettings(Indexes $songIndex): Indexes
     {
         $songIndex->updateFilterableAttributes([
@@ -82,19 +76,6 @@ class MeiliSearchService
         ]);
 
         return $songIndex;
-    }
-
-    public function searchByAttribute(string $attribute)
-    {
-        $songIndex = $this->meiliSearch->index('songs');
-        $this->setSearchSettings($songIndex);
-
-        $res = $songIndex->search('', [
-            'filter' => "$attribute > 70",
-            'sort' => ['bpm:asc'],
-        ]);
-
-        return $res->getHits();
     }
 
     /**

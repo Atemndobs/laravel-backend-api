@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3a9d0486cbfaca02d3065d5c9b8a198",
+    "content-hash": "987650a6fb22893b4cf91530d1fbb968",
     "packages": [
         {
             "name": "aerni/laravel-spotify",
@@ -156,6 +156,72 @@
                 "source": "https://github.com/akaunting/laravel-money/tree/3.0.1"
             },
             "time": "2022-05-11T06:34:38+00:00"
+        },
+        {
+            "name": "alek13/slack",
+            "version": "2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-slack/slack.git",
+                "reference": "9222449402df4e1e57d7850be87898b2c99803bd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-slack/slack/zipball/9222449402df4e1e57d7850be87898b2c99803bd",
+                "reference": "9222449402df4e1e57d7850be87898b2c99803bd",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "guzzlehttp/guzzle": "~7.0|~6.0|~5.0|~4.0",
+                "php": "^7.1|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": ">=7.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Maknz\\Slack\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "maknz",
+                    "email": "github@mak.geek.nz"
+                },
+                {
+                    "name": "Alexander Chibrikin",
+                    "email": "alek13.me@gmail.com"
+                }
+            ],
+            "description": "A simple PHP package (fork of maknz/slack) for sending messages to Slack, with a focus on ease of use and elegant syntax.",
+            "keywords": [
+                "laravel",
+                "slack"
+            ],
+            "support": {
+                "issues": "https://github.com/php-slack/slack/issues",
+                "source": "https://github.com/php-slack/slack/tree/2.2.1"
+            },
+            "funding": [
+                {
+                    "url": "https://donorbox.org/php-slack",
+                    "type": "custom"
+                }
+            ],
+            "time": "2021-10-20T22:52:32+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -2913,16 +2979,16 @@
         },
         {
             "name": "filament/filament",
-            "version": "v2.13.26",
+            "version": "v2.13.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/admin.git",
-                "reference": "cffaa7f9aaca086935a099ef635f5e9f67713772"
+                "reference": "5cffe741b558d1e3d9c267af1d7d0d7f70497581"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/admin/zipball/cffaa7f9aaca086935a099ef635f5e9f67713772",
-                "reference": "cffaa7f9aaca086935a099ef635f5e9f67713772",
+                "url": "https://api.github.com/repos/filamentphp/admin/zipball/5cffe741b558d1e3d9c267af1d7d0d7f70497581",
+                "reference": "5cffe741b558d1e3d9c267af1d7d0d7f70497581",
                 "shasum": ""
             },
             "require": {
@@ -2970,20 +3036,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2022-07-14T09:43:03+00:00"
+            "time": "2022-07-17T09:57:57+00:00"
         },
         {
             "name": "filament/forms",
-            "version": "v2.13.26",
+            "version": "v2.13.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/forms.git",
-                "reference": "443fe776e217c4e03e9ccfc9d9cc302b93259188"
+                "reference": "274d5c564ee426f234505dd04088d447040d01c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/forms/zipball/443fe776e217c4e03e9ccfc9d9cc302b93259188",
-                "reference": "443fe776e217c4e03e9ccfc9d9cc302b93259188",
+                "url": "https://api.github.com/repos/filamentphp/forms/zipball/274d5c564ee426f234505dd04088d447040d01c6",
+                "reference": "274d5c564ee426f234505dd04088d447040d01c6",
                 "shasum": ""
             },
             "require": {
@@ -3027,20 +3093,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2022-07-14T09:42:56+00:00"
+            "time": "2022-07-17T09:57:49+00:00"
         },
         {
             "name": "filament/support",
-            "version": "v2.13.26",
+            "version": "v2.13.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/support.git",
-                "reference": "124cda486d06d82be1d791255fee42a27b2d1ec8"
+                "reference": "8ff747f47fd3d9ceba65a18076ada6ee34a708dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/support/zipball/124cda486d06d82be1d791255fee42a27b2d1ec8",
-                "reference": "124cda486d06d82be1d791255fee42a27b2d1ec8",
+                "url": "https://api.github.com/repos/filamentphp/support/zipball/8ff747f47fd3d9ceba65a18076ada6ee34a708dc",
+                "reference": "8ff747f47fd3d9ceba65a18076ada6ee34a708dc",
                 "shasum": ""
             },
             "require": {
@@ -3077,20 +3143,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2022-07-14T09:43:01+00:00"
+            "time": "2022-07-17T09:57:54+00:00"
         },
         {
             "name": "filament/tables",
-            "version": "v2.13.26",
+            "version": "v2.13.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/tables.git",
-                "reference": "7ec1b111b57e096b7d6ac0cd7da38f36ba005f12"
+                "reference": "0dfe06a1bfa7ed913d28d6e18df87861d283ef4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/tables/zipball/7ec1b111b57e096b7d6ac0cd7da38f36ba005f12",
-                "reference": "7ec1b111b57e096b7d6ac0cd7da38f36ba005f12",
+                "url": "https://api.github.com/repos/filamentphp/tables/zipball/0dfe06a1bfa7ed913d28d6e18df87861d283ef4a",
+                "reference": "0dfe06a1bfa7ed913d28d6e18df87861d283ef4a",
                 "shasum": ""
             },
             "require": {
@@ -3131,7 +3197,7 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2022-07-14T09:43:02+00:00"
+            "time": "2022-07-17T09:58:15+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -3698,6 +3764,43 @@
                 "source": "https://github.com/Galbar/JsonPath-PHP/tree/2.0"
             },
             "time": "2021-08-19T20:32:43+00:00"
+        },
+        {
+            "name": "geerlingguy/ping",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/geerlingguy/Ping.git",
+                "reference": "e0206326e23c99e3e8820e24705f8ca517adff93"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/geerlingguy/Ping/zipball/e0206326e23c99e3e8820e24705f8ca517adff93",
+                "reference": "e0206326e23c99e3e8820e24705f8ca517adff93",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "JJG/Ping.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeff Geerling",
+                    "email": "jeff@jeffgeerling.com"
+                }
+            ],
+            "description": "A PHP class to ping hosts.",
+            "support": {
+                "issues": "https://github.com/geerlingguy/Ping/issues",
+                "source": "https://github.com/geerlingguy/Ping/tree/1.2.1"
+            },
+            "time": "2019-07-29T21:54:12+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -4365,16 +4468,16 @@
         },
         {
             "name": "jwilsson/spotify-web-api-php",
-            "version": "5.1.0",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jwilsson/spotify-web-api-php.git",
-                "reference": "0d163356c9cc2fefb8716c16ddef85a0fe509361"
+                "reference": "0d6dc349669c3cf50cf39fe3c226ca438eec0489"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jwilsson/spotify-web-api-php/zipball/0d163356c9cc2fefb8716c16ddef85a0fe509361",
-                "reference": "0d163356c9cc2fefb8716c16ddef85a0fe509361",
+                "url": "https://api.github.com/repos/jwilsson/spotify-web-api-php/zipball/0d6dc349669c3cf50cf39fe3c226ca438eec0489",
+                "reference": "0d6dc349669c3cf50cf39fe3c226ca438eec0489",
                 "shasum": ""
             },
             "require": {
@@ -4409,9 +4512,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jwilsson/spotify-web-api-php/issues",
-                "source": "https://github.com/jwilsson/spotify-web-api-php/tree/5.1.0"
+                "source": "https://github.com/jwilsson/spotify-web-api-php/tree/5.2.0"
             },
-            "time": "2022-07-04T17:07:48+00:00"
+            "time": "2022-07-16T07:32:37+00:00"
         },
         {
             "name": "laravel/framework",
@@ -4930,16 +5033,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.3",
+            "version": "2.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "0da1dca5781dd3cfddbe328224d9a7a62571addc"
+                "reference": "155ec1c95626b16fda0889cf15904d24890a60d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/0da1dca5781dd3cfddbe328224d9a7a62571addc",
-                "reference": "0da1dca5781dd3cfddbe328224d9a7a62571addc",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/155ec1c95626b16fda0889cf15904d24890a60d5",
+                "reference": "155ec1c95626b16fda0889cf15904d24890a60d5",
                 "shasum": ""
             },
             "require": {
@@ -5032,7 +5135,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-07T21:28:26+00:00"
+            "time": "2022-07-17T16:25:47+00:00"
         },
         {
             "name": "league/config",
@@ -9880,6 +9983,63 @@
             "time": "2018-05-29T20:21:04+00:00"
         },
         {
+            "name": "sarfraznawaz2005/servermonitor",
+            "version": "dev-local-package",
+            "dist": {
+                "type": "path",
+                "url": "packages/sarfraznawaz2005/server-monitor",
+                "reference": "96a740ab7b3fab7cc49b3d71b5a47073bf963bc1"
+            },
+            "require": {
+                "alek13/slack": "~1.7|^2.0",
+                "composer/semver": "^1.4|^3.0",
+                "geerlingguy/ping": "^1.1",
+                "illuminate/support": "~5|~6|~7|~8|~9",
+                "league/flysystem": "^1.0|^3.0",
+                "nesbot/carbon": "^1.0|^2.0",
+                "php": "^7.0||^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sarfraznawaz2005\\ServerMonitor\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sarfraznawaz2005\\ServerMonitor\\": "src/"
+                },
+                "files": [
+                    "src/Helpers/helper.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sarfraz Ahmed",
+                    "email": "sarfraznawaz2005@gmail.com",
+                    "homepage": "http://codeinphp.github.io"
+                }
+            ],
+            "description": "Laravel package to periodically monitor the health of your server and website.",
+            "keywords": [
+                "Laravel",
+                "check",
+                "health",
+                "monitor",
+                "server",
+                "status"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
             "name": "seld/jsonlint",
             "version": "1.9.0",
             "source": {
@@ -14151,16 +14311,16 @@
         },
         {
             "name": "tailflow/laravel-orion",
-            "version": "2.12.2",
+            "version": "2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tailflow/laravel-orion.git",
-                "reference": "cda9980f046261dda811a420c6c2c68a76fb6fb4"
+                "reference": "aa0e4dc2343c42ec4cb81e0c2f79af5f41668f7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tailflow/laravel-orion/zipball/cda9980f046261dda811a420c6c2c68a76fb6fb4",
-                "reference": "cda9980f046261dda811a420c6c2c68a76fb6fb4",
+                "url": "https://api.github.com/repos/tailflow/laravel-orion/zipball/aa0e4dc2343c42ec4cb81e0c2f79af5f41668f7b",
+                "reference": "aa0e4dc2343c42ec4cb81e0c2f79af5f41668f7b",
                 "shasum": ""
             },
             "require": {
@@ -14218,7 +14378,7 @@
                 "issues": "https://github.com/tailflow/laravel-orion/issues",
                 "source": "https://github.com/tailflow/laravel-orion"
             },
-            "time": "2022-06-27T07:57:36+00:00"
+            "time": "2022-07-16T14:37:18+00:00"
         },
         {
             "name": "tgalopin/html-sanitizer",
@@ -15894,17 +16054,91 @@
             "time": "2022-03-08T07:40:50+00:00"
         },
         {
-            "name": "knuckleswtf/scribe",
-            "version": "3.33.2",
+            "name": "kitloong/laravel-migrations-generator",
+            "version": "v6.3.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/knuckleswtf/scribe.git",
-                "reference": "e39ce83fd7dfa72329912d885c5c061cb9b0045e"
+                "url": "https://github.com/kitloong/laravel-migrations-generator.git",
+                "reference": "7b33b6f7c220a4309381009644c6d5b32cc63027"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/e39ce83fd7dfa72329912d885c5c061cb9b0045e",
-                "reference": "e39ce83fd7dfa72329912d885c5c061cb9b0045e",
+                "url": "https://api.github.com/repos/kitloong/laravel-migrations-generator/zipball/7b33b6f7c220a4309381009644c6d5b32cc63027",
+                "reference": "7b33b6f7c220a4309381009644c6d5b32cc63027",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^2.4|^3.0",
+                "ext-pdo": "*",
+                "illuminate/support": "^5.6|^6.0|^7.0|^8.0|^9.0",
+                "myclabs/php-enum": "^1.8",
+                "php": ">=7.1.3"
+            },
+            "require-dev": {
+                "barryvdh/laravel-ide-helper": "^2.7",
+                "friendsofphp/php-cs-fixer": "^2.19.0|^3.1",
+                "mockery/mockery": "^1.0",
+                "nunomaduro/larastan": "^0.4|^0.5|^0.6|^0.7|^1.0|^2.0",
+                "orchestra/testbench": "^3.6|^4.0|^5.0|^6.0|^7.0",
+                "phpmd/phpmd": "^2.10",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "KitLoong\\MigrationsGenerator\\MigrationsGeneratorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "KitLoong\\MigrationsGenerator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kit Loong",
+                    "email": "kitloong1008@gmail.com"
+                }
+            ],
+            "description": "Generates Laravel Migrations from an existing database",
+            "keywords": [
+                "artisan",
+                "generator",
+                "laravel",
+                "lumen",
+                "migration",
+                "migrations"
+            ],
+            "support": {
+                "issues": "https://github.com/kitloong/laravel-migrations-generator/issues",
+                "source": "https://github.com/kitloong/laravel-migrations-generator/tree/v6.3.1"
+            },
+            "funding": [
+                {
+                    "url": "https://www.buymeacoffee.com/kitloong",
+                    "type": "custom"
+                }
+            ],
+            "time": "2022-07-07T15:58:19+00:00"
+        },
+        {
+            "name": "knuckleswtf/scribe",
+            "version": "3.34.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/knuckleswtf/scribe.git",
+                "reference": "185b327dd81d4c73dec7fc74fc473bfb05738c90"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/185b327dd81d4c73dec7fc74fc473bfb05738c90",
+                "reference": "185b327dd81d4c73dec7fc74fc473bfb05738c90",
                 "shasum": ""
             },
             "require": {
@@ -15979,7 +16213,7 @@
             ],
             "support": {
                 "issues": "https://github.com/knuckleswtf/scribe/issues",
-                "source": "https://github.com/knuckleswtf/scribe/tree/3.33.2"
+                "source": "https://github.com/knuckleswtf/scribe/tree/3.34.0"
             },
             "funding": [
                 {
@@ -15987,7 +16221,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-07-09T21:42:18+00:00"
+            "time": "2022-07-16T14:14:18+00:00"
         },
         {
             "name": "laravel-shift/blueprint",
@@ -20381,6 +20615,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "sarfraznawaz2005/servermonitor": 20,
         "laravel-shift/factory-generator": 20
     },
     "prefer-stable": true,

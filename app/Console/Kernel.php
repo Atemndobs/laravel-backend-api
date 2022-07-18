@@ -16,16 +16,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $newdate = date('d M, Y', strtotime(now('CET')));
-        $logFile = 'schedule_'.($newdate).'.log';
+        $new_date = date('d M, Y', strtotime(now('CET')));
+        $logFile = 'schedule_'.($new_date).'.log';
 
         $schedule->command('queue:work --max-jobs=1 --stop-when-empty')
             ->everyMinute()
             ->appendOutputTo('storage/logs/scheduler.log');
 
-        $schedule->command('queue:work database --queue=analyze --stop-when-empty')
-            ->everyMinute()
-            ->appendOutputTo('storage/logs/scheduler.log');
+//            $schedule->command('queue:work database --queue=analyze --stop-when-empty')
+//                ->everyMinute()
+//                ->appendOutputTo('storage/logs/scheduler.log');
 
         $schedule->command('queue:clear')
             ->everyThirtyMinutes()

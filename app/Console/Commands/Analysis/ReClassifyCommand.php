@@ -47,6 +47,9 @@ class ReClassifyCommand extends Command
 
                 $this->output->progressStart(count($songs));
                 foreach ($songs as $song) {
+                    if ($song->status === 're-classified') {
+                        continue;
+                    }
                     $result = $classifyService->buildClassificaton($song);
                     $results[] = $result;
                     $this->output->progressAdvance();

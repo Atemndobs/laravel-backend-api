@@ -53,7 +53,7 @@ services:
         networks:
             - sail
         extra_hosts:
-            - 'host.docker.internal:host-gateway'
+            - "host.docker.internal:host-gateway"
 #DOCKER_BUILDKIT=1 docker build -t recommenders:cpu --build-arg ENV=cpu --build-arg VIRTUAL_ENV=conda --name=recommenders "."   && docker run -p 8888:8888 -d recommenders:cpu
 
 #    recommenders:

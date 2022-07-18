@@ -41,8 +41,7 @@ class SongUpdateBpmCommand extends Command
         if ($slug !== null) {
             $song = Song::where('slug', '=', $slug)->first();
             if ($song === null) {
-                $this->info('No song found');
-
+                $this->info('No song found for BPM Update. All song BPMs updated');
                 return 0;
             }
 
@@ -81,30 +80,25 @@ class SongUpdateBpmCommand extends Command
             return 0;
         }
         $updatedSongs = [];
-//
-//        $bar = $this->output->createProgressBar(count($songs));
-//        $this->newLine();
-//        $bar->start();
-
         $this->output->progressStart(count($songs));
         $this->newLine();
-
-
-       // $bar->setBarWidth(100);
+        // start time in seconds
+        $start = time();
         /** @var Song $song */
         foreach ($songs as $position => $song) {
+            // output with magenta color and gray bg
+            $this->line("<fg=magenta;bg=gray>Current BPM : $song->bpm</>");
+            $this->output->text("<fg=magenta;bg=gray>Current BPM : $song->bpm</>");
+            if ((float)$song->bpm != 0) {
+                $this->output->progressAdvance();
+                continue;
+            }
+
             $number = $position + 1;
             $left = count($songs) - $position;
             $this->info("updating | $song->slug | $number song out of ".count($songs)."| $left songs left");
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
             $updatedSongs[] = $updatedSong;
-//
-//            $this->withProgressBar($left, function () use ($song, $bpm, $key, $updateService, &$updatedSongs) {
-//                $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
-//                $updatedSongs[] = $updatedSong;
-//            });
-
-            //$bar->setMessage("$song->slug | $number song out of ".count($songs)."| $left songs left");
             $this->output->progressAdvance(1);
             $this->newLine();
         }
@@ -114,29 +108,28 @@ class SongUpdateBpmCommand extends Command
         // table of updated songs
         $this->table(['slug', 'title', 'bpm', 'key', 'energy', 'scale'], $updatedSongs);
         $this->info("Updated songs: ".count($updatedSongs));
-
-        // alias s:search="sail artisan scout:import 'App\Models\Song' && sail artisan scout:index songs"
-        //alias s:catalog="sail artisan scout:import 'App\Models\Catalog' && sail artisan scout:index catalogs"
-
-        // index songs
         $this->call('scout:import', ['model' => Song::class]);
-        $this->call('scout:index', ['model' => Song::class]);
+        //$this->call('scout:index', ['model' => Song::class]);
         $this->info('Scout index updated');
 
         // index catalogs
         $this->call('scout:import', ['model' => Catalog::class]);
-        $this->call('scout:index', ['model' => Catalog::class]);
+       // $this->call('scout:index', ['model' => Catalog::class]);
         $this->info('Scout index updated');
 
+        // end time in seconds
+        $end = time() - $start;
+        // progress in seconds
+        $this->warn("Time taken: ".($end)." seconds");
         return 0;
     }
 
     /**
-     * @param  bool  $bpm
-     * @param  bool  $key
-     * @param  SongUpdateService  $updateService
+     * @param bool $bpm
+     * @param bool $key
+     * @param SongUpdateService $updateService
      * @param $song
-     * @return Song
+     * @return array
      */
     public function getUpdatedSong(bool $bpm, bool $key, SongUpdateService $updateService, $song): array
     {

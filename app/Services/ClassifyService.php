@@ -138,7 +138,7 @@ class ClassifyService
      */
     public function buildClassificaton(Song $song): array
     {
-// create classification properties array with emotion, danceability, aggressiveness, energy,
+        // create classification properties array with emotion, danceability, aggressiveness, energy,
         // if mood_happy is > 0.5 emotion is happy, else sad
         // if danceability > 50%, danceability is true, if danceability < 50%, danceability is false
         // if energy > 50%, energy is high, if energy < 50%, energy is low

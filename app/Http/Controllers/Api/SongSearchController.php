@@ -32,7 +32,10 @@ class SongSearchController extends Controller
      */
     public function searchSong()
     {
-        $response = $this->meiliSearchService->seatchSong($this->request->term);
+        $response = Song::search($this->request->get('query'), [
+            'filter' => "status != 'deleted'",
+            'sort' => ['bpm:asc'],
+        ]);
 
         return response($response);
     }
