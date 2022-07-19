@@ -2,80 +2,173 @@
 
 namespace App\Services\Birdy;
 
+use App\Models\Catalog;
+use App\Models\Song;
 use MeiliSearch\Client;
 use MeiliSearch\Endpoints\Indexes;
 
 class MeiliSearchService
 {
-    public Client $meiliSearch;
+    /**
+     * @var Client
+     */
+    public Client $client;
 
     public function __construct()
     {
-        $url = env('MEILISEARCH_HOST');
-        $this->meiliSearch = new Client($url);
+        $this->client = new Client(env('MEILISEARCH_HOST'), env('MEILISEARCH_KEY'));
     }
 
     /**
-     * @param Indexes $songIndex
      * @return Indexes
      */
-    public function setSearchSettings(Indexes $songIndex): Indexes
+    public function setCatalogsIndex(): Indexes
     {
-        $songIndex->updateFilterableAttributes([
-            'bpm',
-            'key',
-            'scale',
-            'energy',
-            'happy',
-            'sad',
-            'aggressiveness',
-            'danceability',
-            'relaxed',
-            'analyzed',
-            'slug',
-        ]);
-        $songIndex->updateSortableAttributes([
-            'bpm',
-            'key',
-            'scale',
-            'energy',
-            'happy',
-            'sad',
-            'aggressiveness',
-            'danceability',
-            'relaxed',
-            'slug',
-        ]);
-        $songIndex->updateDisplayedAttributes([
-            'title',
-            'bpm',
-            'key',
-            'scale',
-            'energy',
-            'happy',
-            'sad',
-            'aggressiveness',
-            'danceability',
-            'relaxed',
-            'played',
-            'path',
-            'slug',
-            'image',
-            'related_songs',
-        ]);
+        $meiliSearch = $this->client;
 
-        $songIndex->updateRankingRules([
-            'bpm',
-            'key',
-            'scale',
-            'danceability',
-            'energy',
-            'happy:asc',
-            'sad:dsc',
-            'relaxed',
-        ]);
+        try {
+            $meiliSearch->createIndex("catalogs");
+            $meiliSearch->index("catalogs")->updateSearchableAttributes([
+                'id',
+                'item_name',
+                'item_category',
+                'description',
+                'features_list',
+            ]);
+            $meiliSearch->index("catalogs")->updateFilterableAttributes([
+                'id',
+                'item_name',
+                'item_category',
+                'description',
+                'features_list',
+            ]);
+            $meiliSearch->index("catalogs")->updateSortableAttributes([
+                'id',
+                'item_name',
+                'item_category',
 
-        return $songIndex;
+            ]);
+            $meiliSearch->index("catalogs")->updateDisplayedAttributes([
+                'id',
+                'item_name',
+                'item_category',
+                'description',
+                'features_list',
+            ]);
+            $meiliSearch->index("catalogs")->updateRankingRules([
+                'id',
+                'item_name',
+                'item_category',
+                'description',
+                'features_list',
+            ]);
+        }catch (\Exception $e) {
+            dump([
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTrace(),
+            ]);
+        }
+        $meiliSearch->index('catalogs')->update(['primaryKey' => 'id']);
+        $meiliSearch->index('catalogs')->addDocuments(Catalog::all()->toArray());
+        return $meiliSearch->index("catalogs");
+    }
+
+    /**
+     * @return Indexes
+     */
+    public function setSongsIndex(): Indexes
+    {
+        $meiliSearch = $this->client;
+
+        try {
+            $meiliSearch->createIndex("songs");
+            $meiliSearch->index("songs")->updateSearchableAttributes([
+                "title",
+                "bpm",
+                "key",
+                "scale",
+                "energy",
+                "happy",
+                "sad",
+                "analyzed",
+                "aggressiveness",
+                "danceability",
+                "relaxed",
+                "played",
+                "path",
+                "slug",
+                "image",
+                "related_songs",
+            ]);
+            $meiliSearch->index("songs")->updateFilterableAttributes([
+                "bpm",
+                "key",
+                "scale",
+                "energy",
+                "happy",
+                "sad",
+                "analyzed",
+                "aggressiveness",
+                "danceability",
+                "relaxed",
+                "slug",
+            ]);
+            $meiliSearch->index("songs")->updateSortableAttributes([
+                "bpm",
+                "key",
+                "scale",
+                "energy",
+                "happy",
+                "sad",
+                "analyzed",
+                "aggressiveness",
+                "danceability",
+                "relaxed",
+                "slug",
+            ]);
+            $meiliSearch->index("songs")->updateDisplayedAttributes([
+                "title",
+                "bpm",
+                "key",
+                "scale",
+                "energy",
+                "happy",
+                "sad",
+                "analyzed",
+                "aggressiveness",
+                "danceability",
+                "relaxed",
+                "played",
+                "path",
+                "slug",
+                "image",
+                "related_songs",
+            ]);
+            $meiliSearch->index("songs")->updateRankingRules([
+                "bpm",
+                "key",
+                "scale",
+                "danceability",
+                "energy",
+                "happy:asc",
+                "sad:dsc",
+                "relaxed",
+            ]);
+        }catch (\Exception $e) {
+            dump([
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTrace(),
+            ]);
+        }
+        $meiliSearch->index('songs')->update(['primaryKey' => 'id']);
+        $meiliSearch->index('songs')->addDocuments(Song::all()->toArray());
+        return $meiliSearch->index("songs");
     }
 
     /**
@@ -83,9 +176,6 @@ class MeiliSearchService
      */
     public function getSongIndex(): Indexes
     {
-        $songIndex = $this->meiliSearch->index('songs');
-        $this->setSearchSettings($songIndex);
-
-        return $songIndex;
+        return $this->client->index("songs");
     }
 }

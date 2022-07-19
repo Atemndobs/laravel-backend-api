@@ -5,11 +5,13 @@ namespace App\Services\Birdy;
 use App\Models\Song;
 use MeiliSearch\Endpoints\Indexes;
 use MeiliSearch\Search\SearchResult;
+use function example\int;
 use function PHPUnit\Framework\isEmpty;
 
 class BirdyMatchService
 {
     public MeiliSearchService $meiliSearchService;
+    private Indexes $songIndex;
 
     public function __construct()
     {
@@ -17,7 +19,11 @@ class BirdyMatchService
         $this->songIndex = $this->meiliSearchService->getSongIndex();
     }
 
-    public function getSongmatch($slug)
+    /**
+     * @param string $slug
+     * @return array
+     */
+    public function getSongmatch(string $slug): array
     {
         $song = $this->getExistingSong($slug);
         if (! $this->checkAnalyzedSong($song)) {
@@ -57,6 +63,10 @@ class BirdyMatchService
         return (bool) $existingSong->analyzed;
     }
 
+    /**
+     * @param Song $incommingSong
+     * @param string $attribute
+     */
     public function getAttributMatch(Song $incommingSong, string $attribute)
     {
         $matches = [];
@@ -234,12 +244,15 @@ class BirdyMatchService
         // remove song with same slug as the song we are analyzing
         $filter[] = "slug != '{$song->slug}'";
         $filter[] = 'analyzed = 1';
-        //dd($filter);
-        $dirrection = 'asc';
+        $direction = 'asc';
+
+        if ((int)$attribute === 0){
+            $attribute = 'bpm';
+        }
 
         return $this->songIndex->search('', [
             'filter' => $filter,
-            'sort' => ["$attribute:$dirrection"],
+            'sort' => ["$attribute:$direction"],
         ]);
     }
 
