@@ -118,8 +118,6 @@ services:
             - sail-mysql:/var/lib/mysql
         networks:
             - sail
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
             retries: 3
@@ -133,8 +131,6 @@ services:
             - 'sail-meilisearch:/data.ms'
         networks:
             - sail
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
         healthcheck:
             test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
             retries: 3
@@ -145,13 +141,13 @@ services:
         ports:
             - 5672:5672
             - 15672:15672
+#        volumes:
+#            - ./rabbitmq/log/:/var/log/rabbitmq
+#            - ./rabbitmq:/var/lib/rabbitmq
         volumes:
-            - ./rabbitmq/log/:/var/log/rabbitmq
-            - ./rabbitmq:/var/lib/rabbitmq
+            - 'sail-rabbitmq:/data.rabbitmq'
         networks:
             - sail
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
 
     redis:
         image: 'redis:alpine'
@@ -161,8 +157,6 @@ services:
             - 'sail-redis:/data'
         networks:
             - sail
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
             retries: 3
@@ -185,4 +179,6 @@ volumes:
     sail-redis:
         driver: local
     sail-meilisearch:
+        driver: local
+    sail-rabbitmq:
         driver: local
