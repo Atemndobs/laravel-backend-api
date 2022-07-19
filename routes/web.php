@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use TCG\Voyager\Facades\Voyager;
 
 
 /*
@@ -18,3 +19,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('health', \App\Http\Controllers\Admin\HealthCheckController::class);
+
+
+Route::group(['prefix' => 'voyager'], function () {
+    Voyager::routes();
+});

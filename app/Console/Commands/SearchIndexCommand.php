@@ -30,6 +30,7 @@ class SearchIndexCommand extends Command
      */
     public function handle()
     {
+
         // Find out and Fix 405 Error with Meileiseach
         $url = env('MEILISEARCH_HOST');
         $client = new Client($url);

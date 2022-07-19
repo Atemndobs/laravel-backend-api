@@ -19,9 +19,9 @@ class Kernel extends ConsoleKernel
         $new_date = date('d M, Y', strtotime(now('CET')));
         $logFile = 'schedule_'.($new_date).'.log';
 
-        $schedule->command('queue:work --max-jobs=1 --stop-when-empty')
-            ->everyMinute()
-            ->appendOutputTo('storage/logs/scheduler.log');
+//        $schedule->command('queue:work --max-jobs=1 --stop-when-empty')
+//            ->everyMinute()
+//            ->appendOutputTo('storage/logs/scheduler.log');
 
 //            $schedule->command('queue:work database --queue=analyze --stop-when-empty')
 //                ->everyMinute()
