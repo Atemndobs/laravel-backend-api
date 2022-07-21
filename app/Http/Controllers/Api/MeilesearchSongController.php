@@ -5,39 +5,57 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
 use MeiliSearch\Client;
+use MeiliSearch\Contracts\DocumentsQuery;
+use function example\int;
 
 class MeilesearchSongController extends Controller
 {
-/**
-     * @var Client
-     */
+    public \MeiliSearch\Client $client;
+
+    public function __construct()
+    {
+        $this->client = new Client(env('MEILISEARCH_HOST'), env('MEILI_MASTER_KEY'));
+    }
+
     public function getSongs()
     {
+        $offset = request()->offset ?? 0;
+        $limit = request()->limit ?? 10;
 
-        // http://mage.tech:7700/indexes/songs/search?offset=0&limit=600
-        $songs = (new Client(env('MEILISEARCH_HOST')))->getIndex('songs');
+        $filter =
+            ['filter' => [
+                ['status != deleted'],
+                'analyzed = 1'
+            ]];
+/*        $songs = $this->client->getIndex('songs')
+            ->getDocuments(
+                (new DocumentsQuery())->setOffset($offset)->setLimit($limit)
+            )->toArray();
+        $total = $songs['total'];
+        $last = $total / $limit;
+        // replace 'results' with 'data'
+        $songs['data'] = $songs['results'];
+        $songs['last'] = $last;
+        unset($songs['results']);*/
 
-        $searchQuery = [
-            'query' => [
-                'match' => [
-                    'title' => 'the beat',
-                ],
-            ],
-        ];
-        $songs->updateSettings([
-            'filterableAttributes' => [
-                'status',
-            ],
-        ]);
-        $songs->search('', [
-            'filter' => "status != 'deleted'",
-            'sort' => ['bpm:asc'],
-        ]);
-        $query = [
-            'offset' => 0,
-            'limit' => 100,
-        ];
-        return $songs->getDocuments($query);
+        $search = $this->client->getIndex('songs')
+            ->search('', $filter)
+            ->toArray();
+        $search['data'] = $search['hits'];
+        unset($search['hits']);
+        $search['total'] = $search['estimatedTotalHits'];
+        unset($search['estimatedTotalHits']);
+        unset($search['processingTimeMs']);
+        unset($search['query']);
+        unset($search['facetDistribution']);
+        unset($search['hitsCount']);
+        $search['offset'] = (int)$offset;
+        $search['limit'] = (int)$limit;
+        $searchTotal = $search['total'];
+        $searchLast = $searchTotal / $limit;
+        $search['last'] = (int)$searchLast;
+
+        return response()->json($search);
     }
 
     public function ping()

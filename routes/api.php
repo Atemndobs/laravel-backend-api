@@ -47,7 +47,7 @@ Route::get('upload/strapi', [\App\Http\Controllers\Api\UploadController::class, 
 Route::post('upload/webhook', [\App\Http\Controllers\Api\UploadController::class, 'strapiUploadsWebhook']);
 
 Route::get('songs/match/{title}', [\App\Http\Controllers\Api\MatchSongController::class, 'getSongMatch']);
-Route::get('index/songs', [\App\Http\Controllers\Api\MeilesearchSongController::class, 'getSongs']);
+Route::get('search/songs', [\App\Http\Controllers\Api\MeilesearchSongController::class, 'getSongs']);
 Route::post('ping', [\App\Http\Controllers\Api\MeilesearchSongController::class, 'ping']);
 Route::get('songs/match/{title}/{$attribute}', [\App\Http\Controllers\Api\MatchSongController::class, 'matchByAttribute']);
 Route::get('songs/search/{term}', [\App\Http\Controllers\Api\SongSearchController::class, 'searchSong']);

@@ -115,6 +115,7 @@ class MeiliSearchService
                 "danceability",
                 "relaxed",
                 "slug",
+                'status'
             ]);
             $meiliSearch->index("songs")->updateSortableAttributes([
                 "bpm",
@@ -130,7 +131,9 @@ class MeiliSearchService
                 "slug",
             ]);
             $meiliSearch->index("songs")->updateDisplayedAttributes([
+                'id',
                 "title",
+                'author',
                 "bpm",
                 "key",
                 "scale",
@@ -146,6 +149,11 @@ class MeiliSearchService
                 "slug",
                 "image",
                 "related_songs",
+                'comment',
+                'genre',
+                'played',
+                'status',
+                'classification_properties'
             ]);
             $meiliSearch->index("songs")->updateRankingRules([
                 "bpm",

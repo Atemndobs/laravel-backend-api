@@ -224,7 +224,6 @@
         </div>
         @endif
     </div>
-
     <div class="page-content settings container-fluid">
         <form action="{{ route('voyager.settings.update') }}" method="POST" enctype="multipart/form-data">
             {{ method_field("PUT") }}

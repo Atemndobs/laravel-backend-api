@@ -4,6 +4,7 @@ namespace App\Console\Commands\Indexer;
 
 use Illuminate\Console\Command;
 use MeiliSearch\Client;
+use MeiliSearch\Endpoints\Indexes;
 
 class MeilisearchReindexer extends Command
 {
@@ -52,6 +53,8 @@ class MeilisearchReindexer extends Command
     {
         $service = new \App\Services\Birdy\MeiliSearchService();
         $method = 'set' . ucfirst($item ) . 'Index';
+
+        /** @var Indexes $index */
         $index =  $service->$method();
 
         $filterable = $index->getFilterableAttributes();

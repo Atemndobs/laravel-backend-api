@@ -224,28 +224,30 @@ return [
     'media' => [
         // The allowed mimetypes to be uploaded through the media-manager.
         // 'allowed_mimetypes' => '*', //All types can be uploaded
-        'allowed_mimetypes' => [
+/*        'allowed_mimetypes' => [
           'image/jpeg',
           'image/png',
           'image/gif',
           'image/bmp',
           'video/mp4',
-        ],
+          'audio/mpeg',
+        ],*/
+        'allowed_mimetypes' => "*",
         //Path for media-manager. Relative to the filesystem.
-        'path'                => '/',
+        'path'                => '/images/',
         'show_folders'        => true,
         'allow_upload'        => true,
         'allow_move'          => true,
         'allow_delete'        => true,
         'allow_create_folder' => true,
         'allow_rename'        => true,
-        /*'watermark'           => [
+/*        'watermark'           => [
             'source'         => 'watermark.png',
             'position'       => 'bottom-left',
             'x'              => 0,
             'y'              => 0,
             'size'           => 15,
-       ],
+       ],*/
        'thumbnails'          => [
            [
                 'type'  => 'fit',
@@ -253,6 +255,6 @@ return [
                 'width' => 500,
                 'height'=> 500
            ],
-       ]*/
+       ]
     ],
 ];
