@@ -22,11 +22,15 @@ class MeilesearchSongController extends Controller
         $offset = request()->offset ?? 0;
         $limit = request()->limit ?? 10;
 
-        $filter =
-            ['filter' => [
+        $query =
+            [
+                'filter' => [
                 ['status != deleted'],
                 'analyzed = 1'
-            ]];
+            ],
+            'limit' => (int)$limit,
+            'offset' => (int)$offset,
+            ];
 /*        $songs = $this->client->getIndex('songs')
             ->getDocuments(
                 (new DocumentsQuery())->setOffset($offset)->setLimit($limit)
@@ -39,8 +43,9 @@ class MeilesearchSongController extends Controller
         unset($songs['results']);*/
 
         $search = $this->client->getIndex('songs')
-            ->search('', $filter)
+            ->search('', $query)
             ->toArray();
+
         $search['data'] = $search['hits'];
         unset($search['hits']);
         $search['total'] = $search['estimatedTotalHits'];

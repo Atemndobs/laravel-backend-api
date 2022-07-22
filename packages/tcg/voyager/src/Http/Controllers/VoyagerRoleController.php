@@ -15,7 +15,7 @@ class VoyagerRoleController extends VoyagerBaseController
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        $this->authorize('edit', app($dataType->model_name));
+      //  $this->authorize('edit', app($dataType->model_name));
 
         //Validate fields
         $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id)->validate();

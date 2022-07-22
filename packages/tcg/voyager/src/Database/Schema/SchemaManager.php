@@ -62,7 +62,10 @@ abstract class SchemaManager
 
         $indexes = static::manager()->listTableIndexes($tableName);
 
-        return new Table($tableName, $columns, $indexes, $foreignKeys, false, []);
+        // Doctrine\DBAL\Schema\UniqueConstraint
+        // Doctrine\DBAL\Schema\ForeignKeyConstraint
+
+        return new Table($tableName, $columns, $indexes, $foreignKeys, [], []);
     }
 
     /**
