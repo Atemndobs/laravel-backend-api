@@ -19,6 +19,7 @@ class SongUpdateJob implements ShouldQueue
      */
     public function __construct()
     {
+        $this->queue = 'SongUpdate';
         //
     }
 

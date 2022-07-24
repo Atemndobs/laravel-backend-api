@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Console\Commands;
 
-use App\Console\Commands\SpotifyDownloadCommand;
+use App\Console\Commands\Scraper\SpotifyDownloadCommand;
 use Tests\TestCase;
 
 /**
  * Class SpotifyDownloadCommandTest.
  *
- * @covers \App\Console\Commands\SpotifyDownloadCommand
+ * @covers \App\Console\Commands\Scraper\SpotifyDownloadCommand
  */
 final class SpotifyDownloadCommandTest extends TestCase
 {

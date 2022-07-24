@@ -21,6 +21,7 @@ class ClassifySongJob implements ShouldQueue
      */
     public function __construct(string $track)
     {
+        $this->queue = 'classify';
         $this->track = $track;
     }
 

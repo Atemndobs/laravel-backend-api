@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands\Scraper;
 
-use App\Services\Scraper\Blogs\Clacified;
 use Illuminate\Console\Command;
 
 class BlogMusicDownloadCommand extends Command
@@ -35,10 +34,7 @@ class BlogMusicDownloadCommand extends Command
         $site = $this->argument('site');
         $artist = $this->option('artist');
 
-        $service = new Clacified();
-        $top20 = $service->getTop20();
-
-        dd($top20);
+        dd($this->options());
         return 0;
     }
 }

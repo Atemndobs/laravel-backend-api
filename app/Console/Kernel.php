@@ -19,9 +19,19 @@ class Kernel extends ConsoleKernel
         $new_date = date('d M, Y', strtotime(now('CET')));
         $logFile = 'schedule_'.($new_date).'.log';
 
-//        $schedule->command('queue:work --max-jobs=1 --stop-when-empty')
-//            ->everyMinute()
-//            ->appendOutputTo('storage/logs/scheduler.log');
+        $schedule->command('watch:audio ')
+            ->everyMinute()
+            ->withoutOverlapping()
+            ->appendOutputTo('storage/logs/downloads.log');
+
+        $schedule->command('rabbitmq:consume --queue=default --stop-when-empty')
+            ->everyMinute()
+            ->appendOutputTo('storage/logs/indexer.log');
+
+
+        $schedule->command('queue:work --queue=analyze --max-jobs=1 --stop-when-empty')
+            ->everyMinute()
+            ->appendOutputTo('storage/logs/analyze.log');
 
 //            $schedule->command('queue:work database --queue=analyze --stop-when-empty')
 //                ->everyMinute()
@@ -31,7 +41,7 @@ class Kernel extends ConsoleKernel
             ->everyThirtyMinutes()
             ->appendOutputTo('storage/logs/scheduler.log');
 
-        $schedule->command('queue:flush')
+        $schedule->command('queue:flush default')
             ->everyThirtyMinutes()
             ->appendOutputTo('storage/logs/scheduler.log');
 

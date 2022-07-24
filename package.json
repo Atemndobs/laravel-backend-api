@@ -17,6 +17,7 @@
         "postcss": "^8.1.14"
     },
     "dependencies": {
-        "@jhurliman/essentia.js": "^0.1.5-dev2"
+        "@jhurliman/essentia.js": "^0.1.5-dev2",
+        "chokidar": "^3.5.3"
     }
 }

@@ -18,6 +18,6 @@ class Clacified
         $link = $this->baseUrl.'/entertainment/16/top-trending-naija-songs-2022';
 
         $getSongLinks = $this->getSongLinks($link);
-
+        
     }
 }

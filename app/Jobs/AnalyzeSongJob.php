@@ -22,6 +22,7 @@ class AnalyzeSongJob implements ShouldQueue
      */
     public function __construct(string $title)
     {
+        $this->queue = 'analyze';
         $this->title = $title;
     }
 

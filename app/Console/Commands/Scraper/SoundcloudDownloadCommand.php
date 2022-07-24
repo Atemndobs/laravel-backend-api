@@ -35,10 +35,26 @@ class SoundcloudDownloadCommand extends Command
         $link = $this->argument('link');
         $artist = $this->option('artist');
 
-        $soundcloudService = new SoundcloudService();
-        $song = $soundcloudService->downloadSong($link);
-        // put result intable
-        $this->info('Downloaded song: ' . $song);
+       // $soundcloudService = new SoundcloudService();
+       // $song = $soundcloudService->downloadSong($link);
+
+        $shell = shell_exec("scdl  -l $link --path storage/app/public/audio/");
+        // $this->info($shell);
+        try {
+            $outputs = explode("\n", $shell);
+
+            // search the word "found" from output
+            $result = "";
+            foreach ($outputs as $output) {
+                if (strpos($output, 'Found') !== false) {
+                    $result = $output;
+                    $this->info($result);
+                }
+            }
+            $this->info("Download Completed ... | $result");
+        }catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
         return 0;
     }
 }

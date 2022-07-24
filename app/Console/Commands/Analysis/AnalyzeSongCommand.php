@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Analysis;
 
+use App\Models\Song;
 use App\Services\MoodAnalysisService;
 use Illuminate\Console\Command;
 
