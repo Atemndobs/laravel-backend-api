@@ -35,13 +35,6 @@ class Kernel extends ConsoleKernel
 //            ->withoutOverlapping()
 //            ->appendOutputTo('storage/logs/analyze.log');
 
-        $schedule->command('queue:clear')
-            ->everyThirtyMinutes()
-            ->appendOutputTo('storage/logs/scheduler.log');
-
-        $schedule->command('queue:flush default')
-            ->everyThirtyMinutes()
-            ->appendOutputTo('storage/logs/scheduler.log');
 
         $schedule->command(RunHealthChecksCommand::class)
             ->everyMinute();
