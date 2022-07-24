@@ -24,3 +24,9 @@ Route::get('health', \App\Http\Controllers\Admin\HealthCheckController::class);
 Route::group(['prefix' => 'voyager'], function () {
     Voyager::routes();
 });
+
+// Mailing Route
+Route::get('/mail', function () {
+    \Illuminate\Support\Facades\Mail::to('info@acurator.com')->send(new \App\Mail\MusicImportedMail());
+    return new App\Mail\MusicImportedMail();
+});
