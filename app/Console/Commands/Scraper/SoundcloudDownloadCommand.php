@@ -37,8 +37,8 @@ class SoundcloudDownloadCommand extends Command
 
        // $soundcloudService = new SoundcloudService();
        // $song = $soundcloudService->downloadSong($link);
-
-        $shell = shell_exec("scdl  -l $link --path storage/app/public/audio/");
+// scdl -l  url --path storage/app/public/audio
+        $shell = shell_exec("scdl  -l $link --path storage/app/public/audio");
         // $this->info($shell);
         try {
             $outputs = explode("\n", $shell);

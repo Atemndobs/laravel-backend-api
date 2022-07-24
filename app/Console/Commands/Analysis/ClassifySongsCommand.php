@@ -19,7 +19,7 @@ class ClassifySongsCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Bulk Classify Songs | Classify All un-analyzed Songs ';
 
     /**
      * Execute the console command.
@@ -28,10 +28,12 @@ class ClassifySongsCommand extends Command
      */
     public function handle()
     {
+        $this->call('rabbitmq:queue-delete', ['name' => 'classify']);
         $unClassified = (new MoodAnalysisService())->classifySongs();
 
         $this->output->info('Queued tracks');
         $headers = [
+            'number',
             'title',
             'status',
         ];
@@ -39,6 +41,7 @@ class ClassifySongsCommand extends Command
         $data = [];
         foreach ($unClassified as $title) {
             $data[] = [
+                'num.' => count($data) +1,
                 'title' => $title,
                 'status' => 'imported',
             ];
@@ -46,6 +49,7 @@ class ClassifySongsCommand extends Command
         }
 
         $this->output->table($headers, $data);
+        $this->info("Unclassified : " . count($unClassified));
         info('=========================================CLASSIFY_COMPLETE====================================');
 
         return 'job has been queued';

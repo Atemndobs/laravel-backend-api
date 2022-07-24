@@ -24,18 +24,16 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping()
             ->appendOutputTo('storage/logs/downloads.log');
 
-        $schedule->command('rabbitmq:consume --queue=default --stop-when-empty')
+        $schedule->command('rabbitmq:consume --queue=classify --max-jobs=1 --stop-when-empty')
             ->everyMinute()
+            ->withoutOverlapping()
             ->appendOutputTo('storage/logs/indexer.log');
 
 
-        $schedule->command('queue:work --queue=analyze --max-jobs=1 --stop-when-empty')
-            ->everyMinute()
-            ->appendOutputTo('storage/logs/analyze.log');
-
-//            $schedule->command('queue:work database --queue=analyze --stop-when-empty')
-//                ->everyMinute()
-//                ->appendOutputTo('storage/logs/scheduler.log');
+//        $schedule->command('queue:work --queue=analyze --max-jobs=1 --stop-when-empty')
+//            ->everyMinute()
+//            ->withoutOverlapping()
+//            ->appendOutputTo('storage/logs/analyze.log');
 
         $schedule->command('queue:clear')
             ->everyThirtyMinutes()

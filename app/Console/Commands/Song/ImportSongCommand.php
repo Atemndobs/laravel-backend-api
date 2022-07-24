@@ -11,6 +11,7 @@ use App\Services\UploadService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use function example\int;
 
 class ImportSongCommand extends Command
 {
@@ -47,9 +48,6 @@ class ImportSongCommand extends Command
         $uploadService->importSongs($tracks);
         $this->downloadStrapiSong();
 
-        DB::table('jobs')->delete();
-        DB::table('failed_jobs')->delete();
-
         if ($source === 'strapi') {
             $songs = (new StrapiSongService())->importStrapiUploads();
             foreach ($songs as $song) {
@@ -59,7 +57,10 @@ class ImportSongCommand extends Command
             return 0;
         }
 
-       $queuedSongs = $this->classifySongs();
+        // call command : rabbitmq:queue-delete classify to delete all classify queues
+        $this->call('rabbitmq:queue-delete', ['name' => 'classify']);
+        $this->call('rabbitmq:queue-delete', ['name' => 'default']);
+        $queuedSongs = $this->classifySongs();
 
         foreach ($queuedSongs as $title) {
             $unClassified[] = $title;
@@ -189,9 +190,7 @@ class ImportSongCommand extends Command
                 $song->status = 'deleted';
                 $song->save();
                 $deleted[] = $song->title;
-                continue;
-            }
-            if ($song->analyzed === null && $song->duration >= 600) {
+            }elseif ((int)$song->analyzed == null && $song->duration >= 600) {
                 $song->status = 'skipped';
                 $song->analyzed = false;
                 $song->save();
@@ -201,28 +200,28 @@ class ImportSongCommand extends Command
                     'status' => $song->status,
                     'analyzed' => $song->analyzed,
                 ];
-                continue;
-            }
-            if ($song->analyzed === null) {
+            }elseif ((int)$song->analyzed == null) {
                 $song->status = 'queued';
                 $song->save();
                 $unClassified[] = $song->slug;
+//                $this->newLine(1);
+//                $this->info("$song->slug : is unclassified");
             }
         }
-        $this->newLine(1);
-        $this->info("$song->slug : is unclassified");
+
         $bar->finish();
 
 
-        $bar2 = $this->output->createProgressBar(count($unClassified));
-        $bar2->start();
-        foreach ($unClassified as $slug) {
-            $bar2->advance();
-            ClassifySongJob::dispatch($slug);
-        }
-        $this->newLine(1);
-        info("$slug : has been queued");
-        $bar2->finish();
+//        $bar2 = $this->output->createProgressBar(count($unClassified));
+//        $bar2->start();
+//        foreach ($unClassified as $slug) {
+//            $bar2->advance();
+//            ClassifySongJob::dispatch($slug);
+////            $this->newLine(1);
+////            info("$slug : has been queued");
+//        }
+//
+//        $bar2->finish();
 
         return $unClassified;
     }

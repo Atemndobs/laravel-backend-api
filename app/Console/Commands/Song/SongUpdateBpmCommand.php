@@ -110,14 +110,15 @@ class SongUpdateBpmCommand extends Command
         $this->newLine();
         // table of updated songs
         $this->table(['slug', 'title', 'bpm', 'key', 'energy', 'scale'], $updatedSongs);
-        $this->info("Updated songs: ".count($updatedSongs));
-        $this->call('scout:import', ['model' => Song::class]);
-        //$this->call('scout:index', ['model' => Song::class]);
-        $this->info('Scout index updated');
 
-        // index catalogs
+        // delete all queues in default queue
+        $this->call('rabbitmq:queue-delete', ['name' => 'default']);
+        $this->info("Updated songs: ".count($updatedSongs));
+
+        $this->call('index:reindex');
+        $this->call('scout:import', ['model' => Song::class]);
+        $this->info('Scout index updated');
         $this->call('scout:import', ['model' => Catalog::class]);
-       // $this->call('scout:index', ['model' => Catalog::class]);
         $this->info('Scout index updated');
 
         return 0;

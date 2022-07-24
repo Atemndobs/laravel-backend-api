@@ -39,9 +39,8 @@ class AudioFileWatcherCommand extends Command
         try {
             Watch::path($dir)
                 ->onFileCreated(function (string $path) {
-                  //  $this->info("New File Created: $path");
-                    if (strpos($path, '.mp3') !== false) {
-                      //  $this->info("New File Created: $path");
+                    sleep(2);
+                    if (str_contains($path, '.mp3')) {
                         $uploadService = new UploadService();
                         $path = str_replace('/var/www/html/storage/app/public/audio', '', $path);
                         $uploadService->importSongs([$path]);
@@ -49,7 +48,7 @@ class AudioFileWatcherCommand extends Command
                     }
                 })
                 ->onFileUpdated(function (string $path) {
-                    if (strpos($path, '.mp3') !== false) {
+                    if (str_contains($path, '.mp3')) {
                       //  $this->line("<fg=blue>Song Path Has been Updated | $path</>");
                     }
                 })
