@@ -41,7 +41,12 @@ return [
     |
     */
 
-    'queue' => env('SCOUT_QUEUE', false),
+    //'queue' => env('SCOUT_QUEUE', false),
+    'queue' => [
+        'enable' => env('SCOUT_QUEUE', false),
+        'queue' => env('SCOUT_QUEUE_NAME', 'custom'),
+      //  'connection' => 'custom',
+    ],
 
     /*
     |--------------------------------------------------------------------------

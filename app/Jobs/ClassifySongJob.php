@@ -32,6 +32,7 @@ class ClassifySongJob implements ShouldQueue
      */
     public function handle()
     {
+        dump('Classifying: ' . $this->track);
         $slug = $this->track;
         (new MoodAnalysisService())->getAnalysis($slug);
     }

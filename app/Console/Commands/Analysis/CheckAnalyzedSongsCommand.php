@@ -35,11 +35,13 @@ class CheckAnalyzedSongsCommand extends Command
         if ($this->option('analyzed')) {
             $analyzed = $songs->where('analyzed', true);
             $pending = $songs->where('analyzed', false);
+            $queued = $songs->where('status', '=', 'queued');
             $tot = $analyzed->count() + $pending->count();
 
             $analyzed_stats = [
                 'analyzed' => $analyzed->count(),
-                'pending' => $pending->count(),
+                'no_analyzed' => $pending->count(),
+                'queued' => $queued->count(),
                 'total' => $tot,
             ];
         }
@@ -65,15 +67,15 @@ class CheckAnalyzedSongsCommand extends Command
 
         if ($this->option('analyzed') && $this->option('status')) {
             $this->info('Analyzed Stats');
-            $this->table(['analyzed', 'pending', 'total'], [$analyzed_stats]);
+            $this->table(['analyzed', "<fg=magenta> not_analyzed </>",  "<fg=red> queued </>", 'total'], [$analyzed_stats]);
             $this->info('Status Stats');
-            $this->table(['not_yet_re-classified', 're-classified', 'deleted', 'queued','total'], [$status_stats]);
+            $this->table(['not_yet_re-classified', 're-classified', 'deleted', "<fg=red> queued </>",'total'], [$status_stats]);
         } elseif ($this->option('analyzed')) {
             $this->info('Analyzed Stats');
-            $this->table(['analyzed', 'pending', 'total'], [$analyzed_stats]);
+            $this->table(['analyzed', "<fg=magenta> not_analyzed </>",  "<fg=red> queued </>", 'total'], [$analyzed_stats]);
         } elseif ($this->option('status')) {
             $this->info('Status Stats');
-            $this->table(['not_yet_re-classified', 're-classified', 'deleted', 'queued','total'], [$status_stats]);
+            $this->table(['not_yet_re-classified', 're-classified', 'deleted', "<fg=red> queued </>",'total'], [$status_stats]);
         } else {
             $this->info('Total: ' . count($songs));
         }

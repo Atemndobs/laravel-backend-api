@@ -154,7 +154,6 @@ class ClassifyService
         $song->classification_properties = $classification_properties;
         $song->save();
         $savedSong = $song->toArray();
-       // $response[] = $this->buildResponse($savedSong, $song);
         return $this->buildResponse($savedSong, $song);
     }
 }

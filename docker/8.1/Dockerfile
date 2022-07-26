@@ -68,6 +68,9 @@ RUN  python3 -m pip --version || apt-get install -y python3-pip
 RUN pip install spotdl \
 && pip3 install scdl
 
+RUN mkdir ~/.config/scdl/
+#RUN cp scdl.cfg /root/.config/scdl/scdl.cfg
+
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
 
 RUN groupadd --force -g $WWWGROUP sail

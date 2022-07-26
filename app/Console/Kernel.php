@@ -27,6 +27,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('rabbitmq:consume --queue=classify --max-jobs=1 --stop-when-empty')
             ->everyMinute()
             ->withoutOverlapping()
+            ->appendOutputTo('storage/logs/classify.log');
+
+        $schedule->command('rabbitmq:consume --queue=scout --stop-when-empty')
+            ->everyMinute()
+            ->withoutOverlapping()
             ->appendOutputTo('storage/logs/indexer.log');
 
 
