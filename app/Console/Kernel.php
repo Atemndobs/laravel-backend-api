@@ -23,6 +23,10 @@ class Kernel extends ConsoleKernel
             ->everyMinute()
             ->withoutOverlapping()
             ->appendOutputTo('storage/logs/downloads.log');
+        $schedule->command('watch:upload')
+            ->everyMinute()
+            ->withoutOverlapping()
+            ->appendOutputTo('storage/logs/downloads.log');
 
         $schedule->command('rabbitmq:consume --queue=classify --max-jobs=1 --stop-when-empty')
             ->everyMinute()

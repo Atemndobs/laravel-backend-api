@@ -95,7 +95,7 @@ class UploadService
                     'error' => $e->getMessage(),
                     'file' => $file,
                 ];
-                dump($error);
+               // dump($error);
                 continue;
             }
             $song->status = 'imported';

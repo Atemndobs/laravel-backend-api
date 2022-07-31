@@ -95,7 +95,7 @@ class SongUpdateBpmCommand extends Command
 
             $number = $position + 1;
             $left = count($songs) - $position;
-            $this->info("updating | $song->slug | $number song out of ".count($songs)."| $left songs left");
+            $this->info("updating | $song->slug | $number song out of ".count($songs)."| <fg=red;bg=cyan>$left songs left</>");
             $updatedSong = $this->getUpdatedSong($bpm, $key, $updateService, $song);
             $updatedSongs[] = $updatedSong;
             $this->output->progressAdvance(1);

@@ -59,13 +59,29 @@ abstract class SchemaManager
         if (static::manager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
             $foreignKeys = static::manager()->listTableForeignKeys($tableName);
         }
-
         $indexes = static::manager()->listTableIndexes($tableName);
 
-        // Doctrine\DBAL\Schema\UniqueConstraint
-        // Doctrine\DBAL\Schema\ForeignKeyConstraint
+        // convert ForeignKeyConstraint to UniqueConstraint
+//        foreach ($foreignKeys as $key => $foreignKey) {
+//            if ($foreignKey instanceof \Doctrine\DBAL\Schema\ForeignKeyConstraint) {
+//                $uniqueConstraint = new \Doctrine\DBAL\Schema\UniqueConstraint(
+//                    $foreignKey->getName(),
+//                    $foreignKey->getColumns(),
+//                    [],
+//                    $foreignKey->getOptions()
+//                );
+//                $foreignKeys[$key] = $uniqueConstraint;
+//            }
+//        }
+
+        foreach ($foreignKeys as $key => $foreignKey) {
+            if ($foreignKey instanceof \Doctrine\DBAL\Schema\ForeignKeyConstraint) {
+                $foreignKeys = [];
+            }
+        }
 
         return new Table($tableName, $columns, $indexes, $foreignKeys, [], []);
+
     }
 
     /**

@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Console\Commands;
 
-use App\Console\Commands\AudioFileWatcherCommand;
+use App\Console\Commands\FileWatcher\AudioFileWatcherCommand;
 use Tests\TestCase;
 
 /**
  * Class AudioFileWatcherCommandTest.
  *
- * @covers \App\Console\Commands\AudioFileWatcherCommand
+ * @covers \App\Console\Commands\FileWatcher\AudioFileWatcherCommand
  */
 final class AudioFileWatcherCommandTest extends TestCase
 {

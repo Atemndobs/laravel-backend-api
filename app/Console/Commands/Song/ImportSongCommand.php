@@ -47,7 +47,7 @@ class ImportSongCommand extends Command
         $tracks = $this->cleanFiles($allFiles);
 
         // check if upload service is still needed ?????
-/*        $uploadService = new UploadService();
+        $uploadService = new UploadService();
         $uploadService->importSongs($tracks);
         $this->downloadStrapiSong();
 
@@ -58,7 +58,7 @@ class ImportSongCommand extends Command
             }
 
             return 0;
-        }*/
+        }
 
         // call command : rabbitmq:queue-delete classify to delete all classify queues
         $this->call('rabbitmq:queue-delete', ['name' => 'classify']);

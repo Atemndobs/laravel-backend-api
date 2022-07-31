@@ -39,7 +39,7 @@ class DbBackupCommand extends Command
             $this->backupTable($files, $count);
 
             $this->info('Backup folder contains '.$count.' files');
-            $answer = $this->ask('Do you want to delete all files? (y/n)');
+            $answer = $this->askWithCompletion('Do you want to delete all files? (y/n)', ['y', 'n'], 'n');
             if ($answer == 'y') {
                 // delete all files from backup folder
                 $this->info('Deleting all files from backup folder');

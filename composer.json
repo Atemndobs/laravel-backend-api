@@ -14,6 +14,7 @@
         "aerni/laravel-spotify": "^2.0",
         "backpack/logmanager": "^4.0",
         "beyondcode/laravel-websockets": "^1.13",
+        "cesargb/laravel-logs-rotate": "^2.2",
         "dbfx/laravel-strapi": "*",
         "doctrine/dbal": "^3.3",
         "fabpot/goutte": "^4.0",

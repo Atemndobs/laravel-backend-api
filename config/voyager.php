@@ -234,7 +234,7 @@ return [
         ],*/
         'allowed_mimetypes' => "*",
         //Path for media-manager. Relative to the filesystem.
-        'path'                => '/images/',
+        'path'                => '/uploads/',
         'show_folders'        => true,
         'allow_upload'        => true,
         'allow_move'          => true,

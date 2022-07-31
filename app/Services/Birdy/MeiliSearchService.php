@@ -87,6 +87,7 @@ class MeiliSearchService
             $meiliSearch->createIndex("songs");
             $meiliSearch->index("songs")->updateSearchableAttributes([
                 "title",
+                "author",
                 "bpm",
                 "key",
                 "scale",
@@ -104,6 +105,7 @@ class MeiliSearchService
                 "related_songs",
             ]);
             $meiliSearch->index("songs")->updateFilterableAttributes([
+                "title",
                 "bpm",
                 "key",
                 "scale",
@@ -115,9 +117,10 @@ class MeiliSearchService
                 "danceability",
                 "relaxed",
                 "slug",
-                'status'
+                "status"
             ]);
             $meiliSearch->index("songs")->updateSortableAttributes([
+                "title",
                 "bpm",
                 "key",
                 "scale",
@@ -129,6 +132,7 @@ class MeiliSearchService
                 "danceability",
                 "relaxed",
                 "slug",
+                "status",
             ]);
             $meiliSearch->index("songs")->updateDisplayedAttributes([
                 'id',
