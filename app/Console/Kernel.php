@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -19,13 +19,15 @@ class Kernel extends ConsoleKernel
         $new_date = date('d M, Y', strtotime(now('CET')));
         $logFile = 'schedule_'.($new_date).'.log';
 
-        $schedule->command('watch:audio ')
+        $schedule->command('watch:audio')
             ->everyMinute()
             ->withoutOverlapping()
+            ->runInBackground()
             ->appendOutputTo('storage/logs/downloads.log');
         $schedule->command('watch:upload')
             ->everyMinute()
             ->withoutOverlapping()
+            ->runInBackground()
             ->appendOutputTo('storage/logs/downloads.log');
 
         $schedule->command('rabbitmq:consume --queue=classify --max-jobs=1 --stop-when-empty')
@@ -37,7 +39,6 @@ class Kernel extends ConsoleKernel
             ->everyMinute()
             ->withoutOverlapping()
             ->appendOutputTo('storage/logs/indexer.log');
-
 
 //        $schedule->command('queue:work --queue=analyze --max-jobs=1 --stop-when-empty')
 //            ->everyMinute()
