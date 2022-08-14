@@ -19,7 +19,7 @@ class CheckAnalyzedSongsCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Show pending songs for analysis or classification';
 
     /**
      * Execute the console command.

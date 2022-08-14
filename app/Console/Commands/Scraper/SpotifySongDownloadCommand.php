@@ -13,7 +13,7 @@ class SpotifySongDownloadCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'Spotify:song {db?} ';
+    protected $signature = 'spotify:song {db?} ';
 
     /**
      * The console command description.

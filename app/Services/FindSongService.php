@@ -127,7 +127,7 @@ class FindSongService
         ray($where)->green();
         ray(Song::where($where)->get()->toArray())->red();
 
-        $songs = Song::query()->select('id', 'slug', 'title', 'bpm', 'key', 'scale', 'path')
+        $songs = Song::query()->select('id', 'title', 'slug', 'bpm', 'key', 'scale','analyzed', 'danceability', 'energy', 'happy', 'path')
             ->where($where)
             ->offset($offset)
             ->limit(10)
@@ -145,13 +145,13 @@ class FindSongService
     public function getAttribute(string $attribute, string|float $value, int $diff = 3)
     {
         if (is_float($value)) {
-            $songs = Song::query()->select('id', 'title', 'slug', 'bpm', 'key', 'scale', 'path')
+            $songs = Song::query()->select('id', 'title', 'slug', 'bpm', 'key', 'scale','analyzed', 'danceability', 'energy', 'happy', 'path')
                 ->whereBetween($attribute, [$value - $diff, $value + $diff])
               //  ->limit(10)
                 ->get();
         }
 
-        $songs = Song::query()->select('id', 'title', 'slug', 'bpm', 'key', 'scale', 'path')
+        $songs = Song::query()->select('id', 'title', 'slug', 'bpm', 'key', 'scale','analyzed', 'danceability', 'energy', 'happy', 'path')
             ->where($attribute, 'like', "%$value%")
            // ->limit(10)
             ->get();

@@ -26,6 +26,8 @@ class MoodAnalysisService
                 'analyzed' => $existingSong->analyzed,
                 'Existing' => $existingSong->status,
             ]);
+            // index the existing song
+            $existingSong->searchable();
 
             return [
                 'status' => $existingSong->status,

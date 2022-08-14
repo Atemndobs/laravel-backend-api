@@ -11,6 +11,8 @@ use App\Services\UploadService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 use function example\int;
 
 class ImportSongCommand extends Command
@@ -36,7 +38,6 @@ class ImportSongCommand extends Command
      */
     public function handle()
     {
-
         $source = $this->argument('source');
         $source = $source ?? 'storage/audio';
         $unClassified = [];
@@ -45,7 +46,6 @@ class ImportSongCommand extends Command
         $this->info('Found ' . count($allFiles) . ' files');
 
         $tracks = $this->cleanFiles($allFiles);
-
         // check if upload service is still needed ?????
         $uploadService = new UploadService();
         $uploadService->importSongs($tracks);

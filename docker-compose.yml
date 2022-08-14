@@ -28,7 +28,13 @@ services:
             - mysql
             - redis
             - meilisearch
-            - selenium
+#    ppm:
+#        image: phppm/nginx
+#        command: --debug=1 --app-env=dev --static-directory=web/
+#        volumes:
+#            - ./:/var/www
+#        ports:
+#            - 8899:80
 #    nginx:
 #        build:
 #            context: ./docker/nginx

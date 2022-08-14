@@ -178,6 +178,7 @@ class MeiliSearchService
                 'trace' => $e->getTrace(),
             ]);
         }
+        // $meiliSearch->index('songs')->deleteAllDocuments();
         $meiliSearch->index('songs')->update(['primaryKey' => 'id']);
         $meiliSearch->index('songs')->addDocuments(Song::all()->toArray());
         return $meiliSearch->index("songs");

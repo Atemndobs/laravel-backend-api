@@ -2,7 +2,10 @@
 
 namespace App\Services\Birdy;
 
+use App\Jobs\DownloadSpotifyJob;
+use App\Models\Feed;
 use App\Models\Song;
+use Illuminate\Support\Facades\Artisan;
 use SpotifyWebAPI\Session;
 use SpotifyWebAPI\SpotifyWebAPI;
 
@@ -48,7 +51,7 @@ class SpotifyService
         return $genres;
     }
 
-    public function getGenreByArtist(string $author)
+    public function getGenreByArtist(string $author, Song $searchSong)
     {
         $genres = [];
         if ($author === 'unknown') {
@@ -65,35 +68,37 @@ class SpotifyService
             $song = Song::query()->where('author', 'like', "%$author%")->first();
         }
         /** @var Song $song */
-        if ($song->genre !== null && count($song->genre) > 0) {
+        if ((int)$song->genre != 0 && count($song->genre) > 0) {
             $gen = json_encode($song->genre);
             $title = $song->title;
+            $searchSong->genre = $song->genre;
+            $searchSong->save();
+            $searchSong->searchable();
             dump("$title by  $author : $gen");
             return 0;
         }
-
-        if (strpos($author, ',') !== false) {
+        if (str_contains($author, ',')) {
             $authors = explode(',', $author);
             foreach ($authors as $author) {
                try {
-                   $genres = $this->getGenreByArtist($author);
+                   $genres = $this->getGenreByArtist($author, $searchSong);
                    $song->genre = $genres;
                    $song->save();
+                   $song->searchable();
                    continue;
                } catch (\Exception $e) {
                    dump($e->getMessage());
                }
             }
         }
-
-        if (strpos($author, '/') !== false) {
+        if (str_contains($author, '/')) {
             $authors = explode('/', $author);
-            foreach ($authors as $author) {
+            foreach ($authors as $artist) {
                 try {
-                    $genres = $this->getGenreByArtist($author);
+                    $genres = $this->getGenreByArtist($artist, $searchSong);
                     $song->genre = $genres;
                     $song->save();
-                   continue;
+                    $song->searchable();
                 } catch (\Exception $e) {
                     if ($e->getMessage() !== 'The access token expired') {
                         // sleep for a while to avoid rate limit
@@ -114,20 +119,43 @@ class SpotifyService
             if (count($artist->genres) === 0) {
                 continue;
             }
-            $genres[] = [
-                'name' => $artist->name,
-                'genres' => $artist->genres,
-            ];
+            if (str_contains($artist->name,$author)){
+                $genres[] = [
+                    'name' => $artist->name,
+                    'genres' => $artist->genres,
+                ];
+            }
+
+        }
+        if (!is_array($genres)) {
+            return [];
         }
 
-        if (count($genres) === 1 && strtoupper($genres[0]['name']) === strtoupper($author)) {
-            return  $genres[0]['genres'];
+        dump([
+            'author' => $author,
+            'searchsong' => $searchSong->title,
+            'genres' => $genres,
+        ]);
+
+        if (count($genres) === 1 && isset($genres[0]['name'])) {
+            if (str_contains($genres[0]['name'], $author)) {
+                return  $genres[0]['genres'];
+            }
         }
 
-        if (count($genres) >= 1) {
+        if (count($genres) > 1) {
             foreach ($genres as $genre) {
-                if (strtoupper($genre['name']) === strtoupper($author)) {
-                    return $genre['genres'];
+
+                ray()->clearAll();
+                ray([
+                    'name' => $genre,
+                    'genre' => $genre,
+                ])->green();
+//                if (strtoupper($genre['name']) === strtoupper($author)) {
+//                    return $genre['genres'];
+//                }cul
+                if (!isset($genre['name'])) {
+                    continue;
                 }
                 similar_text(strtoupper($author), strtoupper($genre['name']), $perc);
 
@@ -174,5 +202,62 @@ class SpotifyService
         $artists = $track->artists;
         $artist = $artists[0]->name;
         return $track->external_urls->spotify;
+    }
+
+    public function getSpotifySearch(string $query)
+    {
+        $song = $this->findSong($query);
+        if ($song == []){
+            return [];
+        }
+        $url = $this->findSong($query)->external_urls->spotify;
+        $this->downloadSpotifySong($url);
+
+        return $song;
+    }
+
+    public function downloadSpotifySong(string $url)
+    {
+        $feed = new Feed();
+        $feed->title = $url;
+        $feed->save();
+        DownloadSpotifyJob::dispatch($url);
+    }
+
+    public function findSong(string $query)
+    {
+        // artist = first part of query
+        $author = explode(' ', $query)[0] ?? $query;
+        // title = second part of query
+        $title = explode(' ', $query)[1] ?? $query;
+        $spotifyTracks = $this->spotify->search($query, 'track')->tracks->items;
+        // find track with title or artist matching search query
+
+        if (count($spotifyTracks) < 1) {
+            return [];
+        }
+        foreach ($spotifyTracks as $spotifyTrack) {
+            if (str_contains(strtolower($spotifyTrack->name), $title)) {
+                // check if artist is in search $author
+                foreach ($spotifyTrack->artists as $artist) {
+                    if (str_contains(strtolower($artist->name), $author)) {
+                        /*                        dump([
+                                                    'query' => $query,
+                                                    'author' => $author,
+                                                    'title' => $title,
+                                                    'name' => strtolower($spotifyTrack->name),
+                                                    'artists' => $spotifyTrack->artists,
+                                                    'album' => $spotifyTrack->album,
+                                                ]);*/
+                        return $spotifyTrack;
+                    }
+                }
+                return $spotifyTrack;
+            }
+            elseif (str_contains(strtolower($spotifyTrack->artists[0]->name), $author)) {
+                return $spotifyTrack;
+            }
+        }
+        return $spotifyTracks[0];
     }
 }

@@ -29,7 +29,7 @@ class CreateSongsTable extends Migration
             $table->double('relaxed')->nullable();
             $table->double('aggressiveness')->nullable();
             $table->double('energy')->nullable();
-            $table->string('comment')->nullable();
+            $table->text('comment')->nullable();
             $table->string('path')->nullable();
             $table->string('extension')->nullable();
             $table->string('status')->nullable();

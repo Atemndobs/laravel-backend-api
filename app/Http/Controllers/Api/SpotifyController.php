@@ -26,4 +26,9 @@ class SpotifyController extends Controller
     {
         return $this->spotifyService->getArtistGenre($request->artist);
     }
+
+    public function getSpotifySearch(string $query)
+    {
+         return $this->spotifyService->getSpotifySearch($query);
+    }
 }

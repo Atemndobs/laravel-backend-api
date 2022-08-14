@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.3",
     "info": {
-        "title": "Laravel",
+        "title": "curator",
         "version": "1.0.0"
     },
     "servers": [
@@ -1413,6 +1413,10 @@
                     "image": {
                         "type": "string",
                         "nullable": true
+                    },
+                    "genre": {
+                        "type": "string",
+                        "nullable": true
                     }
                 }
             },
@@ -1670,13 +1674,16 @@
     },
     "tags": [
         {
-            "name": "Song"
+            "name": "Song",
+            "description": "API documentation for Song"
         },
         {
-            "name": "Catalog"
+            "name": "Catalog",
+            "description": "API documentation for Catalog"
         },
         {
-            "name": "File"
+            "name": "File",
+            "description": "API documentation for File"
         }
     ]
 }

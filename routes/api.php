@@ -52,5 +52,6 @@ Route::post('ping', [\App\Http\Controllers\Api\MeilesearchSongController::class,
 Route::get('songs/match/{title}/{$attribute}', [\App\Http\Controllers\Api\MatchSongController::class, 'matchByAttribute']);
 Route::get('songs/search/{term}', [\App\Http\Controllers\Api\SongSearchController::class, 'searchSong']);
 Route::get('songs/genre/{artist}', [\App\Http\Controllers\Api\SpotifyController::class, 'getArtistGenre']);
+Route::get('spotify/search/{artist}', [\App\Http\Controllers\Api\SpotifyController::class, 'getSpotifySearch']);
 
 WebSocketsRouter::webSocket('/socket/song', UpdateSongSocketHandler::class);

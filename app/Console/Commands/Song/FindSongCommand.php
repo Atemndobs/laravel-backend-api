@@ -34,7 +34,7 @@ class FindSongCommand extends Command
         ray()->clearAll();
         $findService = new FindSongService();
         $allArgs = $this->options();
-        $header = ['ID', 'Title', 'slug', 'BPM', 'key', 'scale', 'path'];
+        $header = ['ID', 'Title', 'slug', 'BPM', 'key', 'scale','analyzed', 'danceability', 'energy', 'happy', 'path'];
 
         $allArgs = array_filter($allArgs, function ($arg) {
             return $arg !== null && $arg !== '' && $arg !== 'null' && $arg !== false;
