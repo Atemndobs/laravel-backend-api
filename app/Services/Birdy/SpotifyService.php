@@ -33,26 +33,13 @@ class SpotifyService
 
     public function getArtistGenre(string $artist)
     {
-
-        //$existingSong = Song::where('title', '=', $title)->first();
-
-        $spotifyTrack = $this->spotify->search($artist, 'track')->tracks->items[0];
-        $id = $spotifyTrack->id;
-
-        $track = $this->spotify->getTrack($id);
-        $artists = $track->artists;
-
-        $genres = [];
-
-        if (count($artists) > 1) {
-            $genres = $this->getBestMatch($artist, $genres);
-        }
-
-        return $genres;
+        $spotifyTrack = $this->spotify->search($artist, 'artist')->artists->items[0];
+        return $spotifyTrack->genres;
     }
 
     public function getGenreByArtist(string $author, Song $searchSong)
     {
+        dd($searchSong->toArray());
         $genres = [];
         if ($author === 'unknown') {
             return  ['remix'];
@@ -259,5 +246,18 @@ class SpotifyService
             }
         }
         return $spotifyTracks[0];
+    }
+
+    public function getGenreFromSong(string $searchQuery) : array
+    {
+        $search = $this->spotify->search($searchQuery, 'track')->tracks->items[0];
+        $trackTitle = $search->name;
+        $trackArtist = $search->artists[0]->name;
+        $genre = $this->getArtistGenre($trackArtist);
+        return [
+            'title' => $trackTitle,
+            'author' => $trackArtist,
+            'genre' => $genre,
+        ];
     }
 }

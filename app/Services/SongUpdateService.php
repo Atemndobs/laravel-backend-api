@@ -151,7 +151,7 @@ class SongUpdateService
     public function updateDuration(array|string $slug = null)
     {
         if ($slug === null) {
-            $songs = Song::all();
+            $songs = Song::query()->whereNull('duration')->get();
         } else {
             $songs[] = Song::query()->where('slug', $slug)->first();
         }
@@ -159,7 +159,6 @@ class SongUpdateService
         $completed = [];
         /** @var Song $song */
         foreach ($songs as $song) {
-            dump(count($songs));
             // get song duration from path using getID3
             $songPath = $song->path;
             $fileInfo = $this->getAnalyze($songPath);
@@ -188,7 +187,13 @@ class SongUpdateService
                 continue;
             }
 
-            $completed[] = $song->slug;
+            $completed[] = [
+                'title' => $song->title,
+                'author' => $song->author,
+                'duration' => $song->duration,
+                'slug' => $song->slug,
+                'image' => $song->image,
+            ];
         }
 
         return $completed;

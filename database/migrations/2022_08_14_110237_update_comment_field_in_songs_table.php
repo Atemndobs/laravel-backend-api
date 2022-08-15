@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('songs', function (Blueprint $table) {
-            $table->text('comment')->nullable();
+            $table->text('comment')->nullable()->change();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('songs', function (Blueprint $table) {
-            $table->string('comment')->nullable();
+            $table->string('comment')->nullable()->change();
         });
     }
 };

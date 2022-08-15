@@ -6,9 +6,11 @@ use App\Models\Song;
 use Goutte\Client;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Symfony\Component\DomCrawler\Crawler;
 
 class SoundcloudService
 {
+    use Tools;
     public Client $client;
 
     private string $baseUrl;
@@ -148,18 +150,11 @@ class SoundcloudService
         return  $songLinks;
     }
 
-    /**
-     * @param  string  $link
-     * @return array
-     */
-    protected function getAudio(string $link)
+    public function getTrackLink(string $searchQuery)
     {
-        $songLink = 'https://soundcloud.com'.$link;
-        $crawler = $this->client->request('GET', $songLink);
-
-        return $crawler->filter('audio')->each(function ($node) {
-            return $node->text();
-        });
+        $searchUrl = "https://soundcloud.com/search?q=$searchQuery";
+        $songLinks = $this->getSongLinks($searchUrl);
+        $res = $this->client->request('GET', $searchQuery);
     }
 
     public function downloadSong(string $url)

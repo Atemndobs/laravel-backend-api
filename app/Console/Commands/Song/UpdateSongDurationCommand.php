@@ -32,12 +32,13 @@ class UpdateSongDurationCommand extends Command
         $slug = $this->argument('slug');
         if ($slug !== null) {
             $this->info("prepare updating |  $slug");
-            $updateService->updateDuration($slug);
-
-            return 0;
+            $results = $updateService->updateDuration($slug);
+        }else{
+            $results = $updateService->updateDuration();
         }
-        $updateService->updateDuration();
 
+        // output results in table
+        $this->table(['title','author',  'duration', 'slug', 'image'], $results);
         return 0;
     }
 }
