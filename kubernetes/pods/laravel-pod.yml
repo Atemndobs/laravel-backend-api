@@ -1,0 +1,48 @@
+# create pod for laravel.test service from docker-compose.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: laravel-pod
+  labels:
+    name: laravel-pod
+    app: curator-app
+spec:
+    containers:
+        - name: laravel
+          image: sail-8.1/app
+          ports:
+              - containerPort: 80
+              - containerPort: 6001
+          env:
+            - name: WWWUSER
+              value: sail
+            - name: LARAVEL_SAIL
+              value: "1"
+          volumeMounts:
+            - name: www
+              mountPath: /var/www/html
+          imagePullPolicy: Always
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            capabilities:
+              add: ["SYS_ADMIN"]
+          livenessProbe:
+              httpGet:
+                path: /
+                port: 80
+              initialDelaySeconds: 30
+              periodSeconds: 30
+              failureThreshold: 3
+              successThreshold: 1
+              timeoutSeconds: 1
+    restartPolicy: Always
+    volumes:
+        - name: www
+          hostPath:
+            path: /var/www/html
+    nodeSelector:
+        kubernetes.io/hostname: host-gateway
+    tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
