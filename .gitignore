@@ -16,6 +16,8 @@ yarn-error.log
 /storage/app/public/audio
 /storage/var
 
+kcachegrind-0.7.4
+
 rabbitmq
 /storage/framework/cache/data
 /storage/framework/sessions/*
