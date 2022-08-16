@@ -6,6 +6,7 @@ use App\Models\Song;
 use App\Services\Birdy\SpotifyService;
 use App\Services\Scraper\SoundcloudService;
 use App\Services\Song\GenreUpdateService;
+use App\Services\SongUpdateService;
 use Illuminate\Console\Command;
 
 class SongUpdateGenreCommand extends Command
@@ -139,21 +140,21 @@ class SongUpdateGenreCommand extends Command
         $genreService = new GenreUpdateService();
         /** @var Song $song */
         foreach ($songs as $song) {
-            try {
-                $songGenre = $genreService->getGenreFromId3($song)->genre;
-                $genre = json_encode($songGenre);
-                $this->output->info("$song->title : $genre");
-            }catch (\Exception $e) {
-                $this->warn($e->getMessage());
-            }
-            $left = count(
-                Song::query()->whereNull('genre')
-                ->orWhere('genre', '=', 0)
-                ->orWhere('genre', '=', '[]')
-                ->orWhere('genre', '=', null)
-                ->get()
-            );
-            $this->line("<fg=red;bg=cyan>$left songs left</>");
+                try {
+                     $songGenre = $genreService->getGenreFromId3($song)->genre;
+                     $genre = json_encode($songGenre);
+                     $this->output->info("$song->title : $genre");
+                 }catch (\Exception $e) {
+                     $this->warn($e->getMessage());
+                 }
+                 $left = count(
+                     Song::query()->whereNull('genre')
+                     ->orWhere('genre', '=', 0)
+                     ->orWhere('genre', '=', '[]')
+                     ->orWhere('genre', '=', null)
+                     ->get()
+                 );
+                 $this->line("<fg=red;bg=cyan>$left songs left</>");
         }
 
         $left = count(
@@ -168,7 +169,10 @@ class SongUpdateGenreCommand extends Command
             // redownload song from sound cloud and update genre
             $this->info('Found '.$left.' songs to update from SoundCloud');
             $this->info('Downloading songs from SoundCloud');
-
+            $updateService = new SongUpdateService();
+            foreach ($songs as $song) {
+                $updateService->getSongDetailsFromSoundCloud($song);
+            }
         }
 
     }

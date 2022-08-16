@@ -150,11 +150,21 @@ class SoundcloudService
         return  $songLinks;
     }
 
-    public function getTrackLink(string $searchQuery)
+    public function getTrackLink(string $searchQuery, array $params= [])
     {
-        $searchUrl = "https://soundcloud.com/search?q=$searchQuery";
+        $baseUrl = "https://soundcloud.com";
+        $searchUrl = "$baseUrl/search?q=$searchQuery";
         $songLinks = $this->getSongLinks($searchUrl);
-        $res = $this->client->request('GET', $searchQuery);
+
+        foreach ($songLinks as $songLink) {
+            foreach ($params as $param) {
+                if (str_contains($songLink, $param)) {
+                    return $baseUrl.$songLink;
+                }
+            }
+
+        }
+        return 0;
     }
 
     public function downloadSong(string $url)
@@ -162,8 +172,6 @@ class SoundcloudService
         $strapi_url = 'http://host.docker.internal:1337/api/classify?link=';
         $link = $strapi_url.$url;
         $response = Http::get($link);
-
-        dump($response->status());
 
         return $response->status();
     }

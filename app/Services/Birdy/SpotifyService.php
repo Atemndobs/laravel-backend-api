@@ -33,13 +33,16 @@ class SpotifyService
 
     public function getArtistGenre(string $artist)
     {
-        $spotifyTrack = $this->spotify->search($artist, 'artist')->artists->items[0];
+        try {
+            $spotifyTrack = $this->spotify->search($artist, 'artist')->artists->items[0];
+        }catch (\Exception $e) {
+            return 0;
+        }
         return $spotifyTrack->genres;
     }
 
     public function getGenreByArtist(string $author, Song $searchSong)
     {
-        dd($searchSong->toArray());
         $genres = [];
         if ($author === 'unknown') {
             return  ['remix'];
@@ -138,9 +141,7 @@ class SpotifyService
                     'name' => $genre,
                     'genre' => $genre,
                 ])->green();
-//                if (strtoupper($genre['name']) === strtoupper($author)) {
-//                    return $genre['genres'];
-//                }cul
+
                 if (!isset($genre['name'])) {
                     continue;
                 }
@@ -160,22 +161,6 @@ class SpotifyService
         }
 
         return [];
-    }
-
-    /**
-     * @param $author
-     * @param  array  $genres
-     * @return array
-     */
-    public function getBestMatch($author, array $genres): array
-    {
-        $matchingGenres = [];
-        foreach ($genres as $genre) {
-            if ($author === $genre) {
-            }
-        }
-
-        return $matchingGenres;
     }
 
     public function getSongUlrByTitle(string $title)
@@ -228,14 +213,6 @@ class SpotifyService
                 // check if artist is in search $author
                 foreach ($spotifyTrack->artists as $artist) {
                     if (str_contains(strtolower($artist->name), $author)) {
-                        /*                        dump([
-                                                    'query' => $query,
-                                                    'author' => $author,
-                                                    'title' => $title,
-                                                    'name' => strtolower($spotifyTrack->name),
-                                                    'artists' => $spotifyTrack->artists,
-                                                    'album' => $spotifyTrack->album,
-                                                ]);*/
                         return $spotifyTrack;
                     }
                 }

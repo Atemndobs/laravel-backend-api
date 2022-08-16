@@ -77,13 +77,4 @@ class GenreUpdateService
 
         return $song;
     }
-
-    public function checkSongGenre(Song $song) : bool
-    {
-        $genre = $song->genre;
-        if ($genre !== null) {
-            return false;
-        }
-        return true;
-    }
 }

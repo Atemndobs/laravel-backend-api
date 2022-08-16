@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Song;
 use App\Services\Birdy\MeiliSearchService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +15,7 @@ class SearchIndexCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'search:index';
+    protected $signature = 'index:reset {--i|index=}';
 
     /**
      * The console command description.
@@ -30,10 +31,22 @@ class SearchIndexCommand extends Command
      */
     public function handle()
     {
+        $index = $this->option('index');
+        if ($index === null) {
+            $index = 'songs';
+        }
+        info("Resetting index $index");
+        $meiliSearch = new Client(env('MEILISEARCH_HOST'), env('MEILISEARCH_KEY'));
+        $meiliSearch->index($index)->deleteAllDocuments();
+        if ($index === 'songs') {
+            $meiliSearch->index($index)->addDocuments(Song::all()->toArray());
+        }
 
-        // Find out and Fix 405 Error with Meileiseach
-        $url = env('MEILISEARCH_HOST');
-        $client = new Client($url);
+        info('Updating BPMS');
+        $this->call('song:bpm');
+        info('=========================================BPMS_DONE==========================================');
+
+        $this->call('song:status', ['--analyzed' => true, '--status' => true]);
         return 0;
     }
 }

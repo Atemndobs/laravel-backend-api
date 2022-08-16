@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Models\Song;
+use App\Services\Scraper\SoundcloudService;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
-use Psy\Util\Str;
 
 class SongUpdateService
 {
@@ -161,13 +163,15 @@ class SongUpdateService
         foreach ($songs as $song) {
             // get song duration from path using getID3
             $songPath = $song->path;
-            $fileInfo = $this->getAnalyze($songPath);
+            $fileInfo = $this->getAnalyze($songPath);;
             try {
                 $duration = $fileInfo['playtime_seconds'];
+                $play_time = $fileInfo['playtime_string'];
                 $song->duration = $duration;
                 $song->save();
             } catch (\Exception $e) {
                 dump($e->getMessage());
+                $this->getSongDetailsFromSoundCloud($song);
                 continue;
             }
             // get info from id3v2 tags
@@ -183,6 +187,7 @@ class SongUpdateService
                 $this->setImageFromSong($fileInfo['comments']['picture'][0]['data'], $song);
                 $song->save();
             } catch (\Exception $e) {
+                $this->getSongDetailsFromSoundCloud($song);
                 dump($e->getMessage());
                 continue;
             }
@@ -262,6 +267,7 @@ class SongUpdateService
         $title = trim($title);
         // replace spaces with underscores in the title
         // $title = str_replace(' ', '_', $title);
+
         $comment = $idv['comment'][0] ?? $song->comment;
         if ($song->genre === null) {
             $song->genre = $genres;
@@ -271,5 +277,79 @@ class SongUpdateService
         }
         $song->title = $title;
         $song->comment = $comment;
+    }
+
+    public function getSongDetailsFromSoundCloud(Song $song)
+    {
+        $searchQuery = $song->title;
+
+        $soundcloud = new SoundcloudService();
+        // first part of title = artis , second part of title = title
+        $titles = explode(' - ', $searchQuery);
+        $artists = $titles;
+        // last element of array is the title
+        $songTitle = $titles[count($titles) - 1];
+        // the resit is artist
+        unset($titles[count($titles) - 1]);
+
+        $searchQuery = Str::slug($searchQuery);
+        $songTitle = Str::slug($songTitle);
+        $params[] = $songTitle;
+        foreach ($titles as $key => $title) {
+            $titles[$key] = Str::slug($title);
+            $params[] = $titles[$key];
+        }
+
+        $link = $soundcloud->getTrackLink($searchQuery, $params);
+        dump($link);
+
+        if ((int)$link == 0) {
+            dump(['id' => $song->id, 'title' => $songTitle, 'artist' => $artists, 'path' => $song->path]);
+            $song->delete();
+//            $song->title = $artists[0];
+//            $song->author = $artists[1];
+//            $song->save();
+//            if (count($artists) == 1 ) {
+//                return;
+//            }
+//            if (count($artists) == 2) {
+//                $artist = $artists[0];
+//                $song->author = $artist;
+//                $song->save();
+//            }
+//            if (count($artists) == 3) {
+//                $artist = $artists[1];
+//                $song->author = $artist;
+//                $song->save();
+//            }
+            return;
+        }
+        dump("call soundcloud download command scrape:sc");
+        // call soundcloud download command scrape:sc
+        Artisan::call('scrape:sc', [
+            'link' => $link
+        ]);
+
+        Artisan::call('song:import');
+
+        $slug = Str::slug($songTitle, '_');
+
+        if ($slug === '' ){
+            return;
+        }
+        $checkSong = Song::query()->where('slug', 'like', "%$slug%")->get(['id','title', 'slug', 'author', 'image'])->toArray();
+
+        dump([
+            'id' => $song->id,
+            'slug' => $songTitle,
+            'checkSong' => $checkSong,
+        ]);
+        if (count($checkSong) > 1 && count($checkSong) < 5) {
+            $songDB = Song::query()->where('slug', $song->slug)->first();
+
+            dd('$songDB');
+            $songDB->delete();
+        }
+
     }
 }
