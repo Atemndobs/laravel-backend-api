@@ -305,7 +305,6 @@ class SongUpdateService
 
         if ((int)$link == 0) {
             dump(['id' => $song->id, 'title' => $songTitle, 'artist' => $artists, 'path' => $song->path]);
-            $song->delete();
 //            $song->title = $artists[0];
 //            $song->author = $artists[1];
 //            $song->save();
