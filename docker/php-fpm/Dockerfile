@@ -114,6 +114,33 @@ RUN chmod 0644 /etc/cron.d/laravel-scheduler
 
 ADD ./laravel.ini /usr/local/etc/php/conf.d
 
+# add curator app dependencies
+# RUN apt-get install -f php-pear
+RUN pecl channel-update pecl.php.net \
+    && apt-get install libmpdec-dev \
+    && pecl install decimal \
+    && git clone https://github.com/edenhill/librdkafka.git \
+    && cd librdkafka \
+    && ./configure \
+    && make \
+    && make install \
+    && pecl install rdkafka \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
+RUN apt-get update
+RUN apt-get install -y ffmpeg
+RUN python3 -m pip --version || apt-get install -y python3-pip
+RUN pip install spotdl \
+&& pip3 install scdl
+
+RUN pip3 install bandcamp-downloader
+
+RUN mkdir -p  ~/.config/scdl/
+#RUN cp scdl.cfg /root/.config/scdl/scdl.cfg
+
 #####################################
 # Aliases:
 #####################################
@@ -140,7 +167,7 @@ RUN rm -r /var/lib/apt/lists/*
 
 RUN usermod -u 1000 www-data
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 COPY ./docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh

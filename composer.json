@@ -24,7 +24,7 @@
         "illuminated/console-mutex": "^9.2",
         "jwilsson/spotify-web-api-php": "^5.0",
         "larapack/doctrine-support": "@dev",
-        "laravel/framework": "^9.24",
+        "laravel/framework": "^9.25",
         "laravel/sanctum": "^2.14",
         "laravel/scout": "^9.4",
         "laravel/tinker": "^2.7",

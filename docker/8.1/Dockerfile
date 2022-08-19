@@ -64,9 +64,11 @@ RUN apt-get update \
 
 RUN apt-get update
 RUN apt-get install -y ffmpeg
-RUN  python3 -m pip --version || apt-get install -y python3-pip
+RUN python3 -m pip --version || apt-get install -y python3-pip
 RUN pip install spotdl \
 && pip3 install scdl
+
+RUN pip3 install bandcamp-downloader
 
 RUN mkdir ~/.config/scdl/
 #RUN cp scdl.cfg /root/.config/scdl/scdl.cfg

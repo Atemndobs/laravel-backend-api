@@ -27,7 +27,7 @@ spec:
         - name: MYSQL_PASSWORD
           value: mage
         - name: MYSQL_ALLOW_EMPTY_PASSWORD
-          value: 1
+          value: "1"
       volumeMounts:
         - name: sail-mysql
           mountPath: /var/lib/mysql

@@ -2,6 +2,7 @@
 
 namespace App\Services\Scraper;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class BandcampService
@@ -9,7 +10,7 @@ class BandcampService
     use Tools;
     public string $baseUrl = "https://bandcamp.com";
 
-    public function getArtistByName(string $artist)
+    public function getSongLinksByArtisName(string $artist)
     {
         $url = "$this->baseUrl/search?q=$artist&item_type";
         $songLinks = $this->getSongLinks($url);
@@ -33,15 +34,23 @@ class BandcampService
             }
         }
 
+        $trackLinks = [];
         foreach ($collectedSongLinks as $foundLink) {
             if(str_contains($foundLink, '/track')) {
                 $trackLinks[] = "https://" . $artistSubDomain . $foundLink;
             }
         }
+        return $trackLinks;
+    }
 
-        dd($trackLinks);
-        dd($collectedSongLinks);
-       dd($songLinks);
+    public function downloadSong(string $songLink)
+    {
+        $fileName = explode('/', $songLink);
+        $fileName = Arr::last($fileName);
+       // $dnload = shell_exec("bandcamp-dl $songLink --base-dir=public/music --file-name=$fileName");
+        $dnload = shell_exec("bandcamp-dl $songLink --base-dir=. --file-name=$fileName -d");
 
+        dump($dnload);
+        return $fileName;
     }
 }

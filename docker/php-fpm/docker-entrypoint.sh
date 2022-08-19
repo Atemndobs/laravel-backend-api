@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Destination of env file inside container
-ENV_FILE="/var/www/.env"
+ENV_FILE="/var/www/html/.env"
 
 # Loop through XDEBUG, PHP_IDE_CONFIG and REMOTE_HOST variables and check if they are set.
 # If they are not set then check if we have values for them in the env file, if the env file exists. If we have values
@@ -56,3 +56,5 @@ elif [ -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini ]; then
 fi
 
 exec "$@"
+
+
