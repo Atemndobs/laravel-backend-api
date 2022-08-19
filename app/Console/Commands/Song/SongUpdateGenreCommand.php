@@ -16,7 +16,7 @@ class SongUpdateGenreCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'song:genre {author?} {--s|slug=} ';
+    protected $signature = 'song:genre {author?} {--s|slug=}  {--g|genre=} ';
 
     /**
      * The console command description.
@@ -36,6 +36,10 @@ class SongUpdateGenreCommand extends Command
         $spotifyService = new SpotifyService();
         $author = $this->argument('author');
         $slug = $this->option('slug');
+        $genre = $this->option('genre');
+        if ($genre !== null) {
+            $this->updateSongsWithGenre($genre);
+        }
         if ($slug !== null) {
             $this->info('Update Genre for song with slug: '.$slug);
             $song = Song::query()->where('slug','like', "%$slug%")->first();
@@ -176,4 +180,38 @@ class SongUpdateGenreCommand extends Command
         }
 
     }
+
+    private function updateSongsWithGenre(bool|array|string $genre)
+    {
+        $songs = Song::query()->where('title', 'like', "%$genre%")->get([
+            'id',
+            'title',
+            'author',
+            'genre',
+        ]);
+       // dd($songs->toArray());
+        foreach ($songs as $song) {
+            // add $genre to $song->genre array
+            $existingGenre = $song->genre;
+            if ($existingGenre === null || $existingGenre === '[]' || $existingGenre === '0' || $existingGenre === 0) {
+                $existingGenre = [];
+            }
+            if (is_array($genre)) {
+                $existingGenre = array_merge($existingGenre, $genre);
+            } else {
+                $existingGenre[] = $genre;
+            }
+           // $song->genre = $existingGenre;
+           // $song->save();
+        }
+
+        $songs = Song::query()->where('title', 'like', "%$genre%")->get([
+            'id',
+            'title',
+            'author',
+            'genre',
+        ]);
+        dd($songs->toArray());
+    }
+
 }

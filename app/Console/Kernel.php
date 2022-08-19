@@ -35,12 +35,12 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping()
             ->description('Classify songs')
             ->appendOutputTo('storage/logs/classify.log');
-
-        $schedule->command('rabbitmq:consume --queue=spotify --max-jobs=1 --stop-when-empty')
-            ->everyMinute()
-            ->withoutOverlapping()
-            ->description('Download Spotify web')
-            ->appendOutputTo('storage/logs/spotify.log');
+//
+//        $schedule->command('rabbitmq:consume --queue=spotify --max-jobs=1 --stop-when-empty')
+//            ->everyMinute()
+//            ->withoutOverlapping()
+//            ->description('Download Spotify web')
+//            ->appendOutputTo('storage/logs/spotify.log');
 
         $schedule->command('rabbitmq:consume --queue=scout --stop-when-empty')
             ->everyMinute()

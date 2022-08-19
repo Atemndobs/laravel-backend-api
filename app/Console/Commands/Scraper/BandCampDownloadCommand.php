@@ -30,7 +30,6 @@ class BandCampDownloadCommand extends Command
     {
       //  $link = "https://terakora.bandcamp.com/track/sad-girlz-are-homeless-w-dave-nunes-legend-of-k-r-remix";
         $service = new BandcampService();
-
         $songLinks = [];
         $url = $this->argument('url');
         $artist = $this->option('artist');
@@ -47,6 +46,7 @@ class BandCampDownloadCommand extends Command
         // progress bar
         $bar = $this->output->createProgressBar(count($songLinks));
         $bar->start();
+
         foreach ($songLinks as $songLink) {
             $this->info("Downloading $songLink");
             $dnload = $service->downloadSong($songLink);

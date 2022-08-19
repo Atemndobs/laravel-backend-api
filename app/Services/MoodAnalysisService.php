@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Jobs\ClassifySongJob;
 use App\Models\Song;
 use Illuminate\Support\Facades\Http;
+use function Psy\debug;
 
 class MoodAnalysisService
 {
@@ -36,13 +37,23 @@ class MoodAnalysisService
 
         // $url = "http://localhost:3000/song/$slug";
         $url = "http://host.docker.internal:3000/song/$slug";
-
-        Http::get($url)->body();
-        info("Job In Progress: $url");
-        // total of all songs not yet analyzed
         $notAnalyzedSongs = Song::where('analyzed', '=', null)->count();
         ray("$notAnalyzedSongs Songs Pending Analysis ")->screenBlue();
 
+        $req = Http::get($url);
+
+        if ($req->json('status') == 'error') {
+            dump([
+                'status' => 'error',
+                'message' => $req->json(),
+                'url' => $url,
+            ]);
+            return [
+                'status' => 'error',
+                'message' => $req->json(),
+            ];
+        }
+        info("Job in progress for $slug");
         return [
             'status' => 'Job In Progress',
         ];
@@ -70,7 +81,7 @@ class MoodAnalysisService
                 $song->save();
                 $slug = $song->slug;
                 $unClassified[] = $slug;
-//                ClassifySongJob::dispatch($slug);
+ //               ClassifySongJob::dispatch($slug);
 //                info("$slug : has been queued");
             }
         }

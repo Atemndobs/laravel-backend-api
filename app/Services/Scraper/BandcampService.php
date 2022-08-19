@@ -3,6 +3,7 @@
 namespace App\Services\Scraper;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class BandcampService
@@ -47,10 +48,44 @@ class BandcampService
     {
         $fileName = explode('/', $songLink);
         $fileName = Arr::last($fileName);
-       // $dnload = shell_exec("bandcamp-dl $songLink --base-dir=public/music --file-name=$fileName");
-        $dnload = shell_exec("bandcamp-dl $songLink --base-dir=. --file-name=$fileName -d");
+        $basDir = Storage::path('public/uploads/audio');
 
-        dump($dnload);
+        $dnload = shell_exec("bandcamp-dl $songLink --base-dir=storage/app/public/uploads/audio --template=%{artist}-%{title}");
+
+        $allFiles = Storage::allFiles('public/uploads/audio');
+        foreach ($allFiles as $file) {
+            $imageNewName = null;
+            $fileName = basename($file);
+            if (str_contains($fileName, '.mp3')) {
+                $audioName = $fileName;
+                $audioPath = $file;
+                $imageNewName = str_replace('.mp3', '.jpg', $audioName);
+            }
+            if (str_contains($fileName, '.jpg')) {
+                $imageName = $fileName;
+                $imagePath = $file;
+            }
+        }
+
+        // remove .jpg from image name
+        $imageNewName = str_replace('.jpg', '', $imageNewName);
+        $imageNewName = Str::slug($imageNewName, '_');
+        $imageNewName = $imageNewName . '.jpg';
+
+        $audioName = str_replace('.mp3', '', $audioName);
+        $audioName = Str::slug($audioName, '_');
+        $audioName = $audioName . '.mp3';
+
+        dump([
+            'audioName' => $audioName,
+            'imageName' => $imageName,
+            'imageNewName' => $imageNewName,
+        ]);
+        rename(Storage::path($imagePath), $basDir . '/' .$imageNewName );
+        rename(Storage::path($audioPath), $basDir . '/' .$audioName );
+        // move image to public/images
+        Storage::move('public/uploads/audio/' . $imageNewName, 'public/images/' . $imageNewName);
+        Storage::move('public/uploads/audio/' . $audioName, 'public/audio/' . $audioName);
         return $fileName;
     }
 }

@@ -161,6 +161,17 @@ class SongUpdateService
         $completed = [];
         /** @var Song $song */
         foreach ($songs as $song) {
+
+            // check if $image Already exists
+            $file = $this->getFilePath($song);
+            $image = $song->image;
+
+            if ($image == null) {
+              $imagePath = $this->getExistingImageFromFile($file);
+              $song->image = $imagePath;
+              $song->save();
+            }
+
             // get song duration from path using getID3
             $songPath = $song->path;
             $fileInfo = $this->getAnalyze($songPath);;
@@ -234,7 +245,6 @@ class SongUpdateService
         $path = str_replace('http://mage.tech:8899/storage/', '', $songPath);
         $getID3 = new \getID3;
         $fileInfo = $getID3->analyze("storage/app/public/$path");
-
         return $fileInfo;
     }
 
@@ -350,5 +360,27 @@ class SongUpdateService
             $songDB->delete();
         }
 
+    }
+
+    /**
+     * @param string $file
+     * @return string|null
+     */
+    public function getExistingImageFromFile(string $file): string | null
+    {
+        $imageName = str_replace('mp3', 'jpg', $file);
+        $imageName = str_replace('audio/', 'images/', $imageName);
+        $imagePath = Storage::path("public/$imageName");
+
+        dump([
+            'file' => $file,
+            'imageName' => $imageName,
+            'imagePath' => $imagePath,
+            'fielsExists' => file_exists($imagePath),
+        ]);
+        if (file_exists($imagePath)) {
+            return asset("storage/$imageName");
+        }
+        return null;
     }
 }
