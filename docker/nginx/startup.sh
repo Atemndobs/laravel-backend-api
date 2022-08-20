@@ -1,10 +1,17 @@
 #!/bin/bash
 
-if [ ! -f /etc/nginx/ssl/default.crt ]; then
-    openssl genrsa -out "/etc/nginx/ssl/default.key" 2048
-    openssl req -new -key "/etc/nginx/ssl/default.key" -out "/etc/nginx/ssl/default.csr" -subj "/CN=default/O=default/C=UK"
-    openssl x509 -req -days 365 -in "/etc/nginx/ssl/default.csr" -signkey "/etc/nginx/ssl/default.key" -out "/etc/nginx/ssl/default.crt"
-    chmod 644 /etc/nginx/ssl/default.key
+if [ ! -f /etc/nginx/ssl/curator.crt ]; then
+#    openssl genrsa -out "/etc/nginx/ssl/curator.key" 2048
+#    openssl req -new -key "/etc/nginx/ssl/curator.key" -out "/etc/nginx/ssl/curator.csr" -subj "/CN=curator/O=curator/C=UK"
+#    openssl x509 -req -days 365 -in "/etc/nginx/ssl/curator.csr" -signkey "/etc/nginx/ssl/curator.key" -out "/etc/nginx/ssl/curator.crt"
+    openssl genrsa -out "/etc/nginx/ssl/curator.key" 2048
+    chmod 644 "/etc/nginx/ssl/curator.key"
+    openssl req -x509 -new -nodes -key "/etc/nginx/ssl/curator.key" -sha256 -days 3650 -out "/etc/nginx/ssl/curator.pem"
+    chmod 644 "/etc/nginx/ssl/curator.pem"
+    openssl req -new -sha256 -nodes -out "/etc/nginx/ssl/curator.csr" -newkey rsa:2048 -keyout "/etc/nginx/ssl/curator.key" -config <( cat "/etc/nginx/ssl/curator.csr.cnf" )
+    #chmod 644 "/etc/nginx/ssl/curator.csr"
+    openssl x509 -req -in  "/etc/nginx/ssl/curator.csr" -CA "/etc/nginx/ssl/curator.pem" -CAkey "/etc/nginx/ssl/curator.key" -CAcreateserial -out "/etc/nginx/ssl/curator.crt" -days 3650 -sha256 -extfile "/etc/nginx/ssl/v3.ext"
+    chmod 644 "/etc/nginx/ssl/curator.crt"
 fi
 
 # cron job to renew the certificate

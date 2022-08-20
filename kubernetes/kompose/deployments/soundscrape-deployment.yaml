@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose -f docker-compose.yml convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: soundscrape
+  name: soundscrape
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: soundscrape
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose -f docker-compose.yml convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/sail: "true"
+        io.kompose.service: soundscrape
+    spec:
+      containers:
+        - image: atemndobs/soundscrape
+          livenessProbe:
+            exec:
+              command:
+                - rc-service sshd restart
+          name: soundscrape
+          ports:
+            - containerPort: 22
+          resources: {}
+          volumeMounts:
+            - mountPath: /music
+              name: soundscrape-claim0
+            - mountPath: /root/.ssh/authorized_keys
+              name: soundscrape-claim1
+      restartPolicy: Always
+      volumes:
+        - name: soundscrape-claim0
+          persistentVolumeClaim:
+            claimName: soundscrape-claim0
+        - name: soundscrape-claim1
+          persistentVolumeClaim:
+            claimName: soundscrape-claim1
+status: {}

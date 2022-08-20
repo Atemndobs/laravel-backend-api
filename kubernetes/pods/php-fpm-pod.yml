@@ -1,0 +1,19 @@
+# create php-fpm pod from php-fpm service in docker-compose.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: php-fpm-pod
+  labels:
+    app: curator-app
+    name: php-fpm-pod
+spec:
+    containers:
+        - name: php-fpm
+          image: atemndobs/php-fpm
+          ports:
+          - containerPort: 9000
+              hostPort: 9000
+          volumeMounts:
+              - mountPath:
+                name: sail-mysql
+              mountPath: /var/lib/mysql

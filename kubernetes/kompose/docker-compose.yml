@@ -41,7 +41,7 @@ services:
         image: atemndobs/strapi:1.0
         environment:
             DATABASE_CLIENT: mysql
-            DATABASE_HOST: mysql
+            DATABASE_HOST: mysqlmv
             DATABASE_PORT: 3306
             DATABASE_NAME: mage
             DATABASE_USERNAME: mage
