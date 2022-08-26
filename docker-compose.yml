@@ -54,9 +54,9 @@ services:
             - meilisearch
     rclone:
         container_name: rclone
-    #    image: wiserain/rclone
-        build:
-            context: ./docker/rclone
+        image: atemndobs/rclone:v1
+#        build:
+#            context: ./docker/rclone
         restart: always
         networks:
             - sail
@@ -65,7 +65,7 @@ services:
             - ./docker/rclone/config:/config
             - ./rclone/log:/log
             - ./rclone/cache:/cache
-            -
+            - ./storage/app/public:/data:shared
         devices:
             - /dev/fuse
         cap_add:

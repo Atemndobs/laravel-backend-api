@@ -23,7 +23,7 @@ settings.sql
 songs.sql
 devspace_start.sh
 kcachegrind-0.7.4
-/docker/rclone
+/docker/rclone_docker
 
 rabbitmq
 /storage/framework/cache/data
