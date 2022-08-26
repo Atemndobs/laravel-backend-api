@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: php-fpm
+  name: php-fpm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: php-fpm
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/sail: "true"
+        io.kompose.service: php-fpm
+    spec:
+      containers:
+        - image: atemndobs/php-fpm:8.1
+          name: php-fpm
+          ports:
+            - containerPort: 9000
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/www/html/
+              name: laravel
+      restartPolicy: Always
+#      volumes:
+#        - name: php-fpm-claim0
+#          persistentVolumeClaim:
+#            claimName: php-fpm-claim0
+#        - name: php-fpm-claim1
+#          persistentVolumeClaim:
+#            claimName: php-fpm-claim1
+      volumes:
+        - name: laravel
+          hostPath:
+            path: /home/atem/sites/curator/laravel/
+            type: Directory
+status: {}

@@ -48,6 +48,8 @@ if [ "true" == "$XDEBUG" ] && [ ! -f /usr/local/etc/php/conf.d/docker-php-ext-xd
   echo "xdebug.remote_connect_back=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
   echo "xdebug.remote_host=$REMOTE_HOST" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini;
 
+  # execute ssh-keygen to generate the ssh key for the remote debugging
+
 elif [ -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini ]; then
   # Remove PHP_IDE_CONFIG from cron file if already added
   sed -i '/PHP_IDE_CONFIG/d' /etc/cron.d/laravel-scheduler

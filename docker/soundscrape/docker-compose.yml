@@ -5,4 +5,5 @@ services:
       context: ./
       dockerfile: Dockerfile
     volumes:
-      - .:/music
+        - ./:/music
+        - ./docker/soundscrape/id_rsa.pub:/root/.ssh/authorized_keys

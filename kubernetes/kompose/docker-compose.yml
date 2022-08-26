@@ -41,7 +41,7 @@ services:
         image: atemndobs/strapi:1.0
         environment:
             DATABASE_CLIENT: mysql
-            DATABASE_HOST: mysqlmv
+            DATABASE_HOST: mysql
             DATABASE_PORT: 3306
             DATABASE_NAME: mage
             DATABASE_USERNAME: mage
@@ -133,7 +133,7 @@ services:
         image: atemndobs/soundscrape
         volumes:
             - ./:/music
-            - ./docker/soundscrape/id_rsa.pub:/root/.ssh/authorized_keys
+            #- ./docker/soundscrape/id_rsa.pub:/root/.ssh/authorized_keys
         networks:
             - sail
         extra_hosts:

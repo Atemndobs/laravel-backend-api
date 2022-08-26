@@ -67,25 +67,33 @@ class BandcampService
             }
         }
 
-        // remove .jpg from image name
-        $imageNewName = str_replace('.jpg', '', $imageNewName);
-        $imageNewName = Str::slug($imageNewName, '_');
-        $imageNewName = $imageNewName . '.jpg';
+        try {
+            // remove .jpg from image name
+            $imageNewName = str_replace('.jpg', '', $imageNewName);
+            $imageNewName = Str::slug($imageNewName, '_');
+            $imageNewName = $imageNewName . '.jpg';
 
-        $audioName = str_replace('.mp3', '', $audioName);
-        $audioName = Str::slug($audioName, '_');
-        $audioName = $audioName . '.mp3';
+            $audioName = str_replace('.mp3', '', $audioName);
+            $audioName = Str::slug($audioName, '_');
+            $audioName = $audioName . '.mp3';
 
-        dump([
-            'audioName' => $audioName,
-            'imageName' => $imageName,
-            'imageNewName' => $imageNewName,
-        ]);
-        rename(Storage::path($imagePath), $basDir . '/' .$imageNewName );
-        rename(Storage::path($audioPath), $basDir . '/' .$audioName );
-        // move image to public/images
-        Storage::move('public/uploads/audio/' . $imageNewName, 'public/images/' . $imageNewName);
-        Storage::move('public/uploads/audio/' . $audioName, 'public/audio/' . $audioName);
+            dump([
+                'audioName' => $audioName,
+                'imageName' => $imageName,
+                'imageNewName' => $imageNewName,
+            ]);
+            rename(Storage::path($imagePath), $basDir . '/' .$imageNewName );
+            rename(Storage::path($audioPath), $basDir . '/' .$audioName );
+            // move image to public/images
+            Storage::move('public/uploads/audio/' . $imageNewName, 'public/images/' . $imageNewName);
+            Storage::move('public/uploads/audio/' . $audioName, 'public/audio/' . $audioName);
+        }catch (\Exception $exception){
+            dump([
+                'exception' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine()
+            ]);
+        }
         return $fileName;
     }
 }

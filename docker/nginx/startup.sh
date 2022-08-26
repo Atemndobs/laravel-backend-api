@@ -27,7 +27,7 @@ fi
 # Start crond in background
 crond -l 2 -b
 
-
+#rclone mount atem_remote:music/raw/audio/ /var/www/html/storage/app/public/uploads/audio
 
 # Start nginx in foreground
 echo "Starting nginx... nginx will restart every 6 hours"

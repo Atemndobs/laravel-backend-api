@@ -98,7 +98,7 @@ class SongUpdateGenreCommand extends Command
             ray('song:genre | No songs to update')->green();
             return 0;
         }
-      //  $this->info('Found '.count($songs).' songs to update from Spotify');
+      // $this->info('Found '.count($songs).' songs to update from Spotify');
         /** @var Song $song */
 /*        foreach ($songs as $song) {
             $author = $song->author;

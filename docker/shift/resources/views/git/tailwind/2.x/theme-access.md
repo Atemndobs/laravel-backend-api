@@ -1,2 +1,0 @@
-Remove `theme()` array references
-

@@ -54,7 +54,7 @@ RUN apk add openrc openssh \
     && echo -e "PasswordAuthentication no" >> /etc/ssh/sshd_config
 RUN rc-status \
     # touch softlevel because system was initialized without openrc
-    && touch /run/openrc/softlevel \
+    && touch /run/openrc/softlevel
    # && rc-service sshd start
 
 EXPOSE 22

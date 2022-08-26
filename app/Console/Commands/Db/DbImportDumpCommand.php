@@ -52,11 +52,14 @@ class DbImportDumpCommand extends Command
             if ($count > 1) {
                 $dates = [];
                 foreach ($files as $file) {
+                    $dates[] = Carbon::createFromTimestamp(filemtime($file));
                     if (count($dates) > 1) {
                         $latestDate = max($dates);
+                        $fileName = basename($file);
                         $latestFile = $fileName;
                     }
                 }
+
             } else {
                 $latestFile = basename($files[0]);
                 $this->info("only one file in backup folder | $latestFile)");

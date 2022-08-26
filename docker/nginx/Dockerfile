@@ -33,6 +33,26 @@ RUN touch /var/log/messages
 # Copy 'logrotate' config file
 COPY logrotate/nginx /etc/logrotate.d/
 
+RUN apk add unzip
+#storj install
+RUN curl -L https://github.com/storj/storj/releases/latest/download/uplink_linux_amd64.zip -o uplink_linux_amd64.zip
+RUN unzip -o uplink_linux_amd64.zip
+RUN install uplink /usr/local/bin/uplink
+COPY accessgrant.txt accessgrant.txt
+RUN yes n | uplink access import curator accessgrant.txt
+#COPY access.json /root/.config/storj/uplink/access.json
+
+#i  Install rclone
+RUN curl https://rclone.org/install.sh | bash
+COPY rclone.conf /root/.config/rclone/rclone.conf
+
+# install fuse
+# RUN apt-get update
+RUN apk add fuse
+#RUN  modprobe fuse
+
+
+
 # Set upstream conf and remove the default conf
 RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREAM_PORT}; }" > /etc/nginx/conf.d/upstream.conf \
     && rm /etc/nginx/conf.d/default.conf

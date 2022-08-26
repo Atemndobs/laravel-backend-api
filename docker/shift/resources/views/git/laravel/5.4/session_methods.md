@@ -1,1 +1,0 @@
-Rename session methods

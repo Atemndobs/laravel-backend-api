@@ -1,1 +1,0 @@
-Bump `phpunit/phpunit` dependency

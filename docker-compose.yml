@@ -1,61 +1,86 @@
-# For more information: https://laravel.com/docs/sail
-version: '3.7'
+version: '3.3'
 services:
     nginx:
         container_name: nginx
+        #image: atemndobs/nginx:v1
         build:
             context: ./docker/nginx
         depends_on:
             -   php-fpm
         ports:
-            - "${NGINX_HOST_HTTP_PORT}:80"
-            - "${NGINX_HOST_HTTPS_PORT}:443"
+            - "8899:80"
+            - "8443:443"
         volumes:
-            - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
-            - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
-            - ${NGINX_SSL_PATH}:/etc/nginx/ssl
-            - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+            - "${NGINX_HOST_LOG_PATH}:/var/log/nginx"
+            - "${NGINX_SITES_PATH}:/etc/nginx/sites-available"
+            - "${NGINX_SSL_PATH}:/etc/nginx/ssl"
+            - "${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}"
+            - ./docker/rclone/config:/config
+            - ./rclone/log:/log
+            - ./rclone/cache:/cache
         networks:
             - sail
+        privileged: true
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+
     php-fpm:
         container_name: php-fpm
-        image: php-fpm
+#        image: atemndobs/php-fpm:8.1
         build:
             context: ./docker/php-fpm
         volumes:
-            - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
-            - './scdl.cfg:/root/.config/scdl/scdl.cfg'
+            - "${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}"
+            - "./docker/php-fpm/scdl.cfg:/root/.config/scdl/scdl.cfg"
+            - ./docker/rclone/config:/config
+            - ./rclone/log:/log
+            - ./rclone/cache:/cache
         networks:
             - sail
-        expose:
-            -   9000
+        privileged: true
+        devices:
+            - /dev/fuse
+        cap_add:
+            - SYS_ADMIN
+        security_opt:
+            - apparmor:unconfined
         extra_hosts:
             - 'host.docker.internal:host-gateway'
+        expose:
+            -   9000
         depends_on:
             - mysql
             - redis
             - meilisearch
-
-    strapi:
-        container_name: strapi
-        image: atemndobs/strapi:1.0
-        environment:
-            DATABASE_CLIENT: mysql
-            DATABASE_HOST: mysql
-            DATABASE_PORT: 3306
-            DATABASE_NAME: mage
-            DATABASE_USERNAME: mage
-            DATABASE_PASSWORD: mage
-        ports:
-            - 1337:1337
-        volumes:
-            - ./../strapi:/srv/app
-        depends_on:
-            - mysql
+    rclone:
+        container_name: rclone
+    #    image: wiserain/rclone
+        build:
+            context: ./docker/rclone
+        restart: always
         networks:
             - sail
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
+        privileged: true
+        volumes:
+            - ./docker/rclone/config:/config
+            - ./rclone/log:/log
+            - ./rclone/cache:/cache
+            -
+        devices:
+            - /dev/fuse
+        cap_add:
+            - SYS_ADMIN
+        security_opt:
+            - apparmor:unconfined
+        environment:
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - TZ=Europe/Berlin
+            - RCLONE_REMOTE_PATH=atem_remote:music
+        depends_on:
+            - mysql
+            - redis
+            - meilisearch
     mysql:
         container_name: mysql
         image: 'mysql/mysql-server:8.0'
@@ -81,13 +106,15 @@ services:
 
     meilisearch:
         container_name: meilisearch
-        image: 'getmeili/meilisearch:latest'
+        image: 'getmeili/meilisearch:v0.29.0-pagination.beta.3'
         ports:
             - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
         volumes:
             - 'sail-meilisearch:/data.ms'
         networks:
             - sail
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
         healthcheck:
             test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
             retries: 3
@@ -96,8 +123,8 @@ services:
         image: rabbitmq:3-management-alpine
         container_name: 'rabbitmq'
         ports:
-            - 5672:5672
-            - 15672:15672
+            - "5672:5672"
+            - "15672:15672"
         volumes:
             - 'sail-rabbitmq:/data.rabbitmq'
         networks:
@@ -125,23 +152,6 @@ services:
             - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
         networks:
             - sail
-    soundscrape:
-        container_name: soundscrape
-        build:
-            context: ./docker/soundscrape
-            dockerfile: Dockerfile
-        image: atemndobs/soundscrape
-        volumes:
-            - ./:/music
-            - ./docker/soundscrape/id_rsa.pub:/root/.ssh/authorized_keys
-        networks:
-            - sail
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
-        ports:
-            - 2200:22
-        healthcheck:
-            test: ["CMD", "rc-service sshd restart"]
 networks:
     sail:
         driver: bridge
@@ -154,4 +164,6 @@ volumes:
     sail-meilisearch:
         driver: local
     sail-rabbitmq:
+        driver: local
+    sail-data:
         driver: local

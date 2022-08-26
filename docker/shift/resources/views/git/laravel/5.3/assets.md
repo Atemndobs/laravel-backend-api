@@ -1,1 +1,0 @@
-Shift asset configuration

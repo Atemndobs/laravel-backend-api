@@ -1,1 +1,0 @@
-Bump Laravel dependencies

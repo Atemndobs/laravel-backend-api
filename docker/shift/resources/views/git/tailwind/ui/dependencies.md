@@ -1,1 +1,0 @@
-Bump Tailwind UI dependencies

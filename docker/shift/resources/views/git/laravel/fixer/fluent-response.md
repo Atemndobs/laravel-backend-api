@@ -1,1 +1,0 @@
-Shift to consistent, fluent response chains

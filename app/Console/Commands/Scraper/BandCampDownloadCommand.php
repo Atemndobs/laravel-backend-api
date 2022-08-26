@@ -35,14 +35,15 @@ class BandCampDownloadCommand extends Command
         $artist = $this->option('artist');
         if ($url) {
             $this->info("Scraping $url");
+            $songLinks[] = $service->downloadSong($url);
         } elseif ($artist) {
             $this->info("Scraping $artist");
-          //  $songLinks = $service->getSongLinksByArtisName($artist);
+            $songLinks = $service->getSongLinksByArtisName($artist);
         } else {
             $this->error("No url or artist specified");
             return 1;
         }
-        $songLinks = $service->getSongLinksByArtisName($artist);
+
         // progress bar
         $bar = $this->output->createProgressBar(count($songLinks));
         $bar->start();

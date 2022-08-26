@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class UploadService
 {
     protected Song $song;
-
+    public string $deletItem = '';
     public array $deletables = [];
 
     /**
@@ -39,8 +39,6 @@ class UploadService
 
         return $this->deletables;
     }
-
-    public string $deletItem = '';
 
     public function uploadSong(UploadedFile $track)
     {
@@ -217,13 +215,13 @@ class UploadService
         $file_name .= $ext;
 
         $full_path = asset(Storage::url('audio/'.$file_name));
-        if ($file_name !== $file) {
-            $oldFile = storage_path('app/public/audio/'.$file);
-            $newFile = storage_path('app/public/audio/'.$file_name);
-            rename($oldFile, $newFile);
-            $this->deletItem = $file;
-            $this->addDeletables($storeFile);
-        }
+//        if ($file_name !== $file) {
+//            $oldFile = storage_path('app/public/audio/'.$file);
+//            $newFile = storage_path('app/public/audio/'.$file_name);
+//            rename($oldFile, $newFile);
+//            $this->deletItem = $file;
+//            $this->addDeletables($storeFile);
+//        }
 
         $api_url = env('APP_URL').'/api/songs/match/';
         $slug = Str::slug($file_name, '_');

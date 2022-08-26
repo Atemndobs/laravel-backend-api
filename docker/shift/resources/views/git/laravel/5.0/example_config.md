@@ -1,1 +1,0 @@
-Add new .env.example configuration file

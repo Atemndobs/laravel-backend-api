@@ -1,0 +1,14 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: php-fpm-claim0
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+  labels:
+    io.kompose.service: php-fpm-claim0
+provisioner: kubernetes.io/local-storage
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  type: gp2
+  iops: "100"
+  fsType: ext4

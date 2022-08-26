@@ -1,1 +1,0 @@
-Shift Markdown directory and methods

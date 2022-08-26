@@ -1,1 +1,0 @@
-Generate HTTP tests for controllers

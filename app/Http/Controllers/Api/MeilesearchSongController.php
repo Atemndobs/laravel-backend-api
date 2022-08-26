@@ -42,9 +42,13 @@ class MeilesearchSongController extends Controller
         $songs['last'] = $last;
         unset($songs['results']);*/
 
-        $search = $this->client->getIndex('songs')
-            ->search('', $query)
-            ->toArray();
+        try {
+            $search = $this->client->getIndex('songs')
+                ->search('', $query)
+                ->toArray();
+        }catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
 
         $search['data'] = $search['hits'];
         unset($search['hits']);

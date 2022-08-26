@@ -1,4 +1,5 @@
-FROM php:8.1-fpm
+FROM php:8.1.9-fpm
+#FROM php:8.1-fpm
 
 MAINTAINER support@cyber-duck.co.uk
 
@@ -53,6 +54,11 @@ RUN docker-php-ext-install intl
 
 # Install the PHP gmp extention
 RUN docker-php-ext-install gmp
+RUN docker-php-ext-install sockets
+
+# Install the FFI gmp extention
+RUN docker-php-ext-install ffi
+RUN docker-php-ext-enable ffi
 
 #####################################
 # PHPRedis:
@@ -150,7 +156,24 @@ RUN pip install spotdl \
 RUN pip3 install bandcamp-downloader
 
 RUN mkdir -p  ~/.config/scdl/
-#RUN cp scdl.cfg /root/.config/scdl/scdl.cfg
+
+#storj install
+RUN curl -L https://github.com/storj/storj/releases/latest/download/uplink_linux_amd64.zip -o uplink_linux_amd64.zip
+RUN unzip -o uplink_linux_amd64.zip
+RUN install uplink /usr/local/bin/uplink
+COPY accessgrant.txt accessgrant.txt
+RUN yes n | uplink access import curator accessgrant.txt
+#COPY access.json /root/.config/storj/uplink/access.json
+
+#i  Install rclone
+RUN curl https://rclone.org/install.sh | bash
+COPY rclone.conf /root/.config/rclone/rclone.conf
+
+# install fuse
+RUN apt-get update
+RUN apt-get install -y fuse
+#RUN  modprobe fuse
+
 
 #####################################
 # Aliases:
@@ -176,6 +199,8 @@ RUN chmod +x /usr/bin/d
 
 RUN rm -r /var/lib/apt/lists/*
 
+RUN mkdir -p  "/var/www/html/storage/app/public/uploads/audio"
+
 RUN usermod -u 1000 www-data
 
 WORKDIR /var/www/html
@@ -184,6 +209,10 @@ COPY ./docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN ln -s /usr/local/bin/docker-entrypoint.sh /
 ENTRYPOINT ["docker-entrypoint.sh"]
+
+
+#RUN "rclone mount atem_remote:curator/raw/audio/ /var/www/html/storage/app/public/uploads/audio --rc --allow-non-empty --allow-other"
+
 
 EXPOSE 9000
 CMD ["php-fpm"]

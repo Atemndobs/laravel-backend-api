@@ -11,6 +11,7 @@ class GenreUpdateService
 {
     public function getGenreFromId3(Song $song) : Song
     {
+        $this->updateRemixedSongs($song);
         $id3Service = new SongUpdateService();
         $spotify = new SpotifyService();
         if ($song->genre != null) {
@@ -76,5 +77,31 @@ class GenreUpdateService
         $song->save();
 
         return $song;
+    }
+
+    private function updateRemixedSongs(\Illuminate\Database\Eloquent\Builder|Song $song)
+    {
+        $existingGenre = $song->genre;
+        if ($existingGenre === null || $existingGenre === '[]' || $existingGenre === '0' || $existingGenre === 0 || count($existingGenre) < 1)  {
+            if (str_contains($song->title, 'amapiano')){
+                $existingGenre[] = 'amapiano';
+            }
+            if (str_contains($song->title, 'afrobeat')){
+                $existingGenre[] = 'afrobeat';
+            }
+            if (str_contains($song->title, 'Moombahton')){
+                $existingGenre[] = 'Moombahton';
+            }
+            if (str_contains($song->title, 'Remix')){
+                $existingGenre[] = 'Remix';
+            }
+            if (str_contains($song->title, 'Dancehall')){
+                $existingGenre[] = 'Dancehall';
+            }
+            $song->genre = $existingGenre;
+            $song->save();
+        }
+
+        return 0;
     }
 }

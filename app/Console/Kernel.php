@@ -19,11 +19,24 @@ class Kernel extends ConsoleKernel
         $new_date = date('d M, Y', strtotime(now('CET')));
         $logFile = 'schedule_'.($new_date).'.log';
 
+        $schedule->command("scout:import 'App\Models\Song'")
+            ->daily()
+            ->withoutOverlapping()
+            ->runInBackground()
+            ->appendOutputTo('storage/logs/downloads.log');
+
+        $schedule->command("scout:index songs")
+            ->daily()
+            ->withoutOverlapping()
+            ->runInBackground()
+            ->appendOutputTo('storage/logs/downloads.log');
+
         $schedule->command('watch:audio')
             ->everyMinute()
             ->withoutOverlapping()
             ->runInBackground()
             ->appendOutputTo('storage/logs/downloads.log');
+
         $schedule->command('watch:upload')
             ->everyMinute()
             ->withoutOverlapping()
