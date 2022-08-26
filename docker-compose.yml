@@ -15,9 +15,9 @@ services:
             - "${NGINX_SITES_PATH}:/etc/nginx/sites-available"
             - "${NGINX_SSL_PATH}:/etc/nginx/ssl"
             - "${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}"
-            - ./docker/rclone/config:/config
-            - ./rclone/log:/log
-            - ./rclone/cache:/cache
+#            - ./docker/rclone/config:/config
+#            - ./rclone/log:/log
+#            - ./rclone/cache:/cache
         networks:
             - sail
         privileged: true
@@ -32,9 +32,9 @@ services:
         volumes:
             - "${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}"
             - "./docker/php-fpm/scdl.cfg:/root/.config/scdl/scdl.cfg"
-            - ./docker/rclone/config:/config
-            - ./rclone/log:/log
-            - ./rclone/cache:/cache
+#            - ./docker/rclone/config:/config
+#            - ./rclone/log:/log
+#            - ./rclone/cache:/cache
         networks:
             - sail
         privileged: true
