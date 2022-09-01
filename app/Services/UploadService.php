@@ -93,27 +93,38 @@ class UploadService
                     'error' => $e->getMessage(),
                     'file' => $file,
                 ];
-               // dump($error);
+                dump($error);
                 continue;
             }
-            $song->status = 'imported';
             $existingSong = $this->getExistingSong($song);
 
             if ($existingSong) {
                 $response[] = $existingSong;
                 continue;
             }
-
+            $rest [] = [
+                'file_name' => $file_name,
+                'id'=> $song->id,
+                'slug'=> $song->slug,
+                'song_path' => $song->path,
+                'image' => $song->image,
+            ];
+            $song->status = 'imported';
             $ext = substr($file_name, -3);
             $type = $ext;
             $source = 'imported';
-            $this->fillSong($source, $song, $type, $file, $ext);
-            $song->title = $file;
+            $this->getSongImage($file_name, $song);
+            $this->fillSong($source, $song, $type, $file_name, $ext);
+            //$song->title = $file_name;
             $song->save();
             $response[] = $song;
             $this->deletables[] = $this->deletItem;
             ClassifySongJob::dispatch($file_name);
         }
+
+        dump([
+            'response' => count($response),
+        ]);
 
         return $response;
     }
@@ -141,6 +152,8 @@ class UploadService
         $ext = substr($file_name, -4);
         $new_file_name = str_replace($ext, '', $file_name);
         $new_file_name = Str::slug($new_file_name, '_');
+        $song->slug = $new_file_name;
+        $slug = $new_file_name;
         $new_file_name .= $ext;
 
         $file_path = $file->storeAs('audio', $new_file_name, 'public');
@@ -154,8 +167,6 @@ class UploadService
             return $existingSong;
         }
 
-        $slug = Str::slug($new_file_name, '_');
-        $song->slug = $slug;
         $song->related_songs = $api_url.$slug;
         $this->fillSong($source, $song, $type, $file_name, $ext);
         $song->save();
@@ -173,24 +184,24 @@ class UploadService
      */
     public function fillSong(string $source, Song $song, ?string $type, string $name, string $ext): void
     {
+        $name = str_replace(".$ext", '', $name);
         $fields = [
-            'aggressiveness' => '',
-            'author' => '',
-            'bpm' => '',
-            'comment' => '',
-            'created_at' => '',
-            'created_by_id' => '',
-            'danceability' => '',
-            'energy' => '',
-            'happy' => '',
-            'id' => '',
-            'key' => '',
+//            'aggressiveness' => '',
+//            'author' => '',
+//            'bpm' => '',
+//            'comment' => '',
+//            'created_at' => '',
+//            'created_by_id' => '',
+//            'danceability' => '',
+//            'energy' => '',
+//            'happy' => '',
+//            'id' => '',
+//            'key' => '',
+//            'relaxed' => '',
+//            'sad' => '',
             'link' => $source,
             'path' => $song->path,
-            'relaxed' => '',
-            'sad' => '',
             'slug' => $song->slug,
-            //    'image' => '',
             'source' => $type,
             'title' => $name,
             'extension' => $ext,
@@ -205,23 +216,16 @@ class UploadService
      */
     protected function getFullSongPath(mixed $file, Song $song): mixed
     {
-        Storage::disk('public');
-        $path_to_store = Storage::path('public/audio/');
-        $storeFile = $path_to_store.$file;
-        $file_name = $file;
+        $path_to_store = setting('site.path_audio');
+
+        $base_url = setting('site.base_url');
+        $file_name = substr($file, strrpos($file, '/') + 1);
         $ext = substr($file_name, -4);
         $file_name = str_replace($ext, '', $file_name);
         $file_name = Str::slug($file_name, '_');
         $file_name .= $ext;
-
-        $full_path = asset(Storage::url('audio/'.$file_name));
-//        if ($file_name !== $file) {
-//            $oldFile = storage_path('app/public/audio/'.$file);
-//            $newFile = storage_path('app/public/audio/'.$file_name);
-//            rename($oldFile, $newFile);
-//            $this->deletItem = $file;
-//            $this->addDeletables($storeFile);
-//        }
+        $full_path = $base_url . "$path_to_store/$file_name";
+        $full_path = str_replace('/public/', '/storage/', $full_path);
 
         $api_url = env('APP_URL').'/api/songs/match/';
         $slug = Str::slug($file_name, '_');
@@ -231,5 +235,27 @@ class UploadService
         $song->related_songs = $api_url.$slug;
 
         return $file_name;
+    }
+
+    private function getSongImage(mixed $file_name, Song $song): void
+    {
+        $path_to_store = setting('site.path_images');
+        $base_url = setting('site.base_url');
+        $file_name = Str::slug($file_name, '_');
+        $image = substr($file_name, 0, -4);
+
+        $image .= '.jpg';
+        $full_path = $base_url . "$path_to_store/$image";
+        $full_path = str_replace('/public/', '/storage/', $full_path);
+        $allImages = glob(public_path('storage/music/images/*'));
+        foreach ($allImages as $image) {
+            $image = str_replace(public_path('storage/music/images/'), '', $image);
+          //  dump(['image' => $image, 'file_name' => $file_name]);
+
+            if ($image === $file_name) {
+                $song->image = $full_path;
+                $song->save();
+            }
+        }
     }
 }

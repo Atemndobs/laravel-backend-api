@@ -47,6 +47,7 @@ class SongUpdateService
      */
     public function updateBpm(Song $song): Song
     {
+    dd('updateBpm');
         $file = $this->getFilePath($song);
         $exec = shell_exec(" ./storage/app/public/streaming_rhythmextractor_multifeature storage/app/public/$file 2>&1");
         $res = explode("\n", $exec)[5];
@@ -84,7 +85,6 @@ class SongUpdateService
     public function getFilePath(Song $song): string
     {
         $path = $song->path;
-
         return str_replace('http://mage.tech:8899/storage/', '', $path);
     }
 
@@ -161,16 +161,8 @@ class SongUpdateService
         $completed = [];
         /** @var Song $song */
         foreach ($songs as $song) {
-
             // check if $image Already exists
-            $file = $this->getFilePath($song);
-            $image = $song->image;
-
-            if ($image == null) {
-              $imagePath = $this->getExistingImageFromFile($file);
-              $song->image = $imagePath;
-              $song->save();
-            }
+            $this->getSongImage($song);
 
             // get song duration from path using getID3
             $songPath = $song->path;
@@ -226,10 +218,9 @@ class SongUpdateService
         $image = $data;
         // save image to storage/app/public/images/
         $imageName = $song->slug . '.jpg';
-        $imagePath = "storage/app/public/images/$imageName";
+        $imagePath = "storage/app/public/music/images/$imageName";
         file_put_contents($imagePath, $image);
-        // save image path as asset  to database
-        $imagePath = asset("storage/images/$imageName");
+        $imagePath = setting('app.url') . "/storage/music/images/$imageName";
 
         if ($song->image === null) {
             $song->image = $imagePath;
@@ -366,21 +357,38 @@ class SongUpdateService
      * @param string $file
      * @return string|null
      */
-    public function getExistingImageFromFile(string $file): string | null
+    public function getExistingImageFromFile(string $file, string $slug = null): string | null
     {
         $imageName = str_replace('mp3', 'jpg', $file);
         $imageName = str_replace('audio/', 'images/', $imageName);
         $imagePath = Storage::path("public/$imageName");
 
-        dump([
-            'file' => $file,
-            'imageName' => $imageName,
-            'imagePath' => $imagePath,
-            'fielsExists' => file_exists($imagePath),
-        ]);
         if (file_exists($imagePath)) {
-            return asset("storage/$imageName");
+            return setting('site.base_url') ."storage/" .  $imageName;
+        }elseif ($slug !== null) {
+            $imageName = "$slug.jpg";
+            $imagePath = "storage/app/public/music/images/$imageName";
+            if (file_exists($imagePath)) {
+                return setting('site.base_url') ."storage/music/images/" .  $imageName;
+            }
         }
         return null;
+    }
+
+    /**
+     * @param Song $song
+     * @return void
+     */
+    public function getSongImage(Song $song): Song
+    {
+        $file = $this->getFilePath($song);
+        $image = $song->image;
+
+        if ($image == null || (int)$image == 0) {
+            $imagePath = $this->getExistingImageFromFile($file, $song->slug);
+            $song->image = $imagePath;
+            $song->save();
+        }
+        return $song;
     }
 }

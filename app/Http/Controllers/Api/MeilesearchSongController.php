@@ -31,16 +31,6 @@ class MeilesearchSongController extends Controller
             'limit' => (int)$limit,
             'offset' => (int)$offset,
             ];
-/*        $songs = $this->client->getIndex('songs')
-            ->getDocuments(
-                (new DocumentsQuery())->setOffset($offset)->setLimit($limit)
-            )->toArray();
-        $total = $songs['total'];
-        $last = $total / $limit;
-        // replace 'results' with 'data'
-        $songs['data'] = $songs['results'];
-        $songs['last'] = $last;
-        unset($songs['results']);*/
 
         try {
             $search = $this->client->getIndex('songs')

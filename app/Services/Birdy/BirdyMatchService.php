@@ -3,8 +3,10 @@
 namespace App\Services\Birdy;
 
 use App\Models\Song;
+use MeiliSearch\Client;
 use MeiliSearch\Endpoints\Indexes;
 use MeiliSearch\Search\SearchResult;
+use Stancl\Tenancy\Events\DatabaseDeleted;
 use function example\int;
 use function PHPUnit\Framework\isEmpty;
 
@@ -238,21 +240,23 @@ class BirdyMatchService
                 $filter[] = "$attribute >= $moodMin AND $attribute <= $moodMax";
             } else {
                 $val = strval($value);
-                $filter[] = "$attribute = '$val'";
+           //     $filter[] = "$attribute = '$val'";
             }
         }
         // remove song with same slug as the song we are analyzing
         $filter[] = "slug != '{$song->slug}'";
         $filter[] = 'analyzed = 1';
+        $filter[] = 'energy >= 0';
         $direction = 'asc';
 
         if ((int)$attribute === 0){
             $attribute = 'bpm';
         }
-
         return $this->songIndex->search('', [
             'filter' => $filter,
             'sort' => ["$attribute:$direction"],
+            'limit' => 10,
+            'offset' => 0,
         ]);
     }
 

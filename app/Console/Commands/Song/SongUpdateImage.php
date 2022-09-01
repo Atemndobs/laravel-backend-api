@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Song;
 
 use App\Models\Song;
+use App\Services\SongUpdateService;
 use Illuminate\Console\Command;
 use function example\int;
 
@@ -32,7 +33,20 @@ class SongUpdateImage extends Command
         $slug = $this->argument('slug');
         if (strlen($slug) === 0) {
             // info updating all songs without image
-            $this->call('song:duration');
+            $songs = Song::query()
+                ->where('image', '=', '')
+                ->orWhere('image', '=', null)
+                ->get();
+
+            $service = new SongUpdateService();
+            $updatedSongs = [];
+            foreach ($songs as $song) {
+
+                $this->info("updating image for |  ".$song->slug);
+                $updatedSongs['image'] = $service->getSongImage($song)->image;
+            }
+            $this->table([ 'image'], [$updatedSongs]);
+            return 0;
         } else {
             try {
                 $existing = Song::query()->where('slug', '=', "$slug")
@@ -52,7 +66,7 @@ class SongUpdateImage extends Command
                     }
                     return 0;
                 }
-                if ($existing[0]['image'] !== null) {
+                if ((int)$existing[0]['image'] != 0) {
                     $this->info('Image already exists');
                     $this->table(['image'], $existing);
                     return 0;

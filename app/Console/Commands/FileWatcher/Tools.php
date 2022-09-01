@@ -20,7 +20,7 @@ trait Tools
                     sleep(2);
                     if (str_contains($path, '.mp3') || str_contains($path, '.vav')) {
                         $fileName = basename($path);
-                        $audioPath = storage_path("app/public/$destination/".$fileName);
+                        $audioPath = storage_path("app/public/music/$destination/".$fileName);
                         rename($path, $audioPath);
                         sleep(2);
                         $this->call('song:import');

@@ -1,0 +1,32 @@
+version: '3.3'
+services:
+    rclone:
+        container_name: rclone
+        image: atemndobs/rclone:v1
+#        build:
+#            context: ./docker/rclone_docker
+        restart: always
+        networks:
+            - rclone
+        privileged: true
+        volumes:
+            - ./docker/rclone/config:/config
+            - ./rclone/log:/log
+            - ./rclone/cache:/cache
+            - ./storage/app/public/music:/data:shared
+        devices:
+            - /dev/fuse
+        cap_add:
+            - SYS_ADMIN
+        security_opt:
+            - apparmor:unconfined
+        environment:
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - TZ=Europe/Berlin
+            - RCLONE_REMOTE_PATH=atem_remote:music
+
+
+networks:
+  rclone:
+    driver: bridge

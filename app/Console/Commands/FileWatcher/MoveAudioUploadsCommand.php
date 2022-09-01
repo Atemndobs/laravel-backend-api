@@ -30,7 +30,7 @@ class MoveAudioUploadsCommand extends Command
         $files = glob(storage_path('app/public/uploads/audio/*'));
         foreach ($files as $file) {
             $fileName = basename($file);
-            $destination = storage_path('app/public/audio/' . $fileName);
+            $destination = storage_path('app/public/music/audio/' . $fileName);
             if (!file_exists($destination)) {
                 rename($file, $destination);
             }

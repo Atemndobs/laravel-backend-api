@@ -24,7 +24,7 @@ services:
 #        build:
 #            context: ./docker/php-fpm
         volumes:
-            - "./:/var/www/html/:default"
+            - "./:/var/www/html/:share"
             - "./scdl.cfg:/root/.config/scdl/scdl.cfg"
         networks:
             - sail

@@ -39,19 +39,13 @@ class ImportSongCommand extends Command
      */
     public function handle()
     {
+        $audioDir = setting('site.path_audio');
         $source = $this->argument('source');
-        $source = $source ?? 'storage/audio';
+        $source = $source ?? $audioDir;
         $unClassified = [];
         $data = [];
-        $allFiles = Storage::disk('public')->allFiles();
-        $this->info('Found ' . count($allFiles) . ' files');
 
-        $tracks = $this->cleanFiles($allFiles);
-        // check if upload service is still needed ?????
-        $uploadService = new UploadService();
-        $uploadService->importSongs($tracks);
-        $this->downloadStrapiSong();
-
+      //  dd($this->downloadStrapiSong());
         if ($source === 'strapi') {
             $songs = (new StrapiSongService())->importStrapiUploads();
             foreach ($songs as $song) {
@@ -60,6 +54,17 @@ class ImportSongCommand extends Command
 
             return 0;
         }
+        // $this->downloadStrapiSong();
+
+        $audioFiles = glob('storage/app/public/music/audio/*.mp3');
+
+        $this->info('Found ' . count($audioFiles) . ' files');
+        // $tracks = $this->cleanFiles($audioFiles);
+        // check if upload service is still needed ?????
+        $uploadService = new UploadService();
+        $uploadService->importSongs($audioFiles);
+
+
 
         // call command : rabbitmq:queue-delete classify to delete all classify queues
         $this->call('rabbitmq:queue-delete', ['name' => 'classify']);
@@ -164,15 +169,35 @@ class ImportSongCommand extends Command
     public function downloadStrapiSong()
     {
         $allSongs = Song::all();
-        $strapiService = new StrapiSongService();
+//        $strapiService = new StrapiSongService();
 
         /** @var Song $song */
         foreach ($allSongs as $song) {
-            if (str_contains($song->path, '1337')) {
-                $done = $strapiService->dowloadStrapiSong($song);
-                dump($done);
+            $path = $song->path;
+
+
+            $path = str_replace('/storage/audio/', '/storage/music/audio/', $path);
+            $song->path = $path;
+            $image = $song->image;
+            if (str_contains($image, 'http://127.0.0.1:3000')) {
+                $image = str_replace('http://127.0.0.1:3000/', setting('site.base_url'), $image);
+                $image = str_replace('/music/', '/storage/music/images/', $image);
             }
+            $image = str_replace('/storage/images/', '/storage/music/images/', $image);
+            $song->image = $image;
+            $song->save();
+            dump([
+                'id' => $song->id,
+                'image' => $song->image,
+                'path' => $song->path,
+            ]);
+//            if (str_contains($song->path, '1337')) {
+//                $done = $strapiService->dowloadStrapiSong($song);
+//                dump($done);
+//            }
         }
+
+        dd('COMPLETED');
     }
 
     /**

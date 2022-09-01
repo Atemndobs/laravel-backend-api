@@ -9,11 +9,11 @@ use Illuminate\Support\Str;
 class BandcampService
 {
     use Tools;
-    public string $baseUrl = "https://bandcamp.com";
+    public const BANDCAMP_BASE_URL = "https://bandcamp.com";
 
     public function getSongLinksByArtisName(string $artist)
     {
-        $url = "$this->baseUrl/search?q=$artist&item_type";
+        $url = self::BANDCAMP_BASE_URL . "/search?q=$artist&item_type";
         $songLinks = $this->getSongLinks($url);
 
         $searchQuery = Str::slug($artist);
@@ -50,7 +50,7 @@ class BandcampService
         $fileName = Arr::last($fileName);
         $basDir = Storage::path('public/uploads/audio');
 
-        $dnload = shell_exec("bandcamp-dl $songLink --base-dir=storage/app/public/uploads/audio --template=%{artist}-%{title}");
+        shell_exec("bandcamp-dl $songLink --base-dir=storage/app/public/uploads/audio --template=%{artist}-%{title}");
 
         $allFiles = Storage::allFiles('public/uploads/audio');
         foreach ($allFiles as $file) {
@@ -77,16 +77,28 @@ class BandcampService
             $audioName = Str::slug($audioName, '_');
             $audioName = $audioName . '.mp3';
 
-            dump([
+            rename("storage/app/$imagePath", $basDir . '/' .$imageNewName );
+            rename("storage/app/$audioPath", $basDir . '/' .$audioName );
+            // move image to public/images
+            $imageDestPath = "storage/app/" . setting('site.path_images') . "/$imageNewName";
+            $audioDestPath =  "storage/app/" . setting('site.path_audio') . "/$audioName";
+            shell_exec("chmod -R 777 $basDir");
+            shell_exec("chown -R www-data:www-data $basDir");
+            shell_exec("mv $basDir/$imageNewName $imageDestPath");
+            shell_exec("mv $basDir/$audioName $audioDestPath");
+//            rename('storage/app/public/uploads/audio/' . $imageNewName, $imageDestPath );
+//            rename('storage/app/public/uploads/audio/' . $audioName, $audioDestPath );
+
+
+            dd([
                 'audioName' => $audioName,
                 'imageName' => $imageName,
                 'imageNewName' => $imageNewName,
+                'imagePath' => $imagePath,
+                'audioPath' => $audioPath,
+                'imageDestPath' => $imageDestPath,
+                'audioDestPath' => $audioDestPath,
             ]);
-            rename(Storage::path($imagePath), $basDir . '/' .$imageNewName );
-            rename(Storage::path($audioPath), $basDir . '/' .$audioName );
-            // move image to public/images
-            Storage::move('public/uploads/audio/' . $imageNewName, 'public/images/' . $imageNewName);
-            Storage::move('public/uploads/audio/' . $audioName, 'public/audio/' . $audioName);
         }catch (\Exception $exception){
             dump([
                 'exception' => $exception->getMessage(),

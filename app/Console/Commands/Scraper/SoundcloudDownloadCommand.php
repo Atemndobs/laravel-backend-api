@@ -38,7 +38,7 @@ class SoundcloudDownloadCommand extends Command
             $mp3Files = glob('*.mp3');
             foreach ($mp3Files as $mp3File) {
                 $this->info("successfully downloaded $mp3File ");
-                rename($mp3File, 'storage/app/public/audio/' . $mp3File);
+                rename($mp3File, 'storage/app/public/music/audio/' . $mp3File);
             }
 
         }catch (\Exception $e) {

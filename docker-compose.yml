@@ -6,7 +6,7 @@ services:
         build:
             context: ./docker/nginx
         depends_on:
-            -   php-fpm
+            - php-fpm
         ports:
             - "8899:80"
             - "8443:443"
@@ -15,9 +15,6 @@ services:
             - "${NGINX_SITES_PATH}:/etc/nginx/sites-available"
             - "${NGINX_SSL_PATH}:/etc/nginx/ssl"
             - "${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}"
-#            - ./docker/rclone/config:/config
-#            - ./rclone/log:/log
-#            - ./rclone/cache:/cache
         networks:
             - sail
         privileged: true
@@ -26,24 +23,15 @@ services:
 
     php-fpm:
         container_name: php-fpm
-#        image: atemndobs/php-fpm:8.1
+ #       image: atemndobs/php-fpm:8.1
         build:
             context: ./docker/php-fpm
         volumes:
             - "${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}"
             - "./docker/php-fpm/scdl.cfg:/root/.config/scdl/scdl.cfg"
-#            - ./docker/rclone/config:/config
-#            - ./rclone/log:/log
-#            - ./rclone/cache:/cache
         networks:
             - sail
         privileged: true
-        devices:
-            - /dev/fuse
-        cap_add:
-            - SYS_ADMIN
-        security_opt:
-            - apparmor:unconfined
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         expose:
@@ -52,35 +40,7 @@ services:
             - mysql
             - redis
             - meilisearch
-    rclone:
-        container_name: rclone
-        image: atemndobs/rclone:v1
-#        build:
-#            context: ./docker/rclone
-        restart: always
-        networks:
-            - sail
-        privileged: true
-        volumes:
-            - ./docker/rclone/config:/config
-            - ./rclone/log:/log
-            - ./rclone/cache:/cache
-            - ./storage/app/public:/data:shared
-        devices:
-            - /dev/fuse
-        cap_add:
-            - SYS_ADMIN
-        security_opt:
-            - apparmor:unconfined
-        environment:
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - TZ=Europe/Berlin
-            - RCLONE_REMOTE_PATH=atem_remote:music
-        depends_on:
-            - mysql
-            - redis
-            - meilisearch
+
     mysql:
         container_name: mysql
         image: 'mysql/mysql-server:8.0'
@@ -97,6 +57,7 @@ services:
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
             - sail-mysql:/var/lib/mysql
+            - "${APP_CODE_PATH_HOST}/storage/app/backups/:/backups${APP_CODE_CONTAINER_FLAG}"
         networks:
             - sail
         healthcheck:
@@ -119,6 +80,7 @@ services:
             test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
             retries: 3
             timeout: 5s
+
     rabbitmq:
         image: rabbitmq:3-management-alpine
         container_name: 'rabbitmq'
@@ -164,6 +126,4 @@ volumes:
     sail-meilisearch:
         driver: local
     sail-rabbitmq:
-        driver: local
-    sail-data:
         driver: local
